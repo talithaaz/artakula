@@ -1,0 +1,113 @@
+/* public/css/style.css */
+:root {
+    --primary-color: #10b981;
+    --secondary-color: #064e3b;
+    --soft-bg: #f8fafc;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--soft-bg);
+    color: #334155;
+    overflow-x: hidden;
+}
+
+.navbar {
+    backdrop-filter: blur(15px);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px 0;
+    transition: all 0.3s shadow;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--secondary-color) !important;
+    font-size: 1.5rem;
+}
+
+.navbar-brand img {
+    object-fit: contain; /* Memastikan gambar tidak gepeng */
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+    transform: rotate(-10deg) scale(1.1); /* Efek gerak sedikit saat kursor menyentuh logo */
+}
+
+.hero-section {
+    padding: 120px 0 80px;
+    background: radial-gradient(circle at top right, #dcfce7 0%, transparent 40%);
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #1e293b 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-card {
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 24px;
+    padding: 40px;
+    background: #ffffff;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary-color);
+}
+
+.icon-circle {
+    width: 64px;
+    height: 64px;
+    background: #f0fdf4;
+    color: var(--primary-color);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 24px;
+}
+
+.btn-primary-custom {
+    background-color: #1e293b;
+    color: white;
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-weight: 700;
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
+    color: white;
+}
+
+.mockup-container {
+    border-radius: 30px;
+    background: #ffffff;
+    padding: 15px;
+    box-shadow: 0 40px 80px -15px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.cta-section {
+    background: var(--secondary-color);
+    border-radius: 40px;
+    padding: 80px;
+    color: white;
+    margin-bottom: 80px;
+    position: relative;
+    overflow: hidden;
+}
