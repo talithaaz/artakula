@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class LandingController extends Controller
+class Index extends Controller
 {
     public function index()
     {

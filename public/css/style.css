@@ -10,13 +10,14 @@ body {
     background-color: var(--soft-bg);
     color: #334155;
     overflow-x: hidden;
+    padding-top: 50px; /* tinggi navbar real */
 }
 
 .navbar {
     backdrop-filter: blur(15px);
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 20px 0;
-    transition: all 0.3s shadow;
+    padding: 10px 0;          /* ⬅️ WAJIB kecil */
+    transition: all 0.3s ease;
 }
 
 .navbar-brand {
@@ -25,6 +26,14 @@ body {
     color: var(--secondary-color) !important;
     font-size: 1.5rem;
 }
+
+.logo-artakula {
+    height: 36px;          /* tinggi normal navbar */
+    width: auto;
+    transform: scale(2.0); /* BESAR SECARA VISUAL */
+    transform-origin: center;
+}
+
 
 .navbar-brand img {
     object-fit: contain; /* Memastikan gambar tidak gepeng */
@@ -36,18 +45,26 @@ body {
 }
 
 .hero-section {
-    padding: 120px 0 80px;
+    padding-top: 0px;
+    padding-bottom: 80px;
     background: radial-gradient(circle at top right, #dcfce7 0%, transparent 40%);
 }
 
+.hero-image {
+    max-height: 90%;
+    width: auto;
+}
+
 .hero-title {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -2px;
     background: linear-gradient(135deg, #1e293b 0%, #10b981 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 
 .feature-card {
@@ -103,7 +120,11 @@ body {
 }
 
 .cta-section {
-    background: var(--secondary-color);
+    background: linear-gradient(
+        135deg,
+        #065f46 0%,
+        #10b981 100%
+    );
     border-radius: 40px;
     padding: 80px;
     color: white;
@@ -111,3 +132,64 @@ body {
     position: relative;
     overflow: hidden;
 }
+
+/* Offset scroll anchor karena navbar fixed */
+section[id] {
+    scroll-margin-top: 50px;
+}
+
+/* ABOUT SECTION */
+.tracking-wide {
+    letter-spacing: 0.12em;
+}
+
+.about-image {
+    max-width: 430px;
+    width: 100%;
+    height: auto;
+    margin-top: -60px;
+}
+
+.about-points {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 24px;
+}
+
+.about-points li {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 14px;
+    font-size: 1rem;
+}
+
+.about-points li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.footer-dark {
+    background-color: #022c22;
+}
+
+.footer-dark h6,
+.footer-dark strong {
+    color: #ecfdf5;
+}
+
+.footer-dark .text-muted {
+    color: rgba(236, 253, 245, 0.65) !important;
+}
+
+.footer-dark .footer-link {
+    color: rgba(236, 253, 245, 0.65);
+}
+
+.footer-dark .footer-link:hover {
+    color: #ffffff;
+}
+
