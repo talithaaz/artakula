@@ -1,0 +1,240 @@
+/* public/css/dashboard.css */
+:root {
+    --primary-color: #10b981;
+    --primary-dark: #059669;
+    --sidebar-bg: #1e293b; /* Slate Dark Modern */
+    --sidebar-hover: #334155;
+    --bg-body: #f4f7fe;
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 85px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-body);
+    overflow-x: hidden;
+}
+
+/* SIDEBAR STYLING */
+#sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    height: 100vh; /* Gunakan height 100vh agar fix setinggi layar */
+    position: fixed;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1050;
+    
+    /* Perbaikan Scroll */
+    overflow-y: auto;  /* Munculkan scroll atas bawah jika menu penuh */
+    overflow-x: hidden; /* Matikan paksa scroll kanan kiri */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logic Mini Sidebar */
+#sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+#sidebar.collapsed .nav-link-custom span,
+#sidebar.collapsed .nav-link-custom::after,
+#sidebar.collapsed h4,
+#sidebar.collapsed .sub-menu,
+#sidebar.collapsed hr {
+    display: none !important;
+}
+
+#sidebar.collapsed .nav-link-custom {
+    padding: 12px 0 !important;
+    margin: 6px 0 !important;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Menaruh icon tepat di tengah */
+    align-items: center;
+}
+
+#sidebar.collapsed .nav-link-custom i {
+    font-size: 1.4rem;
+    margin: 0 !important;
+}
+
+/* Memastikan form logout tidak merusak layout */
+#sidebar.collapsed form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Perbaikan Logout agar tetap di bawah atau ikut ter-scroll dengan rapi */
+#sidebar form {
+    margin-top: auto; /* Memaksa logout ke paling bawah jika menu sedikit */
+    padding-bottom: 20px;
+}
+
+/* Transisi halus untuk konten */
+#content {
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-list {
+    width: 100%;
+    flex-grow: 1; /* Agar list mengisi ruang yang ada */
+}
+
+/* Custom Scrollbar agar sidebar terlihat lebih cantik (Optional) */
+#sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: var(--sidebar-bg);
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: #334155; /* Warna abu-abu gelap agar tidak mencolok */
+    border-radius: 10px;
+}
+
+/* Sidebar Dropdown Icon Rotate */
+.nav-link-custom[data-bs-toggle="collapse"]::after {
+    display: inline-block;
+    margin-left: auto;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+    transition: transform 0.3s;
+}
+
+.nav-link-custom[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+/* Tambahan: Memastikan sub-menu tidak membuat lebar sidebar bertambah */
+.sub-menu {
+    list-style: none;
+    padding-left: 52px;
+    margin-bottom: 10px;
+    width: 100%; 
+    overflow-x: hidden;
+}
+
+.sub-menu a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: block;
+    padding: 8px 0;
+    transition: 0.2s;
+}
+
+.sub-menu a:hover {
+    color: var(--primary-color);
+}
+
+.nav-link-custom {
+    margin: 6px 20px;
+    padding: 12px 15px;
+    border-radius: 14px;
+    color: #cbd5e1;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.nav-link-custom:hover {
+    background: var(--sidebar-hover);
+    color: #fff;
+}
+
+.nav-link-custom.active {
+    background: var(--primary-color);
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+/* CONTENT AREA */
+#content {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 30px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#content.expanded {
+    margin-left: var(--sidebar-collapsed-width);
+    width: calc(100% - var(--sidebar-collapsed-width));
+}
+
+/* CARDS & UI COMPONENTS */
+.card-artakula {
+    border: none;
+    border-radius: 24px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(112, 144, 176, 0.08);
+    padding: 24px;
+    height: 100%;
+    min-width: 0; /* Penting agar chart bisa mengecil dalam flexbox/grid */
+    overflow: hidden;
+}
+
+.card-gradient {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.progress {
+    background-color: #f1f5f9;
+    border-radius: 10px;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 992px) {
+    #sidebar {
+        left: calc(var(--sidebar-width) * -1);
+    }
+    #sidebar.show {
+        left: 0;
+    }
+    #content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    #content.expanded {
+        margin-left: 0;
+        width: 100%;
+    }
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1040;
+    }
+    .overlay.show { display: block; }
+}
+
+footer {
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.hover-primary:hover {
+    color: var(--primary-color) !important;
+    transition: 0.2s;
+}
+
+/* Memastikan footer tetap di bawah jika konten sedikit */
+#content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    margin-top: auto; /* Memaksa footer ke bagian paling bawah container */
+}
