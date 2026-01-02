@@ -1,0 +1,35 @@
+/* public/css/main.css - GLOBAL */
+:root {
+    --primary-color: #10b981;
+    --secondary-color: #064e3b;
+    --soft-bg: #f8fafc;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--soft-bg);
+    color: #334155;
+}
+
+.text-success-custom {
+    color: var(--primary-color) !important;
+}
+
+/* Tombol dipindah ke sini agar bisa dipanggil di Register/Login juga */
+.btn-primary-custom {
+    background-color: #1e293b !important;
+    color: white !important;
+    border-radius: 14px;
+    padding: 14px 32px;
+    font-weight: 700;
+    border: none;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--primary-color) !important;
+    transform: scale(1.05);
+    color: white !important;
+}

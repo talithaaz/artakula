@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
@@ -51,7 +52,7 @@
                     <a class="nav-link fw-bold px-3" href="#fitur">Fitur</a>
                 </li>
                 <li class="nav-item ms-lg-3">
-                    <a href="/register" class="btn btn-primary-custom">
+                    <a href="/login" class="btn btn-primary-custom">
                         Masuk
                     </a>
                 </li>
@@ -86,7 +87,7 @@
                         dalam satu tempat supaya kamu benar-benar paham ke mana uangmu pergi.
                     </p>
 
-                    <a href="/register" class="btn btn-primary-custom shadow-lg">
+                    <a href="{{ route('register.form') }}" class="btn btn-primary-custom shadow-lg">
                         Mulai Kelola Keuangan
                     </a>
                 </div>
