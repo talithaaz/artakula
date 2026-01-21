@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard | Artakula')</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('img/logo2.png') }}">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -41,8 +43,8 @@
                     <li><a href="pemasukan">Pemasukan</a></li>
                     <li><a href="#pengeluaranSub" data-bs-toggle="collapse">Pengeluaran <i class="bi bi-chevron-down ms-1" style="font-size: 0.6rem;"></i></a></li>
                     <div class="collapse ps-3" id="pengeluaranSub">
-                        <li><a href="#">• Budget Pengeluaran</a></li>
-                        <li><a href="#">• Catat Pengeluaran</a></li>
+                        <li><a href="kategori_pengeluaran">• Budget Pengeluaran</a></li>
+                        <li><a href="pengeluaran">• Catat Pengeluaran</a></li>
                     </div>
                 </ul>
             </div>

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\DompetController;
 use App\Http\Controllers\Api\DummyWalletApiController;
 use App\Http\Controllers\PemasukanController;
+use App\Http\Controllers\KategoriPengeluaranController;
+use App\Http\Controllers\PengeluaranController;
 
 // Landing page
 Route::get('/', [Index::class, 'index'])->name('landing');
@@ -98,21 +100,17 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/dompet/{id}', [DompetController::class, 'destroy'])->name('dompet.destroy');
 
     // ambil provider dummy (buat modal)
-    Route::get('/dompet/iterasi/providers',
-        [DompetController::class, 'availableProviders']);
+    Route::get('/dompet/iterasi/providers',[DompetController::class, 'availableProviders']);
 
     // create dompet hasil iterasi (SETELAH IZIN)
-    Route::post('/dompet/iterasi/create',
-        [DompetController::class, 'createFromProvider'])
-        ->name('dompet.iterate.create');
+    Route::post('/dompet/iterasi/create',[DompetController::class, 'createFromProvider'])->name('dompet.iterate.create');
 
     // ITERASI SALDO (PAKAI DUMMY API CONTROLLER)
-    Route::get('/api/dummy-wallet/iterate/{id}',
-        [DummyWalletApiController::class, 'iterate'])
-        ->name('dummy.wallet.iterate');
+    Route::get('/api/dummy-wallet/iterate/{id}',[DummyWalletApiController::class, 'iterate'])->name('dummy.wallet.iterate');
 
     Route::resource('pemasukan', PemasukanController::class)->middleware(['auth']);
-
+    Route::resource('kategori_pengeluaran', KategoriPengeluaranController::class);
+    Route::resource('pengeluaran', PengeluaranController::class);
 
 });
 
