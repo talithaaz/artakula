@@ -24,8 +24,8 @@
         </div>
         
         <div class="nav-list mt-2">
-            <a href="#" class="nav-link-custom active">
-                <i class="bi bi-grid-fill"></i> <span>Ringkasan</span>
+            <a href="{{ route('dashboard') }}" class="nav-link-custom active">
+                <i class="bi bi-grid-fill"></i> <span>Dashboard</span>
             </a>
             
             <a href="{{ route('dompet.index') }}" class="nav-link-custom">
@@ -38,7 +38,7 @@
             </a>
             <div class="collapse" id="keuanganSub">
                 <ul class="sub-menu">
-                    <li><a href="#">Pemasukan</a></li>
+                    <li><a href="pemasukan">Pemasukan</a></li>
                     <li><a href="#pengeluaranSub" data-bs-toggle="collapse">Pengeluaran <i class="bi bi-chevron-down ms-1" style="font-size: 0.6rem;"></i></a></li>
                     <div class="collapse ps-3" id="pengeluaranSub">
                         <li><a href="#">• Budget Pengeluaran</a></li>

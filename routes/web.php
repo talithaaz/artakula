@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\DompetController;
 use App\Http\Controllers\Api\DummyWalletApiController;
+use App\Http\Controllers\PemasukanController;
 
 // Landing page
 Route::get('/', [Index::class, 'index'])->name('landing');
@@ -110,5 +111,9 @@ Route::middleware(['auth'])->group(function () {
         [DummyWalletApiController::class, 'iterate'])
         ->name('dummy.wallet.iterate');
 
+    Route::resource('pemasukan', PemasukanController::class)->middleware(['auth']);
+
+
 });
+
 

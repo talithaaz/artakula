@@ -54,14 +54,37 @@
                 </a>
                 @endif -->
 
-                <form action="{{ route('dompet.destroy', $dompet->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button onclick="return confirm('Hapus dompet ini?')"
-                            class="btn btn-sm btn-outline-danger">
-                        Hapus
-                    </button>
-                </form>
+                {{-- Tombol Hapus dengan Modal --}}
+    <button type="button" class="btn btn-sm btn-outline-danger" 
+        data-bs-toggle="modal" data-bs-target="#deleteDompetModal{{ $dompet->id }}">
+        Hapus
+    </button>
+
+    <!-- Modal Hapus Dompet -->
+    <div class="modal fade" id="deleteDompetModal{{ $dompet->id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus Dompet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus dompet <strong>{{ $dompet->nama_dompet }}</strong> dengan saldo 
+                    <strong>Rp {{ number_format($dompet->saldo,0,',','.') }}</strong>?
+                    <br>
+                    Semua pemasukan/ pengeluaran terkait dompet ini juga akan ikut terhapus.
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('dompet.destroy', $dompet->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Hapus Dompet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
             </div>
 
             @if($dompet->last_sync_at)
