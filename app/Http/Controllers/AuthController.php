@@ -76,7 +76,7 @@ class AuthController extends Controller
     // ===== DASHBOARD =====
     public function dashboard()
     {
-        return view('dashboard');
+        return view('dashboard.index');
     }
 
     // ===== GOOGLE LOGIN =====

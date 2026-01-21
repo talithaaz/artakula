@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Index;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\DompetController;
+use App\Http\Controllers\Api\DummyWalletApiController;
 
 // Landing page
 Route::get('/', [Index::class, 'index'])->name('landing');
@@ -73,6 +75,7 @@ Route::get('/dashboard', [AuthController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
 /*
 |--------------------------------------------------------------------------
 | GOOGLE AUTH
@@ -83,3 +86,29 @@ Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])
     ->name('google.login');
 
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dompet', [DompetController::class, 'index'])->name('dompet.index');
+    Route::get('/dompet/create', [DompetController::class, 'create'])->name('dompet.create');
+    Route::post('/dompet', [DompetController::class, 'store'])->name('dompet.store');
+    Route::get('/dompet/{id}/edit', [DompetController::class, 'edit'])->name('dompet.edit');
+    Route::put('/dompet/{id}', [DompetController::class, 'update'])->name('dompet.update');
+    Route::delete('/dompet/{id}', [DompetController::class, 'destroy'])->name('dompet.destroy');
+
+    // ambil provider dummy (buat modal)
+    Route::get('/dompet/iterasi/providers',
+        [DompetController::class, 'availableProviders']);
+
+    // create dompet hasil iterasi (SETELAH IZIN)
+    Route::post('/dompet/iterasi/create',
+        [DompetController::class, 'createFromProvider'])
+        ->name('dompet.iterate.create');
+
+    // ITERASI SALDO (PAKAI DUMMY API CONTROLLER)
+    Route::get('/api/dummy-wallet/iterate/{id}',
+        [DummyWalletApiController::class, 'iterate'])
+        ->name('dummy.wallet.iterate');
+
+});
+
