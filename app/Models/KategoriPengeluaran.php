@@ -12,6 +12,8 @@ class KategoriPengeluaran extends Model
         'user_id',
         'nama_kategori',
         'budget',
+        'periode_awal',    // ditambahkan
+        'periode_akhir',   // ditambahkan
     ];
 
     public function pengeluaran()

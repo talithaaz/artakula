@@ -21,6 +21,17 @@
             <input type="number" name="budget" class="form-control" value="{{ $kategori->budget }}" required>
         </div>
 
+        <div class="mb-3">
+    <label for="periode_awal" class="form-label">Periode Awal</label>
+    <input type="date" class="form-control" name="periode_awal" id="periode_awal" value="{{ old('periode_awal', $kategori->periode_awal) }}">
+</div>
+
+<div class="mb-3">
+    <label for="periode_akhir" class="form-label">Periode Akhir</label>
+    <input type="date" class="form-control" name="periode_akhir" id="periode_akhir" value="{{ old('periode_akhir', $kategori->periode_akhir) }}">
+</div>
+
+
         <button class="btn btn-success">Update</button>
         <a href="{{ route('kategori_pengeluaran.index') }}" class="btn btn-secondary">Batal</a>
     </form>

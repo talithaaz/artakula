@@ -19,6 +19,8 @@
                 @foreach($kategori as $k)
                     <option value="{{ $k->id }}" {{ $pengeluaran->kategori_id == $k->id ? 'selected' : '' }}>
                         {{ $k->nama_kategori }} (Rp {{ number_format($k->budget,0,',','.') }})
+                        [{{ \Carbon\Carbon::parse($k->periode_awal)->format('d M Y') }} -
+                        {{ \Carbon\Carbon::parse($k->periode_akhir)->format('d M Y') }}]
                     </option>
                 @endforeach
             </select>

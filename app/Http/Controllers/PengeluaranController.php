@@ -37,7 +37,8 @@ class PengeluaranController extends Controller
             'tanggal' => 'required|date',
         ]);
 
-        Pengeluaran::create([
+        // Simpan pengeluaran baru
+        $pengeluaran = Pengeluaran::create([
             'user_id' => auth()->id(),
             'dompet_id' => $request->dompet_id,
             'kategori_id' => $request->kategori_id,
@@ -46,8 +47,13 @@ class PengeluaranController extends Controller
             'tanggal' => $request->tanggal,
         ]);
 
+        // Kurangi saldo dompet
         Dompet::where('id', $request->dompet_id)
             ->decrement('saldo', $request->jumlah);
+
+        // Tambah terpakai di kategori
+        KategoriPengeluaran::where('id', $request->kategori_id)
+            ->increment('terpakai', $request->jumlah);
 
         return redirect()->route('pengeluaran.index')
             ->with('success', 'Pengeluaran berhasil ditambahkan');
@@ -71,12 +77,51 @@ class PengeluaranController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
+        $request->validate([
+            'dompet_id' => 'required',
+            'kategori_id' => 'required',
+            'keterangan' => 'required|string',
+            'jumlah' => 'required|numeric|min:1',
+            'tanggal' => 'required|date',
+        ]);
+
+        // Hitung selisih jumlah pengeluaran
         $selisih = $request->jumlah - $pengeluaran->jumlah;
 
-        $pengeluaran->update($request->all());
+        // Update pengeluaran
+        $pengeluaran->update([
+            'dompet_id' => $request->dompet_id,
+            'kategori_id' => $request->kategori_id,
+            'keterangan' => $request->keterangan,
+            'jumlah' => $request->jumlah,
+            'tanggal' => $request->tanggal,
+        ]);
 
-        Dompet::where('id', $pengeluaran->dompet_id)
-            ->decrement('saldo', $selisih);
+        // Update saldo dompet
+        if($pengeluaran->dompet_id == $request->dompet_id){
+            // sama dompet, cuma kurangi atau tambah sesuai selisih
+            Dompet::where('id', $request->dompet_id)
+                ->decrement('saldo', $selisih);
+        } else {
+            // beda dompet, rollback dompet lama + kurangi dompet baru
+            Dompet::where('id', $pengeluaran->dompet_id)
+                ->increment('saldo', $pengeluaran->jumlah);
+            Dompet::where('id', $request->dompet_id)
+                ->decrement('saldo', $request->jumlah);
+        }
+
+        // Update terpakai kategori
+        if($pengeluaran->kategori_id == $request->kategori_id){
+            // sama kategori, cuma update selisih
+            KategoriPengeluaran::where('id', $request->kategori_id)
+                ->increment('terpakai', $selisih);
+        } else {
+            // beda kategori, rollback kategori lama + increment kategori baru
+            KategoriPengeluaran::where('id', $pengeluaran->kategori_id)
+                ->decrement('terpakai', $pengeluaran->jumlah);
+            KategoriPengeluaran::where('id', $request->kategori_id)
+                ->increment('terpakai', $request->jumlah);
+        }
 
         return redirect()->route('pengeluaran.index')
             ->with('success', 'Pengeluaran berhasil diupdate');
@@ -88,9 +133,15 @@ class PengeluaranController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
+        // Kembalikan saldo dompet
         Dompet::where('id', $pengeluaran->dompet_id)
             ->increment('saldo', $pengeluaran->jumlah);
 
+        // Kurangi terpakai kategori
+        KategoriPengeluaran::where('id', $pengeluaran->kategori_id)
+            ->decrement('terpakai', $pengeluaran->jumlah);
+
+        // Hapus pengeluaran
         $pengeluaran->delete();
 
         return back()->with('success', 'Pengeluaran dihapus');

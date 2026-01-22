@@ -23,12 +23,17 @@ class KategoriPengeluaranController extends Controller
         $request->validate([
             'nama_kategori' => 'required|string',
             'budget' => 'required|numeric|min:0',
+            'periode_awal' => 'nullable|date',
+            'periode_akhir' => 'nullable|date|after_or_equal:periode_awal',
         ]);
 
         KategoriPengeluaran::create([
             'user_id' => auth()->id(),
             'nama_kategori' => $request->nama_kategori,
             'budget' => $request->budget,
+            'periode_awal' => $request->periode_awal,
+            'periode_akhir' => $request->periode_akhir,
+            'terpakai' => 0, // default awal
         ]);
 
         return redirect()->route('kategori_pengeluaran.index')
@@ -53,9 +58,16 @@ class KategoriPengeluaranController extends Controller
         $request->validate([
             'nama_kategori' => 'required|string',
             'budget' => 'required|numeric|min:0',
+            'periode_awal' => 'nullable|date',
+            'periode_akhir' => 'nullable|date|after_or_equal:periode_awal',
         ]);
 
-        $kategori->update($request->all());
+        $kategori->update([
+            'nama_kategori' => $request->nama_kategori,
+            'budget' => $request->budget,
+            'periode_awal' => $request->periode_awal,
+            'periode_akhir' => $request->periode_akhir,
+        ]);
 
         return redirect()->route('kategori_pengeluaran.index')
             ->with('success', 'Kategori pengeluaran berhasil diupdate');
