@@ -53,11 +53,20 @@
                 <i class="bi bi-piggy-bank"></i> <span>Tabungan</span>
             </a>
             <div class="collapse" id="tabunganSub">
-                <ul class="sub-menu">
-                    <li><a href="#">Kategori Tabungan</a></li>
-                    <li><a href="#">Mencatat Tabungan</a></li>
-                </ul>
-            </div>
+    <ul class="sub-menu">
+        <li>
+            <a href="{{ route('kategori-tabungan.index') }}">
+                • Kategori Tabungan
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('tabungan.index') }}">
+                • Catat Tabungan
+            </a>
+        </li>
+    </ul>
+</div>
+
 
             <a href="#" class="nav-link-custom">
                 <i class="bi bi-bar-chart-steps"></i> <span>Evaluasi Keuangan</span>

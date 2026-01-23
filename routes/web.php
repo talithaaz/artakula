@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\DummyWalletApiController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\KategoriPengeluaranController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\KategoriTabunganController;
+use App\Http\Controllers\TabunganController;
 
 // Landing page
 Route::get('/', [Index::class, 'index'])->name('landing');
@@ -111,6 +113,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pemasukan', PemasukanController::class)->middleware(['auth']);
     Route::resource('kategori_pengeluaran', KategoriPengeluaranController::class);
     Route::resource('pengeluaran', PengeluaranController::class);
+    Route::resource('kategori-tabungan', KategoriTabunganController::class);
+
+    Route::resource('tabungan', TabunganController::class);
 
 });
 
