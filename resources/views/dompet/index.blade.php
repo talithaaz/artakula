@@ -38,6 +38,20 @@
                 Rp {{ number_format($dompet->saldo, 0, ',', '.') }}
             </h5>
 
+             <p>
+    <small>Total Tabungan:</small><br>
+    <strong>
+        Rp {{ number_format($dompet->total_tabungan, 0, ',', '.') }}
+    </strong>
+</p>
+
+<p>
+    <small>Saldo Bisa Dipakai:</small><br>
+    <strong class="text-success">
+        Rp {{ number_format($dompet->saldo_bisa_dipakai, 0, ',', '.') }}
+    </strong>
+</p>
+
             <div class="d-flex gap-2 flex-wrap">
                 <a href="{{ route('dompet.edit', $dompet->id) }}"
                    class="btn btn-sm btn-outline-primary">

@@ -6,6 +6,8 @@ use App\Models\Pengeluaran;
 use App\Models\Dompet;
 use App\Models\KategoriPengeluaran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class PengeluaranController extends Controller
 {
@@ -54,6 +56,23 @@ class PengeluaranController extends Controller
         // Tambah terpakai di kategori
         KategoriPengeluaran::where('id', $request->kategori_id)
             ->increment('terpakai', $request->jumlah);
+
+            $dompet = Dompet::where('id', $request->dompet_id)
+    ->where('user_id', auth()->id())
+    ->firstOrFail();
+
+
+            $totalTabungan = DB::table('tb_tabungan')
+    ->where('user_id', auth()->id())
+    ->where('dompet_id', $request->dompet_id)
+    ->sum('nominal');
+
+$saldoBisaDipakai = $dompet->saldo - $totalTabungan;
+
+if ($request->jumlah > $saldoBisaDipakai) {
+    return back()->with('error', 'Saldo tidak mencukupi karena sebagian sudah masuk tabungan');
+}
+
 
         return redirect()->route('pengeluaran.index')
             ->with('success', 'Pengeluaran berhasil ditambahkan');

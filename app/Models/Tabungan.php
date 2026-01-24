@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Tabungan extends Model
 {
+    use HasFactory;
+
     protected $table = 'tb_tabungan';
 
     protected $fillable = [
@@ -14,16 +17,12 @@ class Tabungan extends Model
         'dompet_id',
         'tanggal',
         'nominal',
-        'catatan',
+        'keterangan',
     ];
 
     public function kategori()
     {
-        return $this->belongsTo(
-            KategoriTabungan::class,
-            'kategori_tabungan_id',
-            'id'
-        );
+        return $this->belongsTo(KategoriTabungan::class, 'kategori_tabungan_id');
     }
 
     public function dompet()

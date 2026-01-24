@@ -5,14 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Dompet;
 use Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\Tabungan;
+
+
 
 class DompetController extends Controller
 {
     public function index()
-    {
-        $dompets = Dompet::where('user_id', Auth::id())->get();
-        return view('dompet.index', compact('dompets'));
+{
+    $dompets = Dompet::where('user_id', Auth::id())->get();
+
+    foreach ($dompets as $d) {
+
+        $totalTabungan = DB::table('tb_tabungan')
+            ->where('user_id', auth()->id())
+            ->where('dompet_id', $d->id)
+            ->sum('nominal');
+
+        $d->total_tabungan = $totalTabungan;
+        $d->saldo_bisa_dipakai = $d->saldo - $totalTabungan;
     }
+
+    return view('dompet.index', compact('dompets'));
+}
+
 
     public function create()
     {

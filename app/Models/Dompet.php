@@ -27,3 +27,4 @@ class Dompet extends Model
         'saldo' => 'integer',
     ];
 }
+
