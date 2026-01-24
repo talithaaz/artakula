@@ -22,43 +22,35 @@ class KategoriTabunganController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_tabungan' => 'required',
+            'nama_kategori' => 'required',
+            'target_nominal' => 'nullable|numeric',
+            'target_waktu' => 'nullable|date',
         ]);
 
         KategoriTabungan::create([
             'user_id' => auth()->id(),
-            'nama_tabungan' => $request->nama_tabungan,
-            'keterangan' => $request->keterangan,
+            'nama_kategori' => $request->nama_kategori,
             'target_nominal' => $request->target_nominal,
-            'target_mulai' => $request->target_mulai,
-            'target_selesai' => $request->target_selesai,
+            'target_waktu' => $request->target_waktu,
         ]);
 
-        return redirect()->route('kategori-tabungan.index')
-            ->with('success','Kategori tabungan berhasil ditambahkan');
+        return redirect()->route('kategoriTabungan.index');
     }
 
-    public function edit(KategoriTabungan $kategori_tabungan)
+    public function edit(KategoriTabungan $kategoriTabungan)
     {
-        return view('tabungan.kategori_tabungan.edit', compact('kategori_tabungan'));
+        return view('tabungan.kategori_tabungan.edit', compact('kategoriTabungan'));
     }
 
-    public function update(Request $request, KategoriTabungan $kategori_tabungan)
+    public function update(Request $request, KategoriTabungan $kategoriTabungan)
     {
-        $request->validate([
-            'nama_tabungan' => 'required',
-        ]);
-
-        $kategori_tabungan->update($request->all());
-
-        return redirect()->route('kategori-tabungan.index')
-            ->with('success','Kategori tabungan berhasil diupdate');
+        $kategoriTabungan->update($request->all());
+        return redirect()->route('kategoriTabungan.index');
     }
 
-    public function destroy(KategoriTabungan $kategori_tabungan)
+    public function destroy(KategoriTabungan $kategoriTabungan)
     {
-        $kategori_tabungan->delete();
-
-        return back()->with('success','Kategori tabungan dihapus');
+        $kategoriTabungan->delete();
+        return back();
     }
 }

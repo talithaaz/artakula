@@ -55,7 +55,8 @@
             <div class="collapse" id="tabunganSub">
     <ul class="sub-menu">
         <li>
-            <a href="{{ route('kategori-tabungan.index') }}">
+            <a href="{{ route('kategoriTabungan.index') }}">
+
                 • Kategori Tabungan
             </a>
         </li>

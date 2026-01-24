@@ -12,13 +12,18 @@ class Tabungan extends Model
         'user_id',
         'kategori_tabungan_id',
         'dompet_id',
-        'jumlah',
-        'tanggal'
+        'tanggal',
+        'nominal',
+        'catatan',
     ];
 
     public function kategori()
     {
-        return $this->belongsTo(KategoriTabungan::class, 'kategori_tabungan_id');
+        return $this->belongsTo(
+            KategoriTabungan::class,
+            'kategori_tabungan_id',
+            'id'
+        );
     }
 
     public function dompet()

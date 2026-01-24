@@ -1,39 +1,60 @@
 @extends('layouts.index')
 
-@section('title','Tambah Tabungan')
+@section('title', 'Tambah Tabungan | Artakula')
 
 @section('content')
 
 <h5 class="fw-bold mb-4">Tambah Tabungan</h5>
 
-<div class="card-artakula p-4 col-md-8">
-<form method="POST" action="{{ route('tabungan.store') }}">
+<div class="card-artakula p-4 col-md-6">
+<form action="{{ route('tabungan.store') }}" method="POST">
 @csrf
 
-<select name="kategori_tabungan_id" class="form-select mb-3" required>
-    <option value="">Pilih Kategori Tabungan</option>
+<div class="mb-3">
+    <label class="form-label">Tanggal</label>
+    <input type="date" name="tanggal" class="form-control" required>
+</div>
 
-    @foreach($kategoriTabungan as $k)
-        <option value="{{ $k->id }}">
-            {{ $k->nama_kategori }}
-        </option>
-    @endforeach
-</select>
+<div class="mb-3">
+    <label class="form-label">Kategori Tabungan</label>
+    <select name="kategori_tabungan_id" class="form-select" required>
+        <option value="">-- Pilih Tabungan --</option>
+        @foreach($kategoriTabungan as $item)
+        <option value="{{ $item->id }}">{{ $item->nama_kategori }}</option>
+        @endforeach
+    </select>
+</div>
 
-<input type="number" name="jumlah" 
-    class="form-control mb-3" 
-    placeholder="Jumlah Tabungan" required>
+<div class="mb-3">
+    <label class="form-label">Dompet</label>
+    <select name="dompet_id" class="form-select" required>
+        <option value="">-- Pilih Dompet --</option>
+        @foreach($dompet as $d)
+        <option value="{{ $d->id }}">{{ $d->nama_dompet }}</option>
+        @endforeach
+    </select>
+</div>
 
-<input type="date" name="tanggal" 
-    class="form-control mb-3" required>
+<div class="mb-3">
+    <label class="form-label">Nominal</label>
+    <input type="number" name="nominal" class="form-control" required>
+</div>
 
-<input type="text" name="keterangan" 
-    class="form-control mb-3" 
-    placeholder="Keterangan (Opsional)">
+<div class="mb-3">
+    <label class="form-label">Catatan</label>
+    <textarea name="catatan" class="form-control" rows="3"></textarea>
+</div>
 
-<button class="btn btn-success">Simpan</button>
-<a href="{{ route('tabungan.index') }}" class="btn btn-secondary">Batal</a>
+<div class="d-flex gap-2">
+    <a href="{{ route('tabungan.index') }}" class="btn btn-secondary">
+        Kembali
+    </a>
+    <button type="submit" class="btn btn-success">
+        Simpan
+    </button>
+</div>
 
 </form>
 </div>
+
 @endsection

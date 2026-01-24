@@ -10,15 +10,18 @@ class KategoriTabungan extends Model
 
     protected $fillable = [
         'user_id',
-        'nama_tabungan',
-        'keterangan',
+        'nama_kategori',
         'target_nominal',
-        'target_mulai',
-        'target_selesai'
+        'target_waktu',
     ];
 
     public function tabungan()
     {
         return $this->hasMany(Tabungan::class, 'kategori_tabungan_id');
+    }
+
+    public function totalTerkumpul()
+    {
+        return $this->tabungan()->sum('nominal');
     }
 }

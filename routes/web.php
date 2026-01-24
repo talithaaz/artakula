@@ -113,9 +113,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pemasukan', PemasukanController::class)->middleware(['auth']);
     Route::resource('kategori_pengeluaran', KategoriPengeluaranController::class);
     Route::resource('pengeluaran', PengeluaranController::class);
-    Route::resource('kategori-tabungan', KategoriTabunganController::class);
-
+    Route::resource('kategoriTabungan', KategoriTabunganController::class);
     Route::resource('tabungan', TabunganController::class);
+
 
 });
 
