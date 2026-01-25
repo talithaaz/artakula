@@ -6,6 +6,7 @@ use App\Models\Tabungan;
 use App\Models\KategoriTabungan;
 use App\Models\Dompet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TabunganController extends Controller
 {
@@ -32,26 +33,52 @@ class TabunganController extends Controller
 
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'kategori_tabungan_id' => 'required',
-            'dompet_id'            => 'required',
-            'tanggal'              => 'required|date',
-            'nominal'              => 'required|numeric',
-        ]);
+{
+    $request->validate([
+        'kategori_tabungan_id' => 'required|exists:tb_kategori_tabungan,id',
+        'dompet_id'            => 'required|exists:tb_dompet,id',
+        'tanggal'              => 'required|date',
+        'nominal'              => 'required|numeric|min:1',
+    ]);
 
-        Tabungan::create([
-            'user_id'              => auth()->id(),
-            'kategori_tabungan_id' => $request->kategori_tabungan_id,
-            'dompet_id'            => $request->dompet_id,
-            'tanggal'              => $request->tanggal,
-            'nominal'              => $request->nominal,
-            'keterangan'           => $request->keterangan,
-        ]);
+    DB::transaction(function () use ($request) {
 
-        return redirect()->route('tabungan.index')
-            ->with('success', 'Tabungan berhasil ditambahkan');
+    $kategori = KategoriTabungan::where('user_id', auth()->id())
+        ->findOrFail($request->kategori_tabungan_id);
+
+    $dompetSumber = Dompet::where('user_id', auth()->id())
+        ->lockForUpdate()
+        ->findOrFail($request->dompet_id);
+
+    if ($dompetSumber->saldo < $request->nominal) {
+        abort(400, 'Saldo tidak mencukupi');
     }
+
+    // ➖ selalu kurangi saldo sumber
+    $dompetSumber->decrement('saldo', $request->nominal);
+
+    // ➕ JIKA kategori punya dompet tujuan
+    if ($kategori->dompet_tujuan_id) {
+        Dompet::lockForUpdate()
+            ->where('id', $kategori->dompet_tujuan_id)
+            ->increment('saldo', $request->nominal);
+    }
+
+    // 📝 catat tabungan
+    Tabungan::create([
+        'user_id' => auth()->id(),
+        'kategori_tabungan_id' => $kategori->id,
+        'dompet_id' => $dompetSumber->id,
+        'tanggal' => $request->tanggal,
+        'nominal' => $request->nominal,
+        'keterangan' => $request->keterangan,
+    ]);
+});
+
+
+    return redirect()->route('tabungan.index')
+        ->with('success', 'Tabungan berhasil ditambahkan');
+}
 
     public function edit($id)
     {

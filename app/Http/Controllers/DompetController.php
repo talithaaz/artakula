@@ -18,17 +18,21 @@ class DompetController extends Controller
 
     foreach ($dompets as $d) {
 
-        $totalTabungan = DB::table('tb_tabungan')
-            ->where('user_id', auth()->id())
-            ->where('dompet_id', $d->id)
-            ->sum('nominal');
+        // tabungan TANPA dompet tujuan = TERKUNCI
+        $totalTabunganTerkunci = DB::table('tb_tabungan as t')
+            ->join('tb_kategori_tabungan as k', 'k.id', '=', 't.kategori_tabungan_id')
+            ->where('t.user_id', auth()->id())
+            ->where('t.dompet_id', $d->id)
+            ->whereNull('k.dompet_tujuan_id')
+            ->sum('t.nominal');
 
-        $d->total_tabungan = $totalTabungan;
-        $d->saldo_bisa_dipakai = $d->saldo - $totalTabungan;
+        $d->total_tabungan_terkunci = $totalTabunganTerkunci;
+        $d->saldo_bisa_dipakai = $d->saldo - $totalTabunganTerkunci;
     }
 
     return view('dompet.index', compact('dompets'));
 }
+
 
 
     public function create()

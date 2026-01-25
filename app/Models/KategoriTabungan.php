@@ -11,9 +11,15 @@ class KategoriTabungan extends Model
     protected $fillable = [
         'user_id',
         'nama_kategori',
+        'dompet_tujuan_id',
         'target_nominal',
         'target_waktu',
     ];
+
+    public function dompetTujuan()
+    {
+        return $this->belongsTo(Dompet::class, 'dompet_tujuan_id');
+    }
 
     public function tabungan()
     {

@@ -12,17 +12,45 @@
 
 <div class="mb-3">
     <label class="form-label">Nama Tabungan</label>
-    <input type="text" name="nama_kategori" class="form-control" required>
+    <input type="text"
+           name="nama_kategori"
+           class="form-control"
+           required>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Dompet Tujuan (Opsional)</label>
+    <select name="dompet_tujuan_id" class="form-select">
+        <option value="">
+            -- Saldo Terkunci (Tanpa Dompet Tujuan) --
+        </option>
+
+        @foreach($dompet as $d)
+            <option value="{{ $d->id }}">
+                {{ $d->nama_dompet }}
+            </option>
+        @endforeach
+    </select>
+
+    <small class="text-muted">
+        Jika tidak dipilih, tabungan akan dianggap sebagai saldo terkunci.
+    </small>
 </div>
 
 <div class="mb-3">
     <label class="form-label">Target Nominal</label>
-    <input type="number" name="target_nominal" class="form-control" required>
+    <input type="number"
+           name="target_nominal"
+           class="form-control"
+           required>
 </div>
 
 <div class="mb-3">
     <label class="form-label">Target Waktu</label>
-    <input type="date" name="target_waktu" class="form-control" required>
+    <input type="date"
+           name="target_waktu"
+           class="form-control"
+           required>
 </div>
 
 <div class="d-flex gap-2">

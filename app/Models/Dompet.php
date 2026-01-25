@@ -26,5 +26,10 @@ class Dompet extends Model
         'is_dummy' => 'boolean',
         'saldo' => 'integer',
     ];
+
+    public function tabungan()
+    {
+        return $this->hasMany(Tabungan::class, 'dompet_id');
+    }
 }
 

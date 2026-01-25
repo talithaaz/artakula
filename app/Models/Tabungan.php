@@ -29,4 +29,9 @@ class Tabungan extends Model
     {
         return $this->belongsTo(Dompet::class, 'dompet_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -20,7 +20,8 @@
     <thead class="border-bottom">
         <tr>
             <th>Nama Tabungan</th>
-            <th >Target Nominal</th>
+            <th>Dompet Tujuan</th> {{-- 🔥 KOLOM BARU --}}
+            <th>Target Nominal</th>
             <th>Target Waktu</th>
             <th class="text-center">Aksi</th>
         </tr>
@@ -30,12 +31,28 @@
 @foreach($kategoriTabungan as $item)
 <tr>
     <td class="fw-semibold">{{ $item->nama_kategori }}</td>
-    <td >
+
+    {{-- DOMPET TUJUAN --}}
+    <td>
+        @if ($item->dompetTujuan)
+            <span class="badge bg-primary">
+                {{ $item->dompetTujuan->nama_dompet }}
+            </span>
+        @else
+            <span class="badge bg-secondary">
+                Saldo Terkunci
+            </span>
+        @endif
+    </td>
+
+    <td>
         Rp {{ number_format($item->target_nominal,0,',','.') }}
     </td>
+
     <td>
         {{ \Carbon\Carbon::parse($item->target_waktu)->format('d M Y') }}
     </td>
+
     <td class="text-center">
 
         <a href="{{ route('kategoriTabungan.edit',$item->id) }}"
