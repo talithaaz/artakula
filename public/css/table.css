@@ -1,0 +1,143 @@
+/* =========================================================
+   ARTakula – GLOBAL TABLE DESIGN SYSTEM
+   Clean • Structured • Purposeful
+   ========================================================= */
+
+/* ===== WRAPPER ===== */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    
+}
+
+/* ===== CONTAINER ===== */
+.table-artakula {
+    min-width: 1100px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* ===== TABLE ===== */
+.table-artakula table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    border-color: #238863;
+}
+
+/* =========================================================
+   TABLE HEADER – STRONG BUT CLEAN 🌿
+   ========================================================= */
+.table-artakula thead th {
+    background: linear-gradient(
+        180deg,
+        #d1fae5,
+        #ecfdf5
+    );
+    color: #064e3b;
+    font-size: 0.80rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 18px 20px;
+    white-space: nowrap;
+
+    border-top: 1px solid #238863;
+    border-bottom: 2px solid #238863;
+}
+
+/* sudut kiri atas */
+.table-artakula thead tr th:first-child {
+    border-top-left-radius: 18px;
+}
+
+/* sudut kanan atas */
+.table-artakula thead tr th:last-child {
+    border-top-right-radius: 18px;
+}
+
+/* sudut kiri bawah */
+.table-artakula tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+/* sudut kanan bawah */
+.table-artakula tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+
+/* garis antar kolom header */
+.table-artakula thead th:not(:last-child) {
+    border-right: 1px solid #a7f3d0;
+}
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+.table-artakula tbody td {
+    font-size: 0.85rem;
+    color: #334155;
+    padding: 16px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+
+    max-width: 260px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* border-top: 1px solid #238863;
+    border-bottom: 1px solid #238863; */
+}
+
+/* garis antar kolom body */
+.table-artakula tbody td:not(:last-child) {
+    border-right: 1px solid #f1f5f9;
+}
+
+/* =========================================================
+   ROW INTERACTION
+   ========================================================= */
+.table-artakula tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.table-artakula tbody tr:hover {
+    background-color: #f0fdf4;
+}
+
+.table-artakula tbody tr:last-child td {
+    border-bottom: 1px solid #238863;
+}
+
+
+/* =========================================================
+   SPECIAL TEXT
+   ========================================================= */
+/* .text-nominal {
+    color: #059669;
+    font-weight: 700;
+} */
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 768px) {
+    .table-artakula {
+        border-radius: 14px;
+    }
+
+    .table-artakula thead th {
+        font-size: 0.68rem;
+        padding: 15px;
+    }
+
+    .table-artakula tbody td {
+        font-size: 0.8rem;
+        padding: 14px;
+    }
+}

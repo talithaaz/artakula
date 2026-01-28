@@ -51,7 +51,9 @@
 
 <div class="mb-3">
     <label class="form-label">Catatan</label>
-    <textarea name="catatan" class="form-control" rows="3">{{ $tabungan->catatan }}</textarea>
+<textarea name="keterangan" class="form-control" rows="3">
+{{ old('keterangan', $tabungan->keterangan) }}
+</textarea>
 </div>
 
 <div class="d-flex gap-2">

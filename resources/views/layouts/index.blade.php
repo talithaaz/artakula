@@ -13,6 +13,8 @@
 
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+
 </head>
 <body>
 
@@ -122,7 +124,22 @@
             </div>
         </div>
 
+        
+
+
+
     @yield('content')
+
+    {{-- SLOT KHUSUS TABEL --}}
+@if(View::hasSection('table'))
+    <div class="table-wrapper">
+        <div class="table-artakula">
+            <table class="table table-bordered align-middle">
+                @yield('table')
+            </table>
+        </div>
+    </div>
+@endif
 
     {{-- FOOTER FULL PUNYA KAMU --}}
     <footer class="mt-5 pt-4 pb-2">
