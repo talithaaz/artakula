@@ -14,6 +14,7 @@ class Tabungan extends Model
     protected $fillable = [
         'user_id',
         'kategori_tabungan_id',
+        'sumber_dompet_id',
         'dompet_id',
         'tanggal',
         'nominal',
@@ -29,6 +30,12 @@ class Tabungan extends Model
     {
         return $this->belongsTo(Dompet::class, 'dompet_id');
     }
+
+    public function sumberDompet()
+{
+    return $this->belongsTo(Dompet::class, 'sumber_dompet_id');
+}
+
 
     public function user()
     {

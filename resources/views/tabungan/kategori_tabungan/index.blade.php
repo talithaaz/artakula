@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title', 'Kategori Tabungan | Artakula')
+@section('page_title', 'Overview Tabungan')
 
 @section('content')
 

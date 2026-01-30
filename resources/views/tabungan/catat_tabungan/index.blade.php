@@ -1,11 +1,12 @@
 @extends('layouts.index')
 
 @section('title', 'Tabungan | Artakula')
+@section('page_title', 'Overview Tabungan')
 
 @section('content')
 
 <div class="d-flex justify-content-between mb-4">
-    <h5 class="fw-bold">Tabungan</h5>
+    <h5 class="fw-bold">Catat Tabungan</h5>
     <a href="{{ route('tabungan.create') }}" class="btn btn-success">
         <i class="bi bi-plus-circle"></i> Tambah Tabungan
     </a>
@@ -23,11 +24,11 @@
 <thead>
     <tr>
         <th class="text-center">Tanggal</th>
-        <th>Kategori</th>
-        <th>Keterangan</th>
-        <th>Sumber Dompet</th>
-        <th>Dompet Tujuan</th>
-        <th>Nominal</th>
+        <th class="text-center">Kategori</th>
+        <th class="text-center">Keterangan</th>
+        <th class="text-center">Sumber Dompet</th>
+        <th class="text-center">Dompet Tujuan</th>
+        <th class="text-center">Nominal</th>
         <th class="text-center">Aksi</th>
     </tr>
 </thead>
@@ -46,8 +47,8 @@
         {{ $item->keterangan ?? '-' }}
     </td>
 
-    <td title="{{ $item->dompet->nama_dompet }}">
-        {{ $item->dompet->nama_dompet }}
+    <td title="{{ $item->sumberDompet->nama_dompet }}">
+        {{ $item->sumberDompet->nama_dompet }}
     </td>
 
     <td title="{{ $item->kategori->dompetTujuan->nama_dompet ?? '-' }}">

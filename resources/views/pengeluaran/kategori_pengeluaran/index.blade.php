@@ -1,5 +1,6 @@
 @extends('layouts.index')
 @section('title','Kategori Pengeluaran | Artakula')
+@section('page_title', 'Overview Pengeluaran')
 
 @section('content')
 <div class="d-flex justify-content-between mb-4">

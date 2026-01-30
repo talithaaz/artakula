@@ -59,12 +59,12 @@
         <li>
             <a href="{{ route('kategoriTabungan.index') }}">
 
-                • Kategori Tabungan
+                Kategori Tabungan
             </a>
         </li>
         <li>
             <a href="{{ route('tabungan.index') }}">
-                • Catat Tabungan
+                Catat Tabungan
             </a>
         </li>
     </ul>
@@ -98,7 +98,9 @@
                 <button class="btn btn-white shadow-sm" onclick="toggleSidebar()">
                     <i class="bi bi-list fs-4"></i>
                 </button>
-                <h4 class="fw-bold mb-0">Overview Dashboard</h4>
+                <h4 class="fw-bold mb-0">
+                    @yield('page_title', 'Overview Dashboard')
+                </h4>
             </div>
             
             <div class="d-flex align-items-center gap-3">

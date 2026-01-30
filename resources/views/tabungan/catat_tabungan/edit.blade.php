@@ -12,14 +12,7 @@
 @method('PUT')
 
 <div class="mb-3">
-    <label class="form-label">Tanggal</label>
-    <input type="date" name="tanggal"
-           value="{{ $tabungan->tanggal }}"
-           class="form-control" required>
-</div>
-
-<div class="mb-3">
-    <label class="form-label">Kategori Tabungan</label>
+    <label class="form-label fw-bold">Kategori Tabungan</label>
     <select name="kategori_tabungan_id" class="form-select" required>
         @foreach($kategori as $item)
         <option value="{{ $item->id }}"
@@ -31,26 +24,45 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Dompet</label>
-    <select name="dompet_id" class="form-select" required>
+    <label class="form-label fw-bold">Sumber Dompet</label>
+    <select name="sumber_dompet_id" class="form-select" required>
         @foreach($dompet as $d)
         <option value="{{ $d->id }}"
-            @selected($d->id == $tabungan->dompet_id)>
+            @selected($d->id == $tabungan->sumber_dompet_id)>
             {{ $d->nama_dompet }}
         </option>
         @endforeach
     </select>
 </div>
 
+
 <div class="mb-3">
-    <label class="form-label">Nominal</label>
+    <label class="form-label fw-bold">Dompet Tujuan</label>
+    <input type="text"
+        class="form-control"
+        value="{{ optional($tabungan->kategori->dompetTujuan)->nama_dompet ?? '-' }}"
+        readonly>
+</div>
+
+
+<div class="mb-3">
+    <label class="form-label fw-bold">Nominal (Rp)</label>
     <input type="number" name="nominal"
            value="{{ $tabungan->nominal }}"
            class="form-control" required>
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Catatan</label>
+    <label class="form-label fw-bold">Tanggal</label>
+    <input type="date" name="tanggal"
+           value="{{ $tabungan->tanggal }}"
+           class="form-control" required>
+</div>
+
+
+
+<div class="mb-3">
+    <label class="form-label fw-bold">Keterangan</label>
 <textarea name="keterangan" class="form-control" rows="3">
 {{ old('keterangan', $tabungan->keterangan) }}
 </textarea>

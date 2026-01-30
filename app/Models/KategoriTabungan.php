@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tabungan;
+
 
 class KategoriTabungan extends Model
 {
@@ -25,6 +27,12 @@ class KategoriTabungan extends Model
     {
         return $this->hasMany(Tabungan::class, 'kategori_tabungan_id');
     }
+
+    public function catatTabungan()
+{
+    return $this->hasMany(Tabungan::class, 'kategori_tabungan_id');
+}
+
 
     public function totalTerkumpul()
     {

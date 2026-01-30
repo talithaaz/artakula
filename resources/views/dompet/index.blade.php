@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title', 'Dompet Saya | Artakula')
+@section('page_title', 'Overview Dompet')
 
 @section('content')
 

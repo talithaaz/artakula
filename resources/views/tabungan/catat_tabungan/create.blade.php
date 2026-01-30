@@ -10,7 +10,8 @@
 
 {{-- FORM GET → buat pilih kategori --}}
 <form method="GET" action="{{ route('tabungan.create') }}">
-    <select name="kategori_tabungan_id"
+<label class="form-label fw-bold">Kategori Tabungan</label>    
+<select name="kategori_tabungan_id"
             class="form-select mb-3"
             onchange="this.form.submit()"
             required>
@@ -32,8 +33,9 @@
        name="kategori_tabungan_id"
        value="{{ request('kategori_tabungan_id') }}">
 
-<select name="dompet_id" class="form-select mb-3" required>
-    <option value="">Pilih Sumber Dompet</option>
+<label class="form-label fw-bold">Sumber Dompet</label>    
+       <select name="sumber_dompet_id" class="form-select mb-3" required>
+<option value="">Pilih Sumber Dompet</option>
     @foreach($dompet as $d)
         <option value="{{ $d->id }}">{{ $d->nama_dompet }}</option>
     @endforeach
@@ -41,7 +43,7 @@
 
 {{-- DOMPET TUJUAN (AUTO DARI KATEGORI) --}}
 <div class="mb-3">
-    <label class="form-label">Dompet Tujuan</label>
+    <label class="form-label fw-bold">Dompet Tujuan</label>
     <input type="text"
            class="form-control"
            value="{{ $dompetTujuan?->nama_dompet ?? '-' }}"
@@ -49,24 +51,28 @@
 </div>
 
 <input type="hidden"
-       name="dompet_tujuan_id"
+       name="dompet_id"
        value="{{ $dompetTujuan?->id }}">
 
+<label class="form-label fw-bold">Nominal (Rp)</label>
 <input type="number"
        name="nominal"
        class="form-control mb-3"
        placeholder="Nominal"
        required>
-
+       
+<label class="form-label fw-bold">Tanggal</label>
 <input type="date"
        name="tanggal"
        class="form-control mb-3"
        required>
-
+       
+<label class="form-label fw-bold">Keterangan</label>
 <input type="text"
        name="keterangan"
        class="form-control mb-3"
        placeholder="Keterangan (opsional)">
+       
 
 <a href="{{ route('tabungan.index') }}" class="btn btn-secondary">Batal</a>
 <button class="btn btn-success">Simpan</button>

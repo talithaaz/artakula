@@ -1,11 +1,12 @@
 @extends('layouts.index')
 
 @section('title', 'Pemasukan | Artakula')
+@section('page_title', 'Overview Pemasukan')
 
 @section('content')
 
 <div class="d-flex justify-content-between mb-4">
-    <h5 class="fw-bold">Pemasukan</h5>
+    <h5 class="fw-bold">Catat Pemasukan</h5>
     <a href="{{ route('pemasukan.create') }}" class="btn btn-success">
         <i class="bi bi-plus-circle"></i> Tambah Pemasukan
     </a>

@@ -30,6 +30,7 @@ class KategoriTabunganController extends Controller
             'nama_kategori' => 'required',
             'target_nominal' => 'nullable|numeric',
             'target_waktu' => 'nullable|date',
+            'dompet_tujuan_id'  => 'required|exists:tb_dompet,id',
         ]);
 
         KategoriTabungan::create([
@@ -65,7 +66,7 @@ $data = $request->validate([
         'nama_kategori'      => 'required|string',
         'target_nominal'     => 'required|numeric',
         'target_waktu'       => 'required|date',
-        'dompet_tujuan_id'   => 'nullable|exists:dompet,id',
+        'dompet_tujuan_id'   => 'nullable|exists:tb_dompet,id',
     ]);
         // cek apakah kategori tabungan sudah punya transaksi
     if ($kategoriTabungan->catatTabungan()->count() == 0) {
