@@ -70,7 +70,7 @@
 
 <div class="d-flex gap-2">
     <a href="{{ route('tabungan.index') }}" class="btn btn-secondary">
-        Kembali
+        Batal
     </a>
     <button type="submit" class="btn btn-primary">
         Update

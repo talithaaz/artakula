@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title', 'Edit Kategori Tabungan | Artakula')
+@section('page_title', 'Overview Tabungan')
 
 @section('content')
 
@@ -12,20 +13,20 @@
 @method('PUT')
 
 <div class="mb-3">
-    <label class="form-label">Nama Tabungan</label>
+    <label class="form-label fw-bold">Nama Tabungan</label>
     <input type="text" name="nama_kategori"
            value="{{ $kategoriTabungan->nama_kategori }}"
            class="form-control" required>
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Dompet Tujuan</label>
+    <label class="form-label fw-bold">Dompet Tujuan</label>
 
 <select name="dompet_tujuan_id"
     class="form-select"
     @if($jumlahTransaksi > 0) disabled @endif>
 
-    <option value="">-- Saldo Terkunci --</option>
+    <!-- <option value="">-- Saldo Terkunci --</option> -->
 
     @foreach($dompet as $d)
         <option value="{{ $d->id }}"
@@ -44,14 +45,14 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Target Nominal</label>
+    <label class="form-label fw-bold">Target Nominal (Rp)</label>
     <input type="number" name="target_nominal"
            value="{{ $kategoriTabungan->target_nominal }}"
            class="form-control" required>
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Target Waktu</label>
+    <label class="form-label fw-bold">Target Waktu</label>
     <input type="date" name="target_waktu"
            value="{{ $kategoriTabungan->target_waktu }}"
            class="form-control" required>
@@ -59,7 +60,7 @@
 
 <div class="d-flex gap-2">
     <a href="{{ route('kategoriTabungan.index') }}" class="btn btn-secondary">
-        Kembali
+        Batal
     </a>
     <button type="submit" class="btn btn-primary">
         Update

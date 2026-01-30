@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title', 'Tambah Kategori Tabungan | Artakula')
+@section('page_title', 'Overview Tabungan')
 
 @section('content')
 
@@ -11,7 +12,7 @@
 @csrf
 
 <div class="mb-3">
-    <label class="form-label">Nama Tabungan</label>
+    <label class="form-label fw-bold">Nama Tabungan</label>
     <input type="text"
            name="nama_kategori"
            class="form-control"
@@ -19,11 +20,11 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Dompet Tujuan (Opsional)</label>
+    <label class="form-label fw-bold">Dompet Tujuan</label>
     <select name="dompet_tujuan_id" class="form-select">
-        <option value="">
+        <!-- <option value="">
             -- Saldo Terkunci (Tanpa Dompet Tujuan) --
-        </option>
+        </option> -->
 
         @foreach($dompet as $d)
             <option value="{{ $d->id }}">
@@ -32,13 +33,13 @@
         @endforeach
     </select>
 
-    <small class="text-muted">
+    <!-- <small class="text-muted">
         Jika tidak dipilih, tabungan akan dianggap sebagai saldo terkunci.
-    </small>
+    </small> -->
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Target Nominal</label>
+    <label class="form-label fw-bold">Target Nominal (Rp)</label>
     <input type="number"
            name="target_nominal"
            class="form-control"
@@ -46,7 +47,7 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label">Target Waktu</label>
+    <label class="form-label fw-bold">Target Waktu</label>
     <input type="date"
            name="target_waktu"
            class="form-control"
@@ -55,7 +56,7 @@
 
 <div class="d-flex gap-2">
     <a href="{{ route('kategoriTabungan.index') }}" class="btn btn-secondary">
-        Kembali
+        Batal
     </a>
     <button type="submit" class="btn btn-success">
         Simpan

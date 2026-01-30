@@ -41,7 +41,8 @@ class KategoriTabunganController extends Controller
             'target_waktu' => $request->target_waktu,
         ]);
 
-        return redirect()->route('kategoriTabungan.index');
+        return redirect()->route('kategoriTabungan.index')
+        ->with('success', 'Kategori tabungan berhasil ditambahkan');
     }
 
     public function edit(KategoriTabungan $kategoriTabungan)
@@ -83,6 +84,6 @@ $data = $request->validate([
     public function destroy(KategoriTabungan $kategoriTabungan)
     {
         $kategoriTabungan->delete();
-        return back();
+        return back()->with('success', 'Kategori tabungan berhasil dihapus');
     }
 }
