@@ -1,111 +1,92 @@
 /* =========================================================
    ARTakula – GLOBAL TABLE DESIGN SYSTEM
-   Clean • Structured • Purposeful
    ========================================================= */
 
-/* ===== WRAPPER ===== */
+/* ===== WRAPPER (SCROLL AREA) ===== */
 .table-wrapper {
     width: 100%;
-    overflow-x: auto;
-    
+    overflow-x: auto;   /* 🔥 SCROLL HIDUP DI SINI */
 }
 
-/* ===== CONTAINER ===== */
+/* ===== CONTAINER (BACKGROUND ONLY) ===== */
 .table-artakula {
-    min-width: 1100px;
-    background: #ffffff;
+    width: 100%;
+    background: #fff;
     border-radius: 18px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
+    border: px solid #e5e7eb;
+    box-shadow: 0 18px 40px rgba(0,0,0,.06);
+
+    overflow-x: visible;   /* 🔥 JANGAN CLIP ISI */
+}
+
+/* ===== CLIP KHUSUS BUAT RADIUS ===== */
+.table-artakula-inner {
+    border-radius: inherit;
+    overflow: hidden;   /* cuma buat sudut */
 }
 
 /* ===== TABLE ===== */
 .table-artakula table {
-    width: 100%;
+    width: max-content;   /* kolom ngikut isi */
+    min-width: 100%;      /* full page klo kolom dikit */
+    table-layout: auto;
+
     border-collapse: separate;
     border-spacing: 0;
-
     border-color: #238863;
 }
 
+/* trigger scroll klo kolom banyak */
+@media (max-width: 1200px) {
+    .table-artakula table {
+        min-width: 1000px;
+    }
+}
+
 /* =========================================================
-   TABLE HEADER – STRONG BUT CLEAN 🌿
+   HEADER
    ========================================================= */
 .table-artakula thead th {
-    background: linear-gradient(
-        180deg,
-        #d1fae5,
-        #ecfdf5
-    );
+    background: linear-gradient(180deg,#d1fae5,#ecfdf5);
     color: #064e3b;
     font-size: 0.80rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    padding: 18px 20px;
+    padding: 12px 16px;
     white-space: nowrap;
 
-    border-top: 1px solid #238863;
-    border-bottom: 2px solid #238863;
+    border-top: 0.5px solid #238863;
+    border-bottom: 1px solid #238863;
 }
 
-/* sudut kiri atas */
-.table-artakula thead tr th:first-child {
-    border-top-left-radius: 18px;
-}
-
-/* sudut kanan atas */
-.table-artakula thead tr th:last-child {
-    border-top-right-radius: 18px;
-}
-
-/* sudut kiri bawah */
-.table-artakula tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 18px;
-}
-
-/* sudut kanan bawah */
-.table-artakula tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 18px;
-}
-
-
-/* garis antar kolom header */
 .table-artakula thead th:not(:last-child) {
-    border-right: 1px solid #a7f3d0;
+    border-right: 0.5px solid #a7f3d0;
 }
 
 /* =========================================================
-   TABLE BODY
+   BODY
    ========================================================= */
 .table-artakula tbody td {
     font-size: 0.85rem;
     color: #334155;
-    padding: 16px 20px;
+    padding: 12px 16px;
     vertical-align: middle;
-    border-bottom: 1px solid #f1f5f9;
 
-    max-width: 260px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* border-top: 1px solid #238863;
-    border-bottom: 1px solid #238863; */
+
+    border-bottom: 0.5px solid #f1f5f9;
 }
 
-/* garis antar kolom body */
 .table-artakula tbody td:not(:last-child) {
-    border-right: 1px solid #f1f5f9;
+    border-right: 0.5px solid #f1f5f9;
 }
 
 /* =========================================================
-   ROW INTERACTION
+   INTERACTION
    ========================================================= */
-.table-artakula tbody tr {
-    transition: background-color 0.15s ease;
-}
-
 .table-artakula tbody tr:hover {
     background-color: #f0fdf4;
 }
@@ -114,14 +95,38 @@
     border-bottom: 1px solid #238863;
 }
 
+/* Sudut kiri bawah */
+.table-artakula tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px; /* sama dengan radius container */
+    border-left: 1px solid #238863;  /* supaya border warna sama */
+    border-bottom: 1px solid #238863;
+}
 
-/* =========================================================
-   SPECIAL TEXT
-   ========================================================= */
-/* .text-nominal {
-    color: #059669;
-    font-weight: 700;
-} */
+/* Sudut kanan bawah */
+.table-artakula tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+    border-right: 1px solid #238863;
+    border-bottom: 1px solid #238863;
+}
+
+/* Border bottom baris terakhir lain selain first/last cell */
+.table-artakula tbody tr:last-child td:not(:first-child):not(:last-child) {
+    border-bottom: 1px solid #238863;
+}
+
+/* Sudut kiri atas */
+.table-artakula thead th:first-child {
+    border-top-left-radius: 18px;  /* radius container */
+    border-left: 1px solid #238863; 
+}
+
+/* Sudut kanan atas */
+.table-artakula thead th:last-child {
+    border-top-right-radius: 18px;
+    border-right: 1px solid #238863;
+}
+
+
 
 /* =========================================================
    RESPONSIVE

@@ -136,11 +136,12 @@
 @if(View::hasSection('table'))
     <div class="table-wrapper">
         <div class="table-artakula">
-            <table class="table table-bordered align-middle">
+            <table class="table table-bordered align-middle table-artakula-inner ">
                 @yield('table')
             </table>
         </div>
     </div>
+
 @endif
 
     {{-- FOOTER FULL PUNYA KAMU --}}

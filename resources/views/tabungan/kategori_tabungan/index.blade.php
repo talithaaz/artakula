@@ -57,7 +57,7 @@
         {{ \Carbon\Carbon::parse($item->target_waktu)->format('d M Y') }}
     </td>
 
-    <td >
+    <td class="text-center">
 
         <a href="{{ route('kategoriTabungan.edit',$item->id) }}"
            class="btn btn-sm btn-outline-primary">
