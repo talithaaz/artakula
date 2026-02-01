@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title','Edit Pengeluaran')
+@section('page_title', 'Overview Pengeluaran')
 
 @section('content')
 
@@ -18,9 +19,7 @@
                 <option value="">Pilih Kategori</option>
                 @foreach($kategori as $k)
                     <option value="{{ $k->id }}" {{ $pengeluaran->kategori_id == $k->id ? 'selected' : '' }}>
-                        {{ $k->nama_kategori }} (Rp {{ number_format($k->budget,0,',','.') }})
-                        [{{ \Carbon\Carbon::parse($k->periode_awal)->format('d M Y') }} -
-                        {{ \Carbon\Carbon::parse($k->periode_akhir)->format('d M Y') }}]
+                        {{ $k->nama_kategori }} 
                     </option>
                 @endforeach
             </select>
@@ -33,8 +32,7 @@
                 <option value="">Pilih Dompet</option>
                 @foreach($dompets as $d)
                     <option value="{{ $d->id }}" {{ $pengeluaran->dompet_id == $d->id ? 'selected' : '' }}>
-                        {{ $d->nama_dompet }} (Saldo: Rp {{ number_format($d->saldo,0,',','.') }})
-                    </option>
+                        {{ $d->nama_dompet }} 
                 @endforeach
             </select>
         </div>
@@ -57,8 +55,9 @@
             <input type="date" name="tanggal" class="form-control" value="{{ $pengeluaran->tanggal }}" required>
         </div>
 
-        <button class="btn btn-success">Update</button>
         <a href="{{ route('pengeluaran.index') }}" class="btn btn-secondary">Batal</a>
+        <button class="btn btn-success">Update</button>
+        
     </form>
 </div>
 

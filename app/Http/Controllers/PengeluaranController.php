@@ -24,7 +24,19 @@ class PengeluaranController extends Controller
     public function create()
     {
         $dompets = Dompet::where('user_id', auth()->id())->get();
-        $kategori = KategoriPengeluaran::where('user_id', auth()->id())->get();
+        $today = now()->toDateString();
+
+$kategori = KategoriPengeluaran::where('user_id', auth()->id())
+    ->where(function ($q) use ($today) {
+        $q->whereNull('periode_awal')
+          ->orWhere('periode_awal', '<=', $today);
+    })
+    ->where(function ($q) use ($today) {
+        $q->whereNull('periode_akhir')
+          ->orWhere('periode_akhir', '>=', $today);
+    })
+    ->get();
+
 
         return view('pengeluaran.catat_pengeluaran.create', compact('dompets', 'kategori'));
     }
