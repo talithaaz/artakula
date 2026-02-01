@@ -7,39 +7,59 @@ use App\Models\Dompet;
 use App\Models\KategoriPengeluaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 class PengeluaranController extends Controller
 {
-    public function index()
-    {
-        $pengeluaran = Pengeluaran::with(['dompet', 'kategori'])
-            ->where('user_id', auth()->id())
-            ->orderBy('tanggal', 'desc')
-            ->get();
+    public function index(Request $request)
+{
+    $bulan = $request->bulan ?? now()->month;
+    $tahun = $request->tahun ?? now()->year;
 
-        return view('pengeluaran.catat_pengeluaran.index', compact('pengeluaran'));
-    }
+    $awalBulan = Carbon::create($tahun, $bulan, 1)->startOfMonth();
+    $akhirBulan = Carbon::create($tahun, $bulan, 1)->endOfMonth();
 
-    public function create()
-    {
-        $dompets = Dompet::where('user_id', auth()->id())->get();
-        $today = now()->toDateString();
+    $pengeluaran = Pengeluaran::with(['dompet', 'kategori'])
+        ->where('user_id', auth()->id())
+        ->whereBetween('tanggal', [$awalBulan, $akhirBulan])
+        ->orderBy('id', 'desc')
+        ->get();
 
-$kategori = KategoriPengeluaran::where('user_id', auth()->id())
-    ->where(function ($q) use ($today) {
-        $q->whereNull('periode_awal')
-          ->orWhere('periode_awal', '<=', $today);
-    })
-    ->where(function ($q) use ($today) {
-        $q->whereNull('periode_akhir')
-          ->orWhere('periode_akhir', '>=', $today);
-    })
-    ->get();
+    return view(
+        'pengeluaran.catat_pengeluaran.index',
+        compact('pengeluaran', 'bulan', 'tahun')
+    );
+}
+
+    public function create(Request $request)
+{
+    $dompets = Dompet::where('user_id', auth()->id())->get();
+
+    $bulan = $request->bulan ?? now()->month;
+    $tahun = $request->tahun ?? now()->year;
+
+    // tanggal acuan dari filter, BUKAN now()
+    $tanggalAcuan = Carbon::create($tahun, $bulan, 1)->toDateString();
+
+    $kategori = KategoriPengeluaran::where('user_id', auth()->id())
+        ->where(function ($q) use ($tanggalAcuan) {
+            $q->whereNull('periode_awal')
+              ->orWhere('periode_awal', '<=', $tanggalAcuan);
+        })
+        ->where(function ($q) use ($tanggalAcuan) {
+            $q->whereNull('periode_akhir')
+              ->orWhere('periode_akhir', '>=', $tanggalAcuan);
+        })
+        ->get();
+
+    return view(
+        'pengeluaran.catat_pengeluaran.create',
+        compact('dompets', 'kategori', 'bulan', 'tahun')
+    );
+}
 
 
-        return view('pengeluaran.catat_pengeluaran.create', compact('dompets', 'kategori'));
-    }
 
     public function store(Request $request)
     {
@@ -51,30 +71,24 @@ $kategori = KategoriPengeluaran::where('user_id', auth()->id())
             'tanggal' => 'required|date',
         ]);
 
-        // Simpan pengeluaran baru
-        $pengeluaran = Pengeluaran::create([
-            'user_id' => auth()->id(),
-            'dompet_id' => $request->dompet_id,
-            'kategori_id' => $request->kategori_id,
-            'keterangan' => $request->keterangan,
-            'jumlah' => $request->jumlah,
-            'tanggal' => $request->tanggal,
-        ]);
-
-        // Kurangi saldo dompet
-        Dompet::where('id', $request->dompet_id)
-            ->decrement('saldo', $request->jumlah);
-
-        // Tambah terpakai di kategori
-        KategoriPengeluaran::where('id', $request->kategori_id)
-            ->increment('terpakai', $request->jumlah);
-
-            $dompet = Dompet::where('id', $request->dompet_id)
+$kategori = KategoriPengeluaran::where('id', $request->kategori_id)
     ->where('user_id', auth()->id())
+    ->where(function ($q) use ($request) {
+        $q->whereNull('periode_awal')
+          ->orWhere('periode_awal', '<=', $request->tanggal);
+    })
+    ->where(function ($q) use ($request) {
+        $q->whereNull('periode_akhir')
+          ->orWhere('periode_akhir', '>=', $request->tanggal);
+    })
     ->firstOrFail();
 
 
-            $totalTabungan = DB::table('tb_tabungan')
+        $dompet = Dompet::where('id', $request->dompet_id)
+    ->where('user_id', auth()->id())
+    ->firstOrFail();
+
+$totalTabungan = DB::table('tb_tabungan')
     ->where('user_id', auth()->id())
     ->where('dompet_id', $request->dompet_id)
     ->sum('nominal');
@@ -85,96 +99,124 @@ if ($request->jumlah > $saldoBisaDipakai) {
     return back()->with('error', 'Saldo tidak mencukupi karena sebagian sudah masuk tabungan');
 }
 
+// ✅ baru simpan
+Pengeluaran::create([
+    'user_id' => auth()->id(),
+    'dompet_id' => $request->dompet_id,
+    'kategori_id' => $request->kategori_id,
+    'keterangan' => $request->keterangan,
+    'jumlah' => $request->jumlah,
+    'tanggal' => $request->tanggal,
+]);
 
-        return redirect()->route('pengeluaran.index')
+// ✅ baru kurangi saldo
+$dompet->decrement('saldo', $request->jumlah);
+
+
+
+        return redirect()->route('pengeluaran.index', [
+    'bulan' => $request->bulan,
+    'tahun' => $request->tahun,])
             ->with('success', 'Pengeluaran berhasil ditambahkan');
     }
 
     public function edit($id)
-    {
-        $pengeluaran = Pengeluaran::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+{
+    $pengeluaran = Pengeluaran::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
 
-        $dompets = Dompet::where('user_id', auth()->id())->get();
-        $kategori = KategoriPengeluaran::where('user_id', auth()->id())->get();
+    $dompets = Dompet::where('user_id', auth()->id())->get();
 
-        return view('pengeluaran.catat_pengeluaran.edit', compact('pengeluaran', 'dompets', 'kategori'));
-    }
+    $tanggal = $pengeluaran->tanggal;
+
+    $kategori = KategoriPengeluaran::where('user_id', auth()->id())
+        ->where(function ($q) use ($tanggal) {
+            $q->whereNull('periode_awal')
+              ->orWhere('periode_awal', '<=', $tanggal);
+        })
+        ->where(function ($q) use ($tanggal) {
+            $q->whereNull('periode_akhir')
+              ->orWhere('periode_akhir', '>=', $tanggal);
+        })
+        ->get();
+
+    return view('pengeluaran.catat_pengeluaran.edit', compact('pengeluaran', 'dompets', 'kategori'));
+}
+
 
     public function update(Request $request, $id)
-    {
-        $pengeluaran = Pengeluaran::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+{
+    $pengeluaran = Pengeluaran::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
 
-        $request->validate([
-            'dompet_id' => 'required',
-            'kategori_id' => 'required',
-            'keterangan' => 'required|string',
-            'jumlah' => 'required|numeric|min:1',
-            'tanggal' => 'required|date',
-        ]);
+    $request->validate([
+        'dompet_id' => 'required',
+        'kategori_id' => 'required',
+        'keterangan' => 'required|string',
+        'jumlah' => 'required|numeric|min:1',
+        'tanggal' => 'required|date',
+    ]);
 
-        // Hitung selisih jumlah pengeluaran
-        $selisih = $request->jumlah - $pengeluaran->jumlah;
+    $dompetLama = Dompet::where('id', $pengeluaran->dompet_id)->first();
+    $dompetBaru = Dompet::where('id', $request->dompet_id)->first();
 
-        // Update pengeluaran
-        $pengeluaran->update([
-            'dompet_id' => $request->dompet_id,
-            'kategori_id' => $request->kategori_id,
-            'keterangan' => $request->keterangan,
-            'jumlah' => $request->jumlah,
-            'tanggal' => $request->tanggal,
-        ]);
+    // rollback saldo lama
+    $dompetLama->increment('saldo', $pengeluaran->jumlah);
 
-        // Update saldo dompet
-        if($pengeluaran->dompet_id == $request->dompet_id){
-            // sama dompet, cuma kurangi atau tambah sesuai selisih
-            Dompet::where('id', $request->dompet_id)
-                ->decrement('saldo', $selisih);
-        } else {
-            // beda dompet, rollback dompet lama + kurangi dompet baru
-            Dompet::where('id', $pengeluaran->dompet_id)
-                ->increment('saldo', $pengeluaran->jumlah);
-            Dompet::where('id', $request->dompet_id)
-                ->decrement('saldo', $request->jumlah);
-        }
+    // cek saldo dompet baru
+    $totalTabungan = DB::table('tb_tabungan')
+        ->where('user_id', auth()->id())
+        ->where('dompet_id', $request->dompet_id)
+        ->sum('nominal');
 
-        // Update terpakai kategori
-        if($pengeluaran->kategori_id == $request->kategori_id){
-            // sama kategori, cuma update selisih
-            KategoriPengeluaran::where('id', $request->kategori_id)
-                ->increment('terpakai', $selisih);
-        } else {
-            // beda kategori, rollback kategori lama + increment kategori baru
-            KategoriPengeluaran::where('id', $pengeluaran->kategori_id)
-                ->decrement('terpakai', $pengeluaran->jumlah);
-            KategoriPengeluaran::where('id', $request->kategori_id)
-                ->increment('terpakai', $request->jumlah);
-        }
+    $saldoBisaDipakai = $dompetBaru->saldo - $totalTabungan;
 
-        return redirect()->route('pengeluaran.index')
-            ->with('success', 'Pengeluaran berhasil diupdate');
+    if ($request->jumlah > $saldoBisaDipakai) {
+        // rollback lagi
+        $dompetLama->decrement('saldo', $pengeluaran->jumlah);
+        return back()->with('error', 'Saldo tidak mencukupi');
     }
+
+    // update pengeluaran
+    $pengeluaran->update([
+        'dompet_id' => $request->dompet_id,
+        'kategori_id' => $request->kategori_id,
+        'keterangan' => $request->keterangan,
+        'jumlah' => $request->jumlah,
+        'tanggal' => $request->tanggal,
+    ]);
+
+    // kurangi saldo baru
+    $dompetBaru->decrement('saldo', $request->jumlah);
+
+    $bulan = Carbon::parse($request->tanggal)->month;
+    $tahun = Carbon::parse($request->tanggal)->year;
+
+    return redirect()->route('pengeluaran.index', compact('bulan', 'tahun'))
+        ->with('success', 'Pengeluaran berhasil diupdate');
+}
+
 
     public function destroy($id)
-    {
+{
+    DB::transaction(function () use ($id) {
+
         $pengeluaran = Pengeluaran::where('id', $id)
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        // Kembalikan saldo dompet
+        // kembalikan saldo dompet
         Dompet::where('id', $pengeluaran->dompet_id)
+            ->where('user_id', auth()->id())
             ->increment('saldo', $pengeluaran->jumlah);
 
-        // Kurangi terpakai kategori
-        KategoriPengeluaran::where('id', $pengeluaran->kategori_id)
-            ->decrement('terpakai', $pengeluaran->jumlah);
-
-        // Hapus pengeluaran
+        // hapus pengeluaran
         $pengeluaran->delete();
+    });
 
-        return back()->with('success', 'Pengeluaran dihapus');
-    }
+    return back()->with('success', 'Pengeluaran berhasil dihapus');
+}
+
 }

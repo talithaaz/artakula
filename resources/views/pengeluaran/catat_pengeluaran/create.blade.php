@@ -10,6 +10,8 @@
 <div class="card-artakula p-4 col-md-8">
     <form method="POST" action="{{ route('pengeluaran.store') }}">
         @csrf
+<input type="hidden" name="bulan" value="{{ request('bulan') }}">
+<input type="hidden" name="tahun" value="{{ request('tahun') }}">
 
         {{-- Pilih Kategori --}}
         <div class="mb-3">
@@ -53,7 +55,12 @@
             <input type="date" name="tanggal" class="form-control" required value="{{ old('tanggal') }}">
         </div>
 
-        <a href="{{ route('pengeluaran.index') }}" class="btn btn-secondary">Batal</a>
+<a href="{{ route('pengeluaran.index', [
+    'bulan' => request('bulan'),
+    'tahun' => request('tahun')
+]) }}" class="btn btn-secondary">
+    Batal
+</a>
         <button class="btn btn-success">Simpan</button>
         
     </form>

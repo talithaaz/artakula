@@ -5,34 +5,46 @@
 @section('content')
 <div class="d-flex justify-content-between mb-4">
     <h5 class="fw-bold">Kategori Pengeluaran</h5>
-    <a href="{{ route('kategori_pengeluaran.create', [
-    'bulan' => $bulan,
-    'tahun' => $tahun
-]) }}" class="btn btn-success">
-    <i class="bi bi-plus-circle"></i> Tambah Kategori
-</a>
+    
 
 </div>
 
-<form method="GET" class="d-flex gap-2 mb-3">
-    <select name="bulan" class="form-select w-auto">
-        @for($m = 1; $m <= 12; $m++)
-            <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
-                {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
-            </option>
-        @endfor
-    </select>
+<div class="d-flex justify-content-between align-items-center flex-nowrap gap-2 mb-4">
 
-    <select name="tahun" class="form-select w-auto">
-        @for($y = now()->year - 5; $y <= now()->year + 5; $y++)
-            <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>
-                {{ $y }}
-            </option>
-        @endfor
-    </select>
+    <form method="GET" class="d-flex align-items-center gap-2 flex-nowrap mb-0">
+        <select name="bulan" class="form-select form-select-sm w-auto">
+            @for($m = 1; $m <= 12; $m++)
+                <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
+                    {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                </option>
+            @endfor
+        </select>
 
-    <button class="btn btn-outline-primary">Terapkan</button>
-</form>
+        <select name="tahun" class="form-select form-select-sm w-auto">
+            @for($y = now()->year - 5; $y <= now()->year + 5; $y++)
+                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>
+                    {{ $y }}
+                </option>
+            @endfor
+        </select>
+
+        <button class="btn btn-sm btn-outline-primary text-nowrap">
+            Terapkan
+        </button>
+    </form>
+
+    <a href="{{ route('kategori_pengeluaran.create', [
+        'bulan' => $bulan,
+        'tahun' => $tahun
+    ]) }}"
+    class="btn btn-sm btn-success text-nowrap">
+        <i class="bi bi-plus-circle"></i> Tambah Kategori
+    </a>
+
+</div>
+
+
+
 
 @if(session('success'))
 <div class="alert alert-success">{{ session('success') }}</div>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pengeluaran;
 use App\Models\Dompet;
+use Carbon\Carbon;
 
 class KategoriPengeluaranController extends Controller
 {
@@ -15,8 +16,8 @@ class KategoriPengeluaranController extends Controller
     $bulan = $request->bulan ?? now()->month;
     $tahun = $request->tahun ?? now()->year;
 
-    $awalBulan = \Carbon\Carbon::create($tahun, $bulan, 1)->startOfMonth();
-    $akhirBulan = \Carbon\Carbon::create($tahun, $bulan, 1)->endOfMonth();
+    $awalBulan = Carbon::create($tahun, $bulan, 1)->startOfMonth();
+    $akhirBulan = Carbon::create($tahun, $bulan, 1)->endOfMonth();
 
     $kategori = KategoriPengeluaran::where('user_id', auth()->id())
         ->where(function ($q) use ($awalBulan, $akhirBulan) {

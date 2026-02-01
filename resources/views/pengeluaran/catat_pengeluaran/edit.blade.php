@@ -55,7 +55,10 @@
             <input type="date" name="tanggal" class="form-control" value="{{ $pengeluaran->tanggal }}" required>
         </div>
 
-        <a href="{{ route('pengeluaran.index') }}" class="btn btn-secondary">Batal</a>
+        <a href="{{ route('pengeluaran.index', [
+    'bulan' => request('bulan'),
+    'tahun' => request('tahun')
+]) }}" class="btn btn-secondary">Batal</a>
         <button class="btn btn-success">Update</button>
         
     </form>

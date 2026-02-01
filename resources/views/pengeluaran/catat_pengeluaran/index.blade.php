@@ -5,10 +5,45 @@
 @section('content')
 <div class="d-flex justify-content-between mb-4">
     <h5 class="fw-bold">Catat Pengeluaran</h5>
-    <a href="{{ route('pengeluaran.create') }}" class="btn btn-success">
+    
+</div>
+
+<div class="d-flex justify-content-between align-items-center flex-nowrap gap-2 mb-4">
+
+    <form method="GET" class="d-flex align-items-center gap-2 flex-nowrap mb-0">
+        <select name="bulan" class="form-select form-select-sm w-auto">
+            @for($m = 1; $m <= 12; $m++)
+                <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
+                    {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                </option>
+            @endfor
+        </select>
+
+        <select name="tahun" class="form-select form-select-sm w-auto">
+            @for($y = now()->year - 5; $y <= now()->year + 5; $y++)
+                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>
+                    {{ $y }}
+                </option>
+            @endfor
+        </select>
+
+        <button class="btn btn-sm btn-outline-primary text-nowrap">
+            Terapkan
+        </button>
+    </form>
+
+    <a href="{{ route('pengeluaran.create', [
+        'bulan' => $bulan,
+        'tahun' => $tahun
+    ]) }}"
+    class="btn btn-sm btn-success text-nowrap">
         <i class="bi bi-plus-circle"></i> Catat Pengeluaran
     </a>
+
 </div>
+
+
+
 
 @if(session('success'))
 <div class="alert alert-success">{{ session('success') }}</div>
@@ -39,9 +74,14 @@
                 Rp {{ number_format($item->jumlah,0,',','.') }}
             </td>
             <td class="text-center">
-    <a href="{{ route('pengeluaran.edit', $item->id) }}" class="btn btn-sm btn-outline-primary">
-        Edit
-    </a>
+    <a href="{{ route('pengeluaran.edit', [
+    'pengeluaran' => $item->id,
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}" class="btn btn-sm btn-outline-primary">
+    Edit
+</a>
+
 
     <!-- Tombol Hapus dengan Modal -->
     <button type="button"
@@ -68,7 +108,12 @@
                     </strong>?
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('pengeluaran.destroy', $item->id) }}" method="POST">
+                    <form action="{{ route('pengeluaran.destroy', [
+    'pengeluaran' => $item->id,
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}" method="POST">
+
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
