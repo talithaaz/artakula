@@ -7,10 +7,43 @@
 
 <div class="d-flex justify-content-between mb-4">
     <h5 class="fw-bold">Catat Tabungan</h5>
-    <a href="{{ route('tabungan.create') }}" class="btn btn-success">
+    
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <form method="GET" class="d-flex gap-2 mb-0">
+        <select name="bulan" class="form-select form-select-sm w-auto">
+            @for($m=1;$m<=12;$m++)
+                <option value="{{ $m }}" @selected($bulan==$m)>
+                    {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                </option>
+            @endfor
+        </select>
+
+        <select name="tahun" class="form-select form-select-sm w-auto">
+            @for($y=now()->year-5;$y<=now()->year+5;$y++)
+                <option value="{{ $y }}" @selected($tahun==$y)>
+                    {{ $y }}
+                </option>
+            @endfor
+        </select>
+
+        <button class="btn btn-sm btn-outline-primary">
+            Terapkan
+        </button>
+    </form>
+
+    <a href="{{ route('tabungan.create', [
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}"
+       class="btn btn-sm btn-success">
         <i class="bi bi-plus-circle"></i> Tambah Tabungan
     </a>
+
 </div>
+
 
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -60,7 +93,11 @@
     </td>
 
     <td class="text-center">
-        <a href="{{ route('tabungan.edit',$item->id) }}"
+        <a href="{{ route('tabungan.edit', [
+    'tabungan' => $item->id,
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}"
            class="btn btn-sm btn-outline-primary">
             Edit
         </a>
@@ -89,7 +126,11 @@
                         </strong>?
                     </div>
                     <div class="modal-footer">
-                        <form action="{{ route('tabungan.destroy',$item->id) }}" method="POST">
+                        <form action="{{ route('tabungan.destroy', [
+    'tabungan' => $item->id,
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

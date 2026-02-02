@@ -38,7 +38,8 @@
 <a href="{{ route('kategori_pengeluaran.index', [
     'bulan' => request('bulan'),
     'tahun' => request('tahun')
-]) }}" class="btn btn-secondary">
+]) }}" class="btn btn-secondary">Batal</a>
+
         <button class="btn btn-success">Update</button>
     </form>
 </div>

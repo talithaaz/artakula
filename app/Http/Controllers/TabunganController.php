@@ -11,17 +11,28 @@ use Illuminate\Validation\ValidationException;
 
 class TabunganController extends Controller
 {
-    public function index()
-    {
-        $tabungan = Tabungan::with(['kategori', 'dompet', 'sumberDompet'])
-    ->where('user_id', auth()->id())
-    ->orderBy('tanggal', 'desc')
-    ->orderBy('id', 'desc')
-    ->get();
+    public function index(Request $request)
+{
+    $bulan = $request->bulan ?? now()->month;
+    $tahun = $request->tahun ?? now()->year;
 
+    $awalBulan = \Carbon\Carbon::create($tahun, $bulan, 1)->startOfMonth();
+    $akhirBulan = \Carbon\Carbon::create($tahun, $bulan, 1)->endOfMonth();
 
-        return view('tabungan.catat_tabungan.index', compact('tabungan'));
-    }
+    $tabungan = Tabungan::with(['kategori', 'dompet', 'sumberDompet'])
+        ->where('user_id', auth()->id())
+        ->whereBetween('tanggal', [$awalBulan, $akhirBulan])
+        ->orderBy('tanggal', 'desc')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('tabungan.catat_tabungan.index', compact(
+        'tabungan',
+        'bulan',
+        'tahun'
+    ));
+}
+
 
    public function create(Request $request)
 {
@@ -95,7 +106,10 @@ class TabunganController extends Controller
 });
 
 
-    return redirect()->route('tabungan.index')
+    return redirect()->route('tabungan.index', [
+        'bulan' => $request->bulan,
+        'tahun' => $request->tahun
+    ])
         ->with('success', 'Tabungan berhasil ditambahkan');
 }
 
@@ -161,7 +175,10 @@ class TabunganController extends Controller
         ]);
     });
 
-    return redirect()->route('tabungan.index')
+    return redirect()->route('tabungan.index', [
+        'bulan' => $request->bulan,
+        'tahun' => $request->tahun
+    ])
         ->with('success', 'Tabungan berhasil diperbarui');
 }
 
@@ -179,7 +196,7 @@ class TabunganController extends Controller
 
         // 🔙 balikin ke dompet sumber
         Dompet::lockForUpdate()
-            ->where('id', $tabungan->dompet_id)
+            ->where('id', $tabungan->sumber_dompet_id)
             ->increment('saldo', $tabungan->nominal);
 
         // 🔻 kurangi dari dompet tujuan

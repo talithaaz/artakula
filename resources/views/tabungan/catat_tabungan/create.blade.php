@@ -10,6 +10,8 @@
 
 {{-- FORM GET → buat pilih kategori --}}
 <form method="GET" action="{{ route('tabungan.create') }}">
+    <input type="hidden" name="bulan" value="{{ request('bulan') }}">
+    <input type="hidden" name="tahun" value="{{ request('tahun') }}">
 <label class="form-label fw-bold">Kategori Tabungan</label>    
 <select name="kategori_tabungan_id"
             class="form-select mb-3"
@@ -28,7 +30,8 @@
 {{-- FORM POST → simpan data --}}
 <form method="POST" action="{{ route('tabungan.store') }}">
 @csrf
-
+<input type="hidden" name="bulan" value="{{ request('bulan') }}">
+<input type="hidden" name="tahun" value="{{ request('tahun') }}">
 <input type="hidden"
        name="kategori_tabungan_id"
        value="{{ request('kategori_tabungan_id') }}">
@@ -74,7 +77,10 @@
        placeholder="Keterangan (opsional)">
        
 
-<a href="{{ route('tabungan.index') }}" class="btn btn-secondary">Batal</a>
+<a href="{{ route('tabungan.index', [
+    'bulan' => request('bulan'),
+    'tahun' => request('tahun')
+]) }}" class="btn btn-secondary">Batal</a>
 <button class="btn btn-success">Simpan</button>
 
 </form>
