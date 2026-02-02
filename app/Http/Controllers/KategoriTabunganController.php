@@ -8,12 +8,28 @@ use App\Models\Dompet;
 
 class KategoriTabunganController extends Controller
 {
-    public function index()
-    {
-        $kategoriTabungan = KategoriTabungan::where('user_id', auth()->id())->get();
+    public function index(Request $request)
+{
+    $bulan = $request->bulan ?? now()->month;
+    $tahun = $request->tahun ?? now()->year;
 
-        return view('tabungan.kategori_tabungan.index', compact('kategoriTabungan'));
-    }
+    $awalBulan = \Carbon\Carbon::create($tahun, $bulan, 1)->startOfMonth();
+
+    $kategoriTabungan = KategoriTabungan::where('user_id', auth()->id())
+        ->where(function ($q) use ($awalBulan) {
+            $q->whereNull('target_waktu')
+              ->orWhere('target_waktu', '>=', $awalBulan);
+        })
+        ->withSum('catatTabungan as total_ditabung', 'nominal')
+        ->get();
+
+    return view(
+        'tabungan.kategori_tabungan.index',
+        compact('kategoriTabungan','bulan','tahun')
+    );
+}
+
+
 
     public function create()
 {
@@ -41,7 +57,9 @@ class KategoriTabunganController extends Controller
             'target_waktu' => $request->target_waktu,
         ]);
 
-        return redirect()->route('kategoriTabungan.index')
+        return redirect()->route('kategoriTabungan.index', [
+    'bulan' => $request->bulan,
+    'tahun' => $request->tahun,])
         ->with('success', 'Kategori tabungan berhasil ditambahkan');
     }
 
@@ -78,7 +96,9 @@ $data = $request->validate([
         unset($data['dompet_tujuan_id']);
         $kategoriTabungan->update($data);
     }
-        return redirect()->route('kategoriTabungan.index')->with('success', 'Kategori tabungan berhasil diperbarui');
+        return redirect()->route('kategoriTabungan.index', [
+    'bulan' => $request->bulan,
+    'tahun' => $request->tahun,])->with('success', 'Kategori tabungan berhasil diperbarui');
     }
 
     public function destroy(KategoriTabungan $kategoriTabungan)

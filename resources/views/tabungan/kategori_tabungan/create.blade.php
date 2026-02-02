@@ -10,12 +10,13 @@
 <div class="card-artakula p-4 col-md-6">
 <form action="{{ route('kategoriTabungan.store') }}" method="POST">
 @csrf
-
+<input type="hidden" name="bulan" value="{{ request('bulan') }}">
+<input type="hidden" name="tahun" value="{{ request('tahun') }}">
 <div class="mb-3">
     <label class="form-label fw-bold">Nama Tabungan</label>
     <input type="text"
            name="nama_kategori"
-           class="form-control"
+           class="form-control" placeholder="Contoh: Rumah, Liburan"
            required>
 </div>
 
@@ -25,7 +26,7 @@
         <!-- <option value="">
             -- Saldo Terkunci (Tanpa Dompet Tujuan) --
         </option> -->
-
+        <option value="">Pilih Dompet Tujuan</option>
         @foreach($dompet as $d)
             <option value="{{ $d->id }}">
                 {{ $d->nama_dompet }}
@@ -42,7 +43,7 @@
     <label class="form-label fw-bold">Target Nominal (Rp)</label>
     <input type="number"
            name="target_nominal"
-           class="form-control"
+           class="form-control" placeholder="Jumlah Target"
            required>
 </div>
 
@@ -55,7 +56,10 @@
 </div>
 
 <div class="d-flex gap-2">
-    <a href="{{ route('kategoriTabungan.index') }}" class="btn btn-secondary">
+    <a href="{{ route('kategoriTabungan.index', [
+    'bulan' => request('bulan'),
+    'tahun' => request('tahun')
+]) }}" class="btn btn-secondary">
         Batal
     </a>
     <button type="submit" class="btn btn-success">

@@ -7,14 +7,52 @@
 
 <div class="d-flex justify-content-between mb-4">
     <h5 class="fw-bold">Kategori Tabungan</h5>
-    <a href="{{ route('kategoriTabungan.create') }}" class="btn btn-success">
+    
+</div>
+
+<div class="d-flex justify-content-between align-items-center flex-nowrap gap-2 mb-4">
+
+    {{-- FILTER BULAN & TAHUN --}}
+    <form method="GET" class="d-flex align-items-center gap-2 flex-nowrap mb-0">
+        <select name="bulan" class="form-select form-select-sm w-auto">
+            @for($m = 1; $m <= 12; $m++)
+                <option value="{{ $m }}" {{ $bulan == $m ? 'selected' : '' }}>
+                    {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                </option>
+            @endfor
+        </select>
+
+        <select name="tahun" class="form-select form-select-sm w-auto">
+            @for($y = now()->year - 5; $y <= now()->year + 5; $y++)
+                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>
+                    {{ $y }}
+                </option>
+            @endfor
+        </select>
+
+        <button class="btn btn-sm btn-outline-primary text-nowrap">
+            Terapkan
+        </button>
+    </form>
+
+    {{-- TOMBOL TAMBAH KATEGORI TABUNGAN --}}
+    <a href="{{ route('kategoriTabungan.create', [
+        'bulan' => $bulan,
+        'tahun' => $tahun
+    ]) }}"
+    class="btn btn-sm btn-success text-nowrap">
         <i class="bi bi-plus-circle"></i> Tambah Kategori
     </a>
+
 </div>
+
 
 @if(session('success'))
 <div class="alert alert-success">{{ session('success') }}</div>
 @endif
+
+
+
 
 @endsection
 
@@ -26,6 +64,8 @@
             <th class="text-center">Nama Tabungan</th>
             <th class="text-center">Dompet Tujuan</th> {{-- 🔥 KOLOM BARU --}}
             <th class="text-center">Target Nominal</th>
+            <th class="text-center">Sudah Ditabung</th>
+            <th class="text-center">Sisa Target</th>
             <th class="text-center">Target Waktu</th>
             <th class="text-center">Aksi</th>
         </tr>
@@ -33,6 +73,10 @@
     <tbody>
 
 @foreach($kategoriTabungan as $item)
+@php
+    $sudahDitabung = $item->total_ditabung ?? 0;
+    $sisaTarget = $item->target_nominal - $sudahDitabung;
+@endphp
 <tr>
     <td >{{ $item->nama_kategori }}</td>
 
@@ -54,12 +98,28 @@
     </td>
 
     <td>
+        Rp {{ number_format($sudahDitabung,0,',','.') }}
+    </td>
+
+    <td>
+        @if($sisaTarget > 0)
+            Rp {{ number_format($sisaTarget,0,',','.') }}
+        @else
+            <span class="badge bg-success">Target Tercapai</span>
+        @endif
+    </td>
+
+    <td>
         {{ \Carbon\Carbon::parse($item->target_waktu)->format('d M Y') }}
     </td>
 
     <td class="text-center">
 
-        <a href="{{ route('kategoriTabungan.edit',$item->id) }}"
+        <a href="{{ route('kategoriTabungan.edit', [
+    'kategoriTabungan' => $item->id,
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}"
            class="btn btn-sm btn-outline-primary">
            Edit
         </a>
@@ -82,7 +142,11 @@
                         <strong>{{ $item->nama_kategori }}</strong>?
                     </div>
                     <div class="modal-footer">
-                        <form action="{{ route('kategoriTabungan.destroy',$item->id) }}" method="POST">
+                        <form action="{{ route('kategoriTabungan.destroy', [
+    'kategoriTabungan' => $item->id,
+    'bulan' => $bulan,
+    'tahun' => $tahun
+]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

@@ -11,6 +11,8 @@
 <form action="{{ route('kategoriTabungan.update',$kategoriTabungan->id) }}" method="POST">
 @csrf
 @method('PUT')
+<input type="hidden" name="bulan" value="{{ request('bulan') }}">
+<input type="hidden" name="tahun" value="{{ request('tahun') }}">
 
 <div class="mb-3">
     <label class="form-label fw-bold">Nama Tabungan</label>
@@ -59,7 +61,10 @@
 </div>
 
 <div class="d-flex gap-2">
-    <a href="{{ route('kategoriTabungan.index') }}" class="btn btn-secondary">
+    <a href="{{ route('kategoriTabungan.index', [
+    'bulan' => request('bulan'),
+    'tahun' => request('tahun')
+]) }}" class="btn btn-secondary">
         Batal
     </a>
     <button type="submit" class="btn btn-primary">
