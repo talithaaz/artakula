@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pengeluaran extends Model
 {
+    // Nama tabel
     protected $table = 'tb_pengeluaran';
 
+    // Field yang boleh diisi mass assignment
     protected $fillable = [
         'user_id',
         'dompet_id',
@@ -17,11 +19,13 @@ class Pengeluaran extends Model
         'tanggal',
     ];
 
+    // Relasi ke tabel dompet
     public function dompet()
     {
         return $this->belongsTo(Dompet::class);
     }
 
+    // Relasi ke tabel kategori pengeluaran
     public function kategori()
     {
         return $this->belongsTo(KategoriPengeluaran::class, 'kategori_id');

@@ -9,8 +9,10 @@ class Tabungan extends Model
 {
     use HasFactory;
 
+    // Nama tabel
     protected $table = 'tb_tabungan';
 
+    // Kolom yang boleh diisi (mass assignment)
     protected $fillable = [
         'user_id',
         'kategori_tabungan_id',
@@ -21,22 +23,33 @@ class Tabungan extends Model
         'keterangan',
     ];
 
+    /**
+     * Relasi ke kategori tabungan
+     */
     public function kategori()
     {
         return $this->belongsTo(KategoriTabungan::class, 'kategori_tabungan_id');
     }
 
+    /**
+     * Relasi ke dompet tujuan
+     */
     public function dompet()
     {
         return $this->belongsTo(Dompet::class, 'dompet_id');
     }
 
+    /**
+     * Relasi ke dompet sumber
+     */
     public function sumberDompet()
-{
-    return $this->belongsTo(Dompet::class, 'sumber_dompet_id');
-}
+    {
+        return $this->belongsTo(Dompet::class, 'sumber_dompet_id');
+    }
 
-
+    /**
+     * Relasi ke user
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
