@@ -1,148 +1,146 @@
-/* =========================================================
-   ARTakula – GLOBAL TABLE DESIGN SYSTEM
-   ========================================================= */
+/* ========================================================= */ /* Pembatas section. */
+/* ARTakula – GLOBAL TABLE DESIGN SYSTEM */ /* Judul file tabel. */
+/* ========================================================= */ /* Pembatas section. */
 
-/* ===== WRAPPER (SCROLL AREA) ===== */
-.table-wrapper {
-    width: 100%;
-    overflow-x: auto;   /* 🔥 SCROLL HIDUP DI SINI */
-}
+/* ===== WRAPPER (SCROLL AREA) ===== */ /* Section wrapper. */
+.table-wrapper { /* Wrapper scroll tabel. */
+    width: 100%; /* Lebar penuh. */
+    overflow-x: auto; /* Scroll horizontal aktif. */
+} /* Tutup .table-wrapper. */
 
-/* ===== CONTAINER (BACKGROUND ONLY) ===== */
-.table-artakula {
-    width: 100%;
-    background: #fff;
-    border-radius: 18px;
-    border: px solid #e5e7eb;
-    box-shadow: 0 18px 40px rgba(0,0,0,.06);
+/* ===== CONTAINER (BACKGROUND ONLY) ===== */ /* Section container. */
+.table-artakula { /* Container tabel. */
+    width: 100%; /* Lebar penuh. */
+    background: #fff; /* Latar putih. */
+    border-radius: 18px; /* Radius container. */
+    border: 1px solid #e5e7eb; /* Border halus. */
+    box-shadow: 0 18px 40px rgba(0,0,0,.06); /* Shadow container. */
 
-    overflow-x: visible;   /* 🔥 JANGAN CLIP ISI */
-}
+    overflow-x: visible; /* Jangan clip isi. */
+} /* Tutup .table-artakula. */
 
-/* ===== CLIP KHUSUS BUAT RADIUS ===== */
-.table-artakula-inner {
-    border-radius: inherit;
-    overflow: hidden;   /* cuma buat sudut */
-}
+/* ===== CLIP KHUSUS BUAT RADIUS ===== */ /* Section clip radius. */
+.table-artakula-inner { /* Inner agar radius rapi. */
+    border-radius: inherit; /* Ikuti radius parent. */
+    overflow: hidden; /* Clip isi untuk sudut. */
+} /* Tutup .table-artakula-inner. */
 
-/* ===== TABLE ===== */
-.table-artakula table {
-    width: max-content;   /* kolom ngikut isi */
-    min-width: 100%;      /* full page klo kolom dikit */
-    table-layout: auto;
+/* ===== TABLE ===== */ /* Section table. */
+.table-artakula table { /* Tabel utama. */
+    width: max-content; /* Kolom ngikut isi. */
+    min-width: 100%; /* Full page kalau kolom sedikit. */
+    table-layout: auto; /* Layout tabel otomatis. */
 
-    border-collapse: separate;
-    border-spacing: 0;
-    border-color: #238863;
-}
+    border-collapse: separate; /* Pisahkan border. */
+    border-spacing: 0; /* Hilangkan jarak border. */
+    border-color: #238863; /* Warna border. */
+} /* Tutup table. */
 
-/* trigger scroll klo kolom banyak */
-@media (max-width: 1200px) {
-    .table-artakula table {
-        min-width: 1000px;
-    }
-}
+/* trigger scroll klo kolom banyak */ /* Catatan responsive table. */
+@media (max-width: 1200px) { /* Breakpoint medium. */
+    .table-artakula table { /* Tabel pada layar lebih kecil. */
+        min-width: 1000px; /* Paksa lebar agar scroll. */
+    } /* Tutup table responsive. */
+} /* Tutup media query. */
 
-/* =========================================================
-   HEADER
-   ========================================================= */
-.table-artakula thead th {
-    background: linear-gradient(180deg,#d1fae5,#ecfdf5);
-    color: #064e3b;
-    font-size: 0.80rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 12px 16px;
-    white-space: nowrap;
+/* ========================================================= */ /* Pembatas section. */
+/* HEADER */ /* Section header. */
+/* ========================================================= */ /* Pembatas section. */
+.table-artakula thead th { /* Header table. */
+    background: linear-gradient(180deg,#d1fae5,#ecfdf5); /* Latar gradient. */
+    color: #064e3b; /* Warna teks. */
+    font-size: 0.80rem; /* Ukuran font. */
+    font-weight: 800; /* Tebal font. */
+    text-transform: uppercase; /* Huruf besar. */
+    letter-spacing: 0.08em; /* Jarak huruf. */
+    padding: 12px 16px; /* Padding header. */
+    white-space: nowrap; /* Tidak turun baris. */
 
-    border-top: 0.5px solid #238863;
-    border-bottom: 1px solid #238863;
-}
+    border-top: 0.5px solid #238863; /* Border atas. */
+    border-bottom: 1px solid #238863; /* Border bawah. */
+} /* Tutup header th. */
 
-.table-artakula thead th:not(:last-child) {
-    border-right: 0.5px solid #a7f3d0;
-}
+.table-artakula thead th:not(:last-child) { /* Header selain terakhir. */
+    border-right: 0.5px solid #a7f3d0; /* Border kanan. */
+} /* Tutup header border kanan. */
 
-/* =========================================================
-   BODY
-   ========================================================= */
-.table-artakula tbody td {
-    font-size: 0.85rem;
-    color: #334155;
-    padding: 12px 16px;
-    vertical-align: middle;
+/* ========================================================= */ /* Pembatas section. */
+/* BODY */ /* Section body. */
+/* ========================================================= */ /* Pembatas section. */
+.table-artakula tbody td { /* Sel body. */
+    font-size: 0.85rem; /* Ukuran font. */
+    color: #334155; /* Warna teks. */
+    padding: 12px 16px; /* Padding sel. */
+    vertical-align: middle; /* Tengah vertikal. */
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap; /* Tidak turun baris. */
+    overflow: hidden; /* Sembunyikan overflow. */
+    text-overflow: ellipsis; /* Tambahkan ellipsis. */
 
-    border-bottom: 0.5px solid #f1f5f9;
-}
+    border-bottom: 0.5px solid #f1f5f9; /* Border bawah. */
+} /* Tutup tbody td. */
 
-.table-artakula tbody td:not(:last-child) {
-    border-right: 0.5px solid #f1f5f9;
-}
+.table-artakula tbody td:not(:last-child) { /* Sel selain terakhir. */
+    border-right: 0.5px solid #f1f5f9; /* Border kanan. */
+} /* Tutup border kanan. */
 
-/* =========================================================
-   INTERACTION
-   ========================================================= */
-.table-artakula tbody tr:hover {
-    background-color: #f0fdf4;
-}
+/* ========================================================= */ /* Pembatas section. */
+/* INTERACTION */ /* Section interaksi. */
+/* ========================================================= */ /* Pembatas section. */
+.table-artakula tbody tr:hover { /* Hover baris. */
+    background-color: #f0fdf4; /* Warna hover. */
+} /* Tutup hover baris. */
 
-.table-artakula tbody tr:last-child td {
-    border-bottom: 1px solid #238863;
-}
+.table-artakula tbody tr:last-child td { /* Border baris terakhir. */
+    border-bottom: 1px solid #238863; /* Border bawah tebal. */
+} /* Tutup border baris terakhir. */
 
-/* Sudut kiri bawah */
-.table-artakula tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 18px; /* sama dengan radius container */
-    border-left: 1px solid #238863;  /* supaya border warna sama */
-    border-bottom: 1px solid #238863;
-}
+/* Sudut kiri bawah */ /* Catatan sudut kiri bawah. */
+.table-artakula tbody tr:last-child td:first-child { /* Sel kiri bawah. */
+    border-bottom-left-radius: 18px; /* Sama dengan radius container. */
+    border-left: 1px solid #238863; /* Border kiri. */
+    border-bottom: 1px solid #238863; /* Border bawah. */
+} /* Tutup sudut kiri bawah. */
 
-/* Sudut kanan bawah */
-.table-artakula tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 18px;
-    border-right: 1px solid #238863;
-    border-bottom: 1px solid #238863;
-}
+/* Sudut kanan bawah */ /* Catatan sudut kanan bawah. */
+.table-artakula tbody tr:last-child td:last-child { /* Sel kanan bawah. */
+    border-bottom-right-radius: 18px; /* Radius kanan bawah. */
+    border-right: 1px solid #238863; /* Border kanan. */
+    border-bottom: 1px solid #238863; /* Border bawah. */
+} /* Tutup sudut kanan bawah. */
 
-/* Border bottom baris terakhir lain selain first/last cell */
-.table-artakula tbody tr:last-child td:not(:first-child):not(:last-child) {
-    border-bottom: 1px solid #238863;
-}
+/* Border bottom baris terakhir lain selain first/last cell */ /* Catatan border. */
+.table-artakula tbody tr:last-child td:not(:first-child):not(:last-child) { /* Sel tengah baris terakhir. */
+    border-bottom: 1px solid #238863; /* Border bawah. */
+} /* Tutup border tengah. */
 
-/* Sudut kiri atas */
-.table-artakula thead th:first-child {
-    border-top-left-radius: 18px;  /* radius container */
-    border-left: 1px solid #238863; 
-}
+/* Sudut kiri atas */ /* Catatan sudut kiri atas. */
+.table-artakula thead th:first-child { /* Sel kiri atas. */
+    border-top-left-radius: 18px; /* Radius kiri atas. */
+    border-left: 1px solid #238863; /* Border kiri. */
+} /* Tutup sudut kiri atas. */
 
-/* Sudut kanan atas */
-.table-artakula thead th:last-child {
-    border-top-right-radius: 18px;
-    border-right: 1px solid #238863;
-}
+/* Sudut kanan atas */ /* Catatan sudut kanan atas. */
+.table-artakula thead th:last-child { /* Sel kanan atas. */
+    border-top-right-radius: 18px; /* Radius kanan atas. */
+    border-right: 1px solid #238863; /* Border kanan. */
+} /* Tutup sudut kanan atas. */
 
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-@media (max-width: 768px) {
-    .table-artakula {
-        border-radius: 14px;
+/* ========================================================= */ /* Pembatas section. */
+/* RESPONSIVE */ /* Section responsif. */
+/* ========================================================= */ /* Pembatas section. */
+@media (max-width: 768px) { /* Breakpoint mobile. */
+    .table-artakula { /* Container pada mobile. */
+        border-radius: 14px; /* Radius lebih kecil. */
     }
 
-    .table-artakula thead th {
-        font-size: 0.68rem;
-        padding: 15px;
+    .table-artakula thead th { /* Header pada mobile. */
+        font-size: 0.68rem; /* Ukuran font kecil. */
+        padding: 15px; /* Padding lebih besar. */
     }
 
-    .table-artakula tbody td {
-        font-size: 0.8rem;
-        padding: 14px;
+    .table-artakula tbody td { /* Body pada mobile. */
+        font-size: 0.8rem; /* Ukuran font kecil. */
+        padding: 14px; /* Padding lebih besar. */
     }
-}
+} /* Tutup media query. */

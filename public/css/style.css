@@ -1,169 +1,168 @@
-body {
-    overflow-x: hidden;
+body { /* Styling body halaman. */
+    overflow-x: hidden; /* Hilangkan scroll horizontal. */
     padding-top: 50px; /* tinggi navbar real */
-}
+} /* Tutup body. */
 
-.navbar {
-    backdrop-filter: blur(15px);
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px 0;          /* ⬅️ WAJIB kecil */
-    transition: all 0.3s ease;
-}
+.navbar { /* Navbar utama. */
+    backdrop-filter: blur(15px); /* Blur latar navbar. */
+    background-color: rgba(255, 255, 255, 0.8); /* Latar semi transparan. */
+    padding: 10px 0; /* Padding navbar. */
+    transition: all 0.3s ease; /* Transisi halus. */
+} /* Tutup .navbar. */
 
-.navbar-brand {
-    font-weight: 800;
-    letter-spacing: -1px;
-    color: var(--secondary-color) !important;
-    font-size: 1.5rem;
-}
+.navbar-brand { /* Brand di navbar. */
+    font-weight: 800; /* Tebal font brand. */
+    letter-spacing: -1px; /* Jarak huruf rapat. */
+    color: var(--secondary-color) !important; /* Warna brand. */
+    font-size: 1.5rem; /* Ukuran font brand. */
+} /* Tutup .navbar-brand. */
 
-.logo-artakula {
-    height: 36px;          /* tinggi normal navbar */
-    width: auto;
+.logo-artakula { /* Logo utama. */
+    height: 36px; /* tinggi normal navbar */
+    width: auto; /* Lebar otomatis. */
     transform: scale(2.0); /* BESAR SECARA VISUAL */
-    transform-origin: center;
-}
+    transform-origin: center; /* Titik transform di tengah. */
+} /* Tutup .logo-artakula. */
 
 
-.navbar-brand img {
+.navbar-brand img { /* Gambar pada brand. */
     object-fit: contain; /* Memastikan gambar tidak gepeng */
-    transition: transform 0.3s ease;
-}
+    transition: transform 0.3s ease; /* Transisi hover. */
+} /* Tutup .navbar-brand img. */
 
-.navbar-brand:hover img {
+.navbar-brand:hover img { /* Hover logo. */
     transform: rotate(-10deg) scale(1.1); /* Efek gerak sedikit saat kursor menyentuh logo */
-}
+} /* Tutup hover logo. */
 
-.hero-section {
-    padding-top: 0px;
-    padding-bottom: 80px;
-    background: radial-gradient(circle at top right, #dcfce7 0%, transparent 40%);
-}
+.hero-section { /* Section hero. */
+    padding-top: 0px; /* Padding atas. */
+    padding-bottom: 80px; /* Padding bawah. */
+    background: radial-gradient(circle at top right, #dcfce7 0%, transparent 40%); /* Latar gradient. */
+} /* Tutup .hero-section. */
 
-.hero-image {
-    max-height: 90%;
-    width: auto;
-}
+.hero-image { /* Gambar hero. */
+    max-height: 90%; /* Tinggi maksimal gambar. */
+    width: auto; /* Lebar otomatis. */
+} /* Tutup .hero-image. */
 
-.hero-title {
-    font-size: 3rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -2px;
-    background: linear-gradient(135deg, #1e293b 0%, #10b981 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
+.hero-title { /* Judul hero. */
+    font-size: 3rem; /* Ukuran judul. */
+    font-weight: 800; /* Tebal judul. */
+    line-height: 1.1; /* Tinggi baris. */
+    letter-spacing: -2px; /* Jarak huruf. */
+    background: linear-gradient(135deg, #1e293b 0%, #10b981 100%); /* Gradient teks. */
+    -webkit-background-clip: text; /* Clip gradient ke teks (Safari). */
+    background-clip: text; /* Clip gradient ke teks. */
+    -webkit-text-fill-color: transparent; /* Teks transparan (Safari). */
+    color: transparent; /* Teks transparan. */
+} /* Tutup .hero-title. */
 
-.feature-card {
-    border: 1px solid rgba(0,0,0,0.05);
-    border-radius: 24px;
-    padding: 40px;
-    background: #ffffff;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    height: 100%;
-}
+.feature-card { /* Card fitur. */
+    border: 1px solid rgba(0,0,0,0.05); /* Border halus. */
+    border-radius: 24px; /* Radius card. */
+    padding: 40px; /* Padding card. */
+    background: #ffffff; /* Latar putih. */
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Transisi hover. */
+    height: 100%; /* Tinggi penuh. */
+} /* Tutup .feature-card. */
 
-.feature-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-    border-color: var(--primary-color);
-}
+.feature-card:hover { /* Hover card fitur. */
+    transform: translateY(-12px); /* Angkat card. */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); /* Shadow saat hover. */
+    border-color: var(--primary-color); /* Border warna utama. */
+} /* Tutup hover card fitur. */
 
-.icon-circle {
-    width: 64px;
-    height: 64px;
-    background: #f0fdf4;
-    color: var(--primary-color);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin-bottom: 24px;
-}
+.icon-circle { /* Lingkaran ikon. */
+    width: 64px; /* Lebar lingkaran. */
+    height: 64px; /* Tinggi lingkaran. */
+    background: #f0fdf4; /* Latar lingkaran. */
+    color: var(--primary-color); /* Warna ikon. */
+    border-radius: 18px; /* Radius lingkaran. */
+    display: flex; /* Flex layout. */
+    align-items: center; /* Tengah vertikal. */
+    justify-content: center; /* Tengah horizontal. */
+    font-size: 28px; /* Ukuran ikon. */
+    margin-bottom: 24px; /* Jarak bawah. */
+} /* Tutup .icon-circle. */
 
-.mockup-container {
-    border-radius: 30px;
-    background: #ffffff;
-    padding: 15px;
-    box-shadow: 0 40px 80px -15px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0,0,0,0.1);
-}
+.mockup-container { /* Container mockup. */
+    border-radius: 30px; /* Radius container. */
+    background: #ffffff; /* Latar putih. */
+    padding: 15px; /* Padding container. */
+    box-shadow: 0 40px 80px -15px rgba(0,0,0,0.1); /* Shadow container. */
+    border: 1px solid rgba(0,0,0,0.1); /* Border halus. */
+} /* Tutup .mockup-container. */
 
-.cta-section {
+.cta-section { /* Section CTA. */
     background: linear-gradient(
         135deg,
         #065f46 0%,
         #10b981 100%
-    );
-    border-radius: 40px;
-    padding: 80px;
-    color: white;
-    margin-bottom: 80px;
-    position: relative;
-    overflow: hidden;
-}
+    ); /* Gradient CTA. */
+    border-radius: 40px; /* Radius CTA. */
+    padding: 80px; /* Padding CTA. */
+    color: white; /* Warna teks. */
+    margin-bottom: 80px; /* Jarak bawah. */
+    position: relative; /* Posisi relatif. */
+    overflow: hidden; /* Sembunyikan overflow. */
+} /* Tutup .cta-section. */
 
-/* Offset scroll anchor karena navbar fixed */
-section[id] {
-    scroll-margin-top: 50px;
-}
+/* Offset scroll anchor karena navbar fixed */ /* Catatan anchor. */
+section[id] { /* Anchor section. */
+    scroll-margin-top: 50px; /* Offset scroll. */
+} /* Tutup section[id]. */
 
-/* ABOUT SECTION */
-.tracking-wide {
-    letter-spacing: 0.12em;
-}
+/* ABOUT SECTION */ /* Judul section about. */
+.tracking-wide { /* Letter spacing lebar. */
+    letter-spacing: 0.12em; /* Jarak huruf. */
+} /* Tutup .tracking-wide. */
 
-.about-image {
-    max-width: 430px;
-    width: 100%;
-    height: auto;
-    margin-top: -60px;
-}
+.about-image { /* Gambar about. */
+    max-width: 430px; /* Lebar maksimum. */
+    width: 100%; /* Lebar penuh. */
+    height: auto; /* Tinggi otomatis. */
+    margin-top: -60px; /* Geser ke atas. */
+} /* Tutup .about-image. */
 
-.about-points {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 24px;
-}
+.about-points { /* List poin about. */
+    list-style: none; /* Hilangkan bullet. */
+    padding-left: 0; /* Hilangkan padding kiri. */
+    margin-top: 24px; /* Jarak atas. */
+} /* Tutup .about-points. */
 
-.about-points li {
-    position: relative;
-    padding-left: 22px;
-    margin-bottom: 14px;
-    font-size: 1rem;
-}
+.about-points li { /* Item list about. */
+    position: relative; /* Posisi relatif. */
+    padding-left: 22px; /* Ruang untuk bullet. */
+    margin-bottom: 14px; /* Jarak bawah. */
+    font-size: 1rem; /* Ukuran teks. */
+} /* Tutup .about-points li. */
 
-.about-points li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--primary-color);
-    font-size: 1.4rem;
-    line-height: 1;
-}
+.about-points li::before { /* Bullet kustom. */
+    content: "•"; /* Bullet titik. */
+    position: absolute; /* Posisi absolut. */
+    left: 0; /* Posisi kiri. */
+    color: var(--primary-color); /* Warna bullet. */
+    font-size: 1.4rem; /* Ukuran bullet. */
+    line-height: 1; /* Tinggi baris. */
+} /* Tutup bullet kustom. */
 
-.footer-dark {
-    background-color: #022c22;
-}
+.footer-dark { /* Footer gelap. */
+    background-color: #022c22; /* Latar footer. */
+} /* Tutup .footer-dark. */
 
 .footer-dark h6,
 .footer-dark strong {
-    color: #ecfdf5;
+    color: #ecfdf5; /* Warna teks footer. */
 }
 
 .footer-dark .text-muted {
-    color: rgba(236, 253, 245, 0.65) !important;
+    color: rgba(236, 253, 245, 0.65) !important; /* Warna teks muted. */
 }
 
 .footer-dark .footer-link {
-    color: rgba(236, 253, 245, 0.65);
+    color: rgba(236, 253, 245, 0.65); /* Warna link footer. */
 }
 
 .footer-dark .footer-link:hover {
-    color: #ffffff;
+    color: #ffffff; /* Warna link saat hover. */
 }
-

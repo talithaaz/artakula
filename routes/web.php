@@ -1,19 +1,19 @@
-<?php
+<?php // Mulai file PHP.
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Index;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\DompetController;
-use App\Http\Controllers\Api\DummyWalletApiController;
-use App\Http\Controllers\PemasukanController;
-use App\Http\Controllers\KategoriPengeluaranController;
-use App\Http\Controllers\PengeluaranController;
-use App\Http\Controllers\KategoriTabunganController;
-use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\AuthController; // Controller auth.
+use App\Http\Controllers\Index; // Controller landing page.
+use Illuminate\Support\Facades\Route; // Facade Route.
+use Illuminate\Foundation\Auth\EmailVerificationRequest; // Request verifikasi email.
+use App\Http\Controllers\DompetController; // Controller dompet.
+use App\Http\Controllers\Api\DummyWalletApiController; // Controller dummy wallet API.
+use App\Http\Controllers\PemasukanController; // Controller pemasukan.
+use App\Http\Controllers\KategoriPengeluaranController; // Controller kategori pengeluaran.
+use App\Http\Controllers\PengeluaranController; // Controller pengeluaran.
+use App\Http\Controllers\KategoriTabunganController; // Controller kategori tabungan.
+use App\Http\Controllers\TabunganController; // Controller tabungan.
 
 // Landing page
-Route::get('/', [Index::class, 'index'])->name('landing');
+Route::get('/', [Index::class, 'index'])->name('landing'); // Route landing.
 
 /*
 |--------------------------------------------------------------------------
@@ -22,22 +22,22 @@ Route::get('/', [Index::class, 'index'])->name('landing');
 */
 
 // Register
-Route::get('/register', [AuthController::class, 'showRegisterForm'])
-    ->name('register.form');
+Route::get('/register', [AuthController::class, 'showRegisterForm']) // Tampilkan form register.
+    ->name('register.form'); // Nama route form register.
 
-Route::post('/register', [AuthController::class, 'register'])
-    ->name('register.submit');
+Route::post('/register', [AuthController::class, 'register']) // Proses register.
+    ->name('register.submit'); // Nama route submit register.
 
 // Login
-Route::get('/login', [AuthController::class, 'showLoginForm'])
-    ->name('login.form');
+Route::get('/login', [AuthController::class, 'showLoginForm']) // Tampilkan form login.
+    ->name('login.form'); // Nama route form login.
 
-Route::post('/login', [AuthController::class, 'login'])
-    ->name('login.submit');
+Route::post('/login', [AuthController::class, 'login']) // Proses login.
+    ->name('login.submit'); // Nama route submit login.
 
 // Logout
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
+Route::post('/logout', [AuthController::class, 'logout']) // Proses logout.
+    ->name('logout'); // Nama route logout.
 
 /*
 |--------------------------------------------------------------------------
@@ -46,29 +46,29 @@ Route::post('/logout', [AuthController::class, 'logout'])
 */
 
 // Halaman cek email (PAKAI verify.blade.php)
-Route::get('/email/verify', function () {
-    return view('auth.verify');
+Route::get('/email/verify', function () { // Halaman notice verifikasi.
+    return view('auth.verify'); // Tampilkan view verifikasi.
 })
-    ->middleware('auth')
-    ->name('verification.notice');
+    ->middleware('auth') // Wajib login.
+    ->name('verification.notice'); // Nama route notice verifikasi.
 
 // Klik link dari email
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) { // Callback verifikasi email.
+    $request->fulfill(); // Tandai email terverifikasi.
 
-    return redirect()->route('dashboard');
+    return redirect()->route('dashboard'); // Redirect ke dashboard.
 })
-    ->middleware(['auth', 'signed'])
-    ->name('verification.verify');
+    ->middleware(['auth', 'signed']) // Wajib login + link signed.
+    ->name('verification.verify'); // Nama route verifikasi.
 
 // Kirim ulang email verifikasi
-Route::post('/email/verification-notification', function () {
-    request()->user()->sendEmailVerificationNotification();
+Route::post('/email/verification-notification', function () { // Proses kirim ulang email verifikasi.
+    request()->user()->sendEmailVerificationNotification(); // Kirim ulang email verifikasi.
 
-    return back()->with('status', 'verification-link-sent');
+    return back()->with('status', 'verification-link-sent'); // Kembali dengan status sukses.
 })
-    ->middleware(['auth', 'throttle:6,1'])
-    ->name('verification.send');
+    ->middleware(['auth', 'throttle:6,1']) // Wajib login + throttle.
+    ->name('verification.send'); // Nama route kirim ulang.
 
 /*
 |--------------------------------------------------------------------------
@@ -76,9 +76,9 @@ Route::post('/email/verification-notification', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/dashboard', [AuthController::class, 'dashboard'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/dashboard', [AuthController::class, 'dashboard']) // Route dashboard.
+    ->middleware(['auth', 'verified']) // Wajib login + email terverifikasi.
+    ->name('dashboard'); // Nama route dashboard.
 
 
 /*
@@ -87,36 +87,34 @@ Route::get('/dashboard', [AuthController::class, 'dashboard'])
 |--------------------------------------------------------------------------
 */
 
-Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])
-    ->name('google.login');
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle']) // Redirect ke Google OAuth.
+    ->name('google.login'); // Nama route login Google.
 
-Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']); // Callback Google OAuth.
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () { // Group route yang butuh login.
 
-    Route::get('/dompet', [DompetController::class, 'index'])->name('dompet.index');
-    Route::get('/dompet/create', [DompetController::class, 'create'])->name('dompet.create');
-    Route::post('/dompet', [DompetController::class, 'store'])->name('dompet.store');
-    Route::get('/dompet/{id}/edit', [DompetController::class, 'edit'])->name('dompet.edit');
-    Route::put('/dompet/{id}', [DompetController::class, 'update'])->name('dompet.update');
-    Route::delete('/dompet/{id}', [DompetController::class, 'destroy'])->name('dompet.destroy');
+    Route::get('/dompet', [DompetController::class, 'index'])->name('dompet.index'); // Daftar dompet.
+    Route::get('/dompet/create', [DompetController::class, 'create'])->name('dompet.create'); // Form tambah dompet.
+    Route::post('/dompet', [DompetController::class, 'store'])->name('dompet.store'); // Simpan dompet.
+    Route::get('/dompet/{id}/edit', [DompetController::class, 'edit'])->name('dompet.edit'); // Form edit dompet.
+    Route::put('/dompet/{id}', [DompetController::class, 'update'])->name('dompet.update'); // Update dompet.
+    Route::delete('/dompet/{id}', [DompetController::class, 'destroy'])->name('dompet.destroy'); // Hapus dompet.
 
     // ambil provider dummy (buat modal)
-    Route::get('/dompet/iterasi/providers',[DompetController::class, 'availableProviders']);
+    Route::get('/dompet/iterasi/providers',[DompetController::class, 'availableProviders']); // Provider dummy.
 
     // create dompet hasil iterasi (SETELAH IZIN)
-    Route::post('/dompet/iterasi/create',[DompetController::class, 'createFromProvider'])->name('dompet.iterate.create');
+    Route::post('/dompet/iterasi/create',[DompetController::class, 'createFromProvider'])->name('dompet.iterate.create'); // Buat dompet iterasi.
 
     // ITERASI SALDO (PAKAI DUMMY API CONTROLLER)
-    Route::get('/api/dummy-wallet/iterate/{id}',[DummyWalletApiController::class, 'iterate'])->name('dummy.wallet.iterate');
+    Route::get('/api/dummy-wallet/iterate/{id}',[DummyWalletApiController::class, 'iterate'])->name('dummy.wallet.iterate'); // Iterasi saldo dummy.
 
-    Route::resource('pemasukan', PemasukanController::class)->middleware(['auth']);
-    Route::resource('kategori_pengeluaran', KategoriPengeluaranController::class);
-    Route::resource('pengeluaran', PengeluaranController::class);
-    Route::resource('kategoriTabungan', KategoriTabunganController::class);
-    Route::resource('tabungan', TabunganController::class);
+    Route::resource('pemasukan', PemasukanController::class)->middleware(['auth']); // Resource pemasukan.
+    Route::resource('kategori_pengeluaran', KategoriPengeluaranController::class); // Resource kategori pengeluaran.
+    Route::resource('pengeluaran', PengeluaranController::class); // Resource pengeluaran.
+    Route::resource('kategoriTabungan', KategoriTabunganController::class); // Resource kategori tabungan.
+    Route::resource('tabungan', TabunganController::class); // Resource tabungan.
 
 
 });
-
-

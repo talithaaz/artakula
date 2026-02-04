@@ -1,112 +1,111 @@
-/* public/css/auth.css - KHUSUS HALAMAN LOGIN & REGISTER */
+/* public/css/auth.css - KHUSUS HALAMAN LOGIN & REGISTER */ /* Header file CSS. */
 
-/* 1. Pengaturan Layout Halaman */
-/* Update di public/css/auth.css */
+/* 1. Pengaturan Layout Halaman */ /* Judul section layout. */
+/* Update di public/css/auth.css */ /* Catatan update file. */
+/* Update di public/css/auth.css */ /* Catatan update file. */
 
-/* Update di public/css/auth.css */
+.auth-body { /* Container body halaman auth. */
+    min-height: 100vh; /* Tinggi minimum satu viewport. */
+    display: flex; /* Layout flex. */
+    align-items: center; /* Pusatkan vertikal. */
+    justify-content: center; /* Pusatkan horizontal. */
+    background-color: #f0fdf4; /* Warna latar. */
+    padding: 15px; /* Beri sedikit ruang agar tidak mentok. */
+} /* Tutup .auth-body. */
 
-.auth-body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f0fdf4;
-    padding: 15px; /* Beri sedikit ruang agar tidak mentok */
-}
+.auth-card { /* Card utama auth. */
+    border: none; /* Hilangkan border. */
+    border-radius: 24px; /* Radius sudut card. */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05); /* Bayangan halus. */
+    width: 100%; /* Lebar penuh container. */
+    max-width: 420px; /* Lebar maksimum. */
+    background: #ffffff; /* Warna latar putih. */
+    padding: 1.5rem 2rem; /* Padding atas bawah dikecilkan. */
+} /* Tutup .auth-card. */
 
-.auth-card {
-    border: none;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    max-width: 420px;
-    background: #ffffff;
-    padding: 1.5rem 2rem; /* Padding atas bawah dikecilkan */
-}
+/* Tambahkan margin khusus untuk tombol Google agar ada spasi */ /* Catatan spacing Google. */
+.btn-google-spacer { /* Class spacer tombol Google. */
+    margin-top: 12px; /* Jarak atas tombol Google. */
+} /* Tutup .btn-google-spacer. */
 
-/* Tambahkan margin khusus untuk tombol Google agar ada spasi */
-.btn-google-spacer {
-    margin-top: 12px; 
-}
+/* Perkecil margin antar elemen sedikit saja */ /* Catatan margin elemen. */
+.auth-card .mb-4 { margin-bottom: 1.2rem !important; } /* Override margin mb-4. */
+.auth-card .mb-3 { margin-bottom: 0.8rem !important; } /* Override margin mb-3. */
 
-/* Perkecil margin antar elemen sedikit saja */
-.auth-card .mb-4 { margin-bottom: 1.2rem !important; }
-.auth-card .mb-3 { margin-bottom: 0.8rem !important; }
+/* 3. Styling Label & Input */ /* Judul section label & input. */
+.auth-form-label { /* Label form auth. */
+    font-size: 0.85rem; /* Ukuran font label. */
+    font-weight: 700; /* Tebal font label. */
+    color: #475569; /* Warna label. */
+    margin-bottom: 8px; /* Jarak bawah label. */
+    display: block; /* Label jadi block. */
+} /* Tutup .auth-form-label. */
 
-/* 3. Styling Label & Input */
-.auth-form-label {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #475569;
-    margin-bottom: 8px;
-    display: block;
-}
+.auth-input { /* Input form auth. */
+    border-radius: 12px !important; /* Radius input. */
+    padding: 12px 15px !important; /* Padding input. */
+    border: 1px solid #e2e8f0 !important; /* Border input. */
+    background-color: #f8fafc !important; /* Warna latar input. */
+    transition: all 0.3s ease !important; /* Transisi halus. */
+} /* Tutup .auth-input. */
 
-.auth-input {
-    border-radius: 12px !important;
-    padding: 12px 15px !important;
-    border: 1px solid #e2e8f0 !important;
-    background-color: #f8fafc !important;
-    transition: all 0.3s ease !important;
-}
+.auth-input:focus { /* Style saat input fokus. */
+    background-color: #ffffff !important; /* Latar putih saat fokus. */
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important; /* Ring fokus hijau. */
+    border-color: #10b981 !important; /* Border hijau. */
+    outline: none; /* Hilangkan outline default. */
+} /* Tutup .auth-input:focus. */
 
-.auth-input:focus {
-    background-color: #ffffff !important;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1) !important;
-    border-color: #10b981 !important;
-    outline: none;
-}
+/* 4. Tombol Google */ /* Judul section tombol Google. */
+.btn-google { /* Tombol Google. */
+    border: 1px solid #e2e8f0; /* Border tombol. */
+    background: white; /* Latar putih. */
+    border-radius: 14px; /* Radius tombol. */
+    padding: 12px; /* Padding tombol. */
+    transition: all 0.3s; /* Transisi hover. */
+    font-weight: 600; /* Tebal font. */
+    text-decoration: none; /* Hilangkan underline. */
+    display: flex; /* Flex layout. */
+    align-items: center; /* Tengah vertikal. */
+    justify-content: center; /* Tengah horizontal. */
+    gap: 10px; /* Jarak antar elemen. */
+    color: #334155; /* Warna teks. */
+} /* Tutup .btn-google. */
 
-/* 4. Tombol Google */
-.btn-google {
-    border: 1px solid #e2e8f0;
-    background: white;
-    border-radius: 14px;
-    padding: 12px;
-    transition: all 0.3s;
-    font-weight: 600;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: #334155;
-}
+.btn-google:hover { /* Style hover tombol Google. */
+    background: #f8fafc; /* Latar saat hover. */
+    border-color: #cbd5e1; /* Border saat hover. */
+    transform: translateY(-1px); /* Angkat sedikit saat hover. */
+} /* Tutup .btn-google:hover. */
 
-.btn-google:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    transform: translateY(-1px);
-}
+/* 5. Pembatas (Divider) "atau" */ /* Judul section divider. */
+.auth-divider { /* Wrapper divider. */
+    position: relative; /* Posisi relatif untuk span. */
+    margin: 30px 0; /* Jarak atas bawah. */
+    text-align: center; /* Teks rata tengah. */
+} /* Tutup .auth-divider. */
 
-/* 5. Pembatas (Divider) "atau" */
-.auth-divider {
-    position: relative;
-    margin: 30px 0;
-    text-align: center;
-}
+.auth-divider hr { /* Garis divider. */
+    border-top: 1px solid #e2e8f0; /* Warna garis. */
+    opacity: 1; /* Opacity penuh. */
+    margin: 0; /* Hilangkan margin. */
+} /* Tutup .auth-divider hr. */
 
-.auth-divider hr {
-    border-top: 1px solid #e2e8f0;
-    opacity: 1;
-    margin: 0;
-}
+.auth-divider span { /* Teks di tengah divider. */
+    position: absolute; /* Posisi absolut di tengah. */
+    top: 50%; /* Tengah vertikal. */
+    left: 50%; /* Tengah horizontal. */
+    transform: translate(-50%, -50%); /* Pusatkan elemen. */
+    background: #ffffff; /* Latar putih teks. */
+    padding: 0 15px; /* Padding kiri kanan. */
+    color: #94a3b8; /* Warna teks. */
+    font-size: 0.85rem; /* Ukuran font teks. */
+} /* Tutup .auth-divider span. */
 
-.auth-divider span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #ffffff;
-    padding: 0 15px;
-    color: #94a3b8;
-    font-size: 0.85rem;
-}
-
-/* 6. Responsif Mobile */
-@media (max-width: 576px) {
-    .auth-card {
-        padding: 1.5rem;
-        border-radius: 20px;
-    }
-}
+/* 6. Responsif Mobile */ /* Judul section responsif. */
+@media (max-width: 576px) { /* Breakpoint mobile. */
+    .auth-card { /* Card pada layar kecil. */
+        padding: 1.5rem; /* Padding lebih kecil. */
+        border-radius: 20px; /* Radius lebih kecil. */
+    } /* Tutup .auth-card mobile. */
+} /* Tutup media query. */

@@ -1,240 +1,240 @@
-/* public/css/dashboard.css */
-:root {
-    --primary-color: #10b981;
-    --primary-dark: #059669;
+/* public/css/dashboard.css */ /* Header file CSS. */
+:root { /* Variabel global tema. */
+    --primary-color: #10b981; /* Warna utama. */
+    --primary-dark: #059669; /* Warna utama gelap. */
     --sidebar-bg: #1e293b; /* Slate Dark Modern */
-    --sidebar-hover: #334155;
-    --bg-body: #f4f7fe;
-    --sidebar-width: 280px;
-    --sidebar-collapsed-width: 85px;
-}
+    --sidebar-hover: #334155; /* Warna hover sidebar. */
+    --bg-body: #f4f7fe; /* Warna latar body. */
+    --sidebar-width: 280px; /* Lebar sidebar. */
+    --sidebar-collapsed-width: 85px; /* Lebar sidebar saat collapse. */
+} /* Tutup :root. */
 
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--bg-body);
-    overflow-x: hidden;
-}
+body { /* Styling body. */
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Font utama. */
+    background-color: var(--bg-body); /* Warna latar body. */
+    overflow-x: hidden; /* Hilangkan scroll horizontal. */
+} /* Tutup body. */
 
-/* SIDEBAR STYLING */
-#sidebar {
-    width: var(--sidebar-width);
-    background: var(--sidebar-bg);
+/* SIDEBAR STYLING */ /* Judul section sidebar. */
+#sidebar { /* Sidebar utama. */
+    width: var(--sidebar-width); /* Lebar sidebar. */
+    background: var(--sidebar-bg); /* Warna latar sidebar. */
     height: 100vh; /* Gunakan height 100vh agar fix setinggi layar */
-    position: fixed;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1050;
+    position: fixed; /* Sidebar tetap di kiri. */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transisi halus. */
+    z-index: 1050; /* Urutan layer. */
     
-    /* Perbaikan Scroll */
+    /* Perbaikan Scroll */ /* Catatan scroll. */
     overflow-y: auto;  /* Munculkan scroll atas bawah jika menu penuh */
     overflow-x: hidden; /* Matikan paksa scroll kanan kiri */
-    display: flex;
-    flex-direction: column;
-}
+    display: flex; /* Flex layout. */
+    flex-direction: column; /* Susun vertikal. */
+} /* Tutup #sidebar. */
 
-/* Logic Mini Sidebar */
-#sidebar.collapsed {
-    width: var(--sidebar-collapsed-width);
-}
+/* Logic Mini Sidebar */ /* Judul section collapse. */
+#sidebar.collapsed { /* Sidebar saat collapse. */
+    width: var(--sidebar-collapsed-width); /* Lebar collapse. */
+} /* Tutup #sidebar.collapsed. */
 
 #sidebar.collapsed .nav-link-custom span,
 #sidebar.collapsed .nav-link-custom::after,
 #sidebar.collapsed h4,
 #sidebar.collapsed .sub-menu,
 #sidebar.collapsed hr {
-    display: none !important;
+    display: none !important; /* Sembunyikan elemen saat collapse. */
 }
 
-#sidebar.collapsed .nav-link-custom {
-    padding: 12px 0 !important;
-    margin: 6px 0 !important;
-    width: 100%;
-    display: flex;
+#sidebar.collapsed .nav-link-custom { /* Link saat collapse. */
+    padding: 12px 0 !important; /* Padding atas bawah. */
+    margin: 6px 0 !important; /* Margin atas bawah. */
+    width: 100%; /* Lebar penuh. */
+    display: flex; /* Flex layout. */
     justify-content: center; /* Menaruh icon tepat di tengah */
-    align-items: center;
-}
+    align-items: center; /* Tengah vertikal. */
+} /* Tutup .nav-link-custom collapse. */
 
-#sidebar.collapsed .nav-link-custom i {
-    font-size: 1.4rem;
-    margin: 0 !important;
-}
+#sidebar.collapsed .nav-link-custom i { /* Ikon saat collapse. */
+    font-size: 1.4rem; /* Ukuran ikon. */
+    margin: 0 !important; /* Hilangkan margin. */
+} /* Tutup ikon collapse. */
 
-/* Memastikan form logout tidak merusak layout */
-#sidebar.collapsed form {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
+/* Memastikan form logout tidak merusak layout */ /* Catatan form logout. */
+#sidebar.collapsed form { /* Form logout saat collapse. */
+    width: 100%; /* Lebar penuh. */
+    display: flex; /* Flex layout. */
+    justify-content: center; /* Tengah horizontal. */
+} /* Tutup form collapse. */
 
-/* Perbaikan Logout agar tetap di bawah atau ikut ter-scroll dengan rapi */
-#sidebar form {
+/* Perbaikan Logout agar tetap di bawah atau ikut ter-scroll dengan rapi */ /* Catatan logout. */
+#sidebar form { /* Form logout pada sidebar. */
     margin-top: auto; /* Memaksa logout ke paling bawah jika menu sedikit */
-    padding-bottom: 20px;
-}
+    padding-bottom: 20px; /* Jarak bawah. */
+} /* Tutup #sidebar form. */
 
-/* Transisi halus untuk konten */
-#content {
-    transition: all 0.3s ease-in-out;
-}
+/* Transisi halus untuk konten */ /* Catatan transisi konten. */
+#content { /* Konten utama. */
+    transition: all 0.3s ease-in-out; /* Transisi halus. */
+} /* Tutup #content transisi. */
 
-.nav-list {
-    width: 100%;
+.nav-list { /* List navigasi. */
+    width: 100%; /* Lebar penuh. */
     flex-grow: 1; /* Agar list mengisi ruang yang ada */
-}
+} /* Tutup .nav-list. */
 
-/* Custom Scrollbar agar sidebar terlihat lebih cantik (Optional) */
-#sidebar::-webkit-scrollbar {
-    width: 5px;
-}
+/* Custom Scrollbar agar sidebar terlihat lebih cantik (Optional) */ /* Catatan scrollbar. */
+#sidebar::-webkit-scrollbar { /* Scrollbar sidebar. */
+    width: 5px; /* Lebar scrollbar. */
+} /* Tutup scrollbar. */
 
-#sidebar::-webkit-scrollbar-track {
-    background: var(--sidebar-bg);
-}
+#sidebar::-webkit-scrollbar-track { /* Track scrollbar. */
+    background: var(--sidebar-bg); /* Warna track. */
+} /* Tutup track. */
 
-#sidebar::-webkit-scrollbar-thumb {
+#sidebar::-webkit-scrollbar-thumb { /* Thumb scrollbar. */
     background: #334155; /* Warna abu-abu gelap agar tidak mencolok */
-    border-radius: 10px;
-}
+    border-radius: 10px; /* Radius thumb. */
+} /* Tutup thumb. */
 
-/* Sidebar Dropdown Icon Rotate */
-.nav-link-custom[data-bs-toggle="collapse"]::after {
-    display: inline-block;
-    margin-left: auto;
-    vertical-align: 0.255em;
-    content: "";
-    border-top: 0.3em solid;
-    border-right: 0.3em solid transparent;
-    border-bottom: 0;
-    border-left: 0.3em solid transparent;
-    transition: transform 0.3s;
-}
+/* Sidebar Dropdown Icon Rotate */ /* Judul section icon dropdown. */
+.nav-link-custom[data-bs-toggle="collapse"]::after { /* Ikon panah dropdown. */
+    display: inline-block; /* Tampilkan inline. */
+    margin-left: auto; /* Dorong ke kanan. */
+    vertical-align: 0.255em; /* Posisi vertikal. */
+    content: ""; /* Konten pseudo. */
+    border-top: 0.3em solid; /* Segitiga atas. */
+    border-right: 0.3em solid transparent; /* Segitiga kanan transparan. */
+    border-bottom: 0; /* Hilangkan bawah. */
+    border-left: 0.3em solid transparent; /* Segitiga kiri transparan. */
+    transition: transform 0.3s; /* Transisi rotasi. */
+} /* Tutup ikon dropdown. */
 
-.nav-link-custom[aria-expanded="true"]::after {
-    transform: rotate(180deg);
-}
+.nav-link-custom[aria-expanded="true"]::after { /* Ikon saat terbuka. */
+    transform: rotate(180deg); /* Putar ikon. */
+} /* Tutup ikon terbuka. */
 
-/* Tambahan: Memastikan sub-menu tidak membuat lebar sidebar bertambah */
-.sub-menu {
-    list-style: none;
-    padding-left: 52px;
-    margin-bottom: 10px;
-    width: 100%; 
-    overflow-x: hidden;
-}
+/* Tambahan: Memastikan sub-menu tidak membuat lebar sidebar bertambah */ /* Catatan sub-menu. */
+.sub-menu { /* Sub-menu sidebar. */
+    list-style: none; /* Hilangkan bullet. */
+    padding-left: 52px; /* Padding kiri. */
+    margin-bottom: 10px; /* Margin bawah. */
+    width: 100%; /* Lebar penuh. */
+    overflow-x: hidden; /* Hilangkan scroll horizontal. */
+} /* Tutup .sub-menu. */
 
-.sub-menu a {
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 0.85rem;
-    display: block;
-    padding: 8px 0;
-    transition: 0.2s;
-}
+.sub-menu a { /* Link sub-menu. */
+    color: #94a3b8; /* Warna teks. */
+    text-decoration: none; /* Hilangkan underline. */
+    font-size: 0.85rem; /* Ukuran font. */
+    display: block; /* Tampilkan block. */
+    padding: 8px 0; /* Padding atas bawah. */
+    transition: 0.2s; /* Transisi hover. */
+} /* Tutup .sub-menu a. */
 
-.sub-menu a:hover {
-    color: var(--primary-color);
-}
+.sub-menu a:hover { /* Hover sub-menu. */
+    color: var(--primary-color); /* Warna saat hover. */
+} /* Tutup hover sub-menu. */
 
-.nav-link-custom {
-    margin: 6px 20px;
-    padding: 12px 15px;
-    border-radius: 14px;
-    color: #cbd5e1;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    transition: 0.2s;
-}
+.nav-link-custom { /* Link navigasi utama. */
+    margin: 6px 20px; /* Margin kiri kanan. */
+    padding: 12px 15px; /* Padding link. */
+    border-radius: 14px; /* Radius link. */
+    color: #cbd5e1; /* Warna teks. */
+    font-weight: 500; /* Tebal teks. */
+    display: flex; /* Flex layout. */
+    align-items: center; /* Tengah vertikal. */
+    gap: 12px; /* Jarak ikon dan teks. */
+    text-decoration: none; /* Hilangkan underline. */
+    transition: 0.2s; /* Transisi hover. */
+} /* Tutup .nav-link-custom. */
 
-.nav-link-custom:hover {
-    background: var(--sidebar-hover);
-    color: #fff;
-}
+.nav-link-custom:hover { /* Hover link utama. */
+    background: var(--sidebar-hover); /* Latar hover. */
+    color: #fff; /* Warna teks hover. */
+} /* Tutup hover link. */
 
-.nav-link-custom.active {
-    background: var(--primary-color);
-    color: white !important;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
-}
+.nav-link-custom.active { /* Link aktif. */
+    background: var(--primary-color); /* Latar aktif. */
+    color: white !important; /* Warna teks aktif. */
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); /* Shadow aktif. */
+} /* Tutup link aktif. */
 
-/* CONTENT AREA */
-#content {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-    padding: 30px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* CONTENT AREA */ /* Judul section konten. */
+#content { /* Area konten utama. */
+    margin-left: var(--sidebar-width); /* Offset kiri sesuai sidebar. */
+    width: calc(100% - var(--sidebar-width)); /* Lebar konten. */
+    padding: 30px; /* Padding konten. */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transisi halus. */
+} /* Tutup #content. */
 
-#content.expanded {
-    margin-left: var(--sidebar-collapsed-width);
-    width: calc(100% - var(--sidebar-collapsed-width));
-}
+#content.expanded { /* Konten saat sidebar collapse. */
+    margin-left: var(--sidebar-collapsed-width); /* Offset kiri collapse. */
+    width: calc(100% - var(--sidebar-collapsed-width)); /* Lebar konten collapse. */
+} /* Tutup #content.expanded. */
 
-/* CARDS & UI COMPONENTS */
-.card-artakula {
-    border: none;
-    border-radius: 24px;
-    background: white;
-    box-shadow: 0 10px 30px rgba(112, 144, 176, 0.08);
-    padding: 24px;
-    height: 100%;
+/* CARDS & UI COMPONENTS */ /* Judul section card. */
+.card-artakula { /* Card umum. */
+    border: none; /* Hilangkan border. */
+    border-radius: 24px; /* Radius card. */
+    background: white; /* Latar putih. */
+    box-shadow: 0 10px 30px rgba(112, 144, 176, 0.08); /* Shadow card. */
+    padding: 24px; /* Padding card. */
+    height: 100%; /* Tinggi penuh. */
     min-width: 0; /* Penting agar chart bisa mengecil dalam flexbox/grid */
-    overflow: hidden;
-}
+    overflow: hidden; /* Sembunyikan overflow. */
+} /* Tutup .card-artakula. */
 
-.card-gradient {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
+.card-gradient { /* Card dengan gradient. */
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Latar gradient. */
+} /* Tutup .card-gradient. */
 
-.progress {
-    background-color: #f1f5f9;
-    border-radius: 10px;
-}
+.progress { /* Progress bar. */
+    background-color: #f1f5f9; /* Warna latar progress. */
+    border-radius: 10px; /* Radius progress. */
+} /* Tutup .progress. */
 
-/* MOBILE RESPONSIVE */
-@media (max-width: 992px) {
-    #sidebar {
-        left: calc(var(--sidebar-width) * -1);
+/* MOBILE RESPONSIVE */ /* Judul section responsif. */
+@media (max-width: 992px) { /* Breakpoint tablet/mobile. */
+    #sidebar { /* Sidebar di layar kecil. */
+        left: calc(var(--sidebar-width) * -1); /* Geser keluar layar. */
     }
-    #sidebar.show {
-        left: 0;
+    #sidebar.show { /* Sidebar tampil. */
+        left: 0; /* Geser masuk layar. */
     }
-    #content {
-        margin-left: 0;
-        width: 100%;
-        padding: 20px;
+    #content { /* Konten di layar kecil. */
+        margin-left: 0; /* Tanpa offset kiri. */
+        width: 100%; /* Lebar penuh. */
+        padding: 20px; /* Padding lebih kecil. */
     }
-    #content.expanded {
-        margin-left: 0;
-        width: 100%;
+    #content.expanded { /* Konten saat sidebar collapse. */
+        margin-left: 0; /* Tanpa offset. */
+        width: 100%; /* Lebar penuh. */
     }
-    .overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 1040;
+    .overlay { /* Overlay saat sidebar muncul. */
+        display: none; /* Sembunyikan default. */
+        position: fixed; /* Posisi fixed. */
+        inset: 0; /* Tutup seluruh layar. */
+        background: rgba(0,0,0,0.5); /* Latar gelap. */
+        z-index: 1040; /* Urutan layer. */
     }
-    .overlay.show { display: block; }
-}
+    .overlay.show { display: block; } /* Tampilkan overlay. */
+} /* Tutup media query. */
 
-footer {
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
+footer { /* Styling footer. */
+    border-top: 1px solid rgba(0,0,0,0.05); /* Garis atas footer. */
+} /* Tutup footer. */
 
-.hover-primary:hover {
-    color: var(--primary-color) !important;
-    transition: 0.2s;
-}
+.hover-primary:hover { /* Hover warna utama. */
+    color: var(--primary-color) !important; /* Warna saat hover. */
+    transition: 0.2s; /* Transisi hover. */
+} /* Tutup hover-primary. */
 
-/* Memastikan footer tetap di bawah jika konten sedikit */
-#content {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+/* Memastikan footer tetap di bawah jika konten sedikit */ /* Catatan footer. */
+#content { /* Konten sebagai flex column. */
+    display: flex; /* Flex layout. */
+    flex-direction: column; /* Susun vertikal. */
+    min-height: 100vh; /* Tinggi minimum layar. */
+} /* Tutup #content flex. */
 
-footer {
+footer { /* Footer dorong ke bawah. */
     margin-top: auto; /* Memaksa footer ke bagian paling bawah container */
-}
+} /* Tutup footer dorong. */

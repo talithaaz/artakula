@@ -1,42 +1,42 @@
-/* public/css/main.css - GLOBAL */
-:root {
-    --primary-color: #10b981;
-    --secondary-color: #064e3b;
-    --soft-bg: #f8fafc;
-}
+/* public/css/main.css - GLOBAL */ /* Header file CSS. */
+:root { /* Variabel global tema. */
+    --primary-color: #10b981; /* Warna utama. */
+    --secondary-color: #064e3b; /* Warna sekunder. */
+    --soft-bg: #f8fafc; /* Warna latar lembut. */
+} /* Tutup :root. */
 
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--soft-bg);
-    color: #334155;
-}
+body { /* Styling body. */
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Font utama. */
+    background-color: var(--soft-bg); /* Warna latar body. */
+    color: #334155; /* Warna teks default. */
+} /* Tutup body. */
 
-.text-success-custom {
-    color: var(--primary-color) !important;
-}
+.text-success-custom { /* Warna teks sukses kustom. */
+    color: var(--primary-color) !important; /* Gunakan warna utama. */
+} /* Tutup .text-success-custom. */
 
-/* Tombol dipindah ke sini agar bisa dipanggil di Register/Login juga */
-.btn-primary-custom {
-    background-color: #1e293b !important;
-    color: white !important;
-    border-radius: 14px;
-    padding: 14px 32px;
-    font-weight: 700;
-    border: none;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
-}
+/* Tombol dipindah ke sini agar bisa dipanggil di Register/Login juga */ /* Catatan tombol. */
+.btn-primary-custom { /* Tombol utama kustom. */
+    background-color: #1e293b !important; /* Warna latar tombol. */
+    color: white !important; /* Warna teks tombol. */
+    border-radius: 14px; /* Radius tombol. */
+    padding: 14px 32px; /* Padding tombol. */
+    font-weight: 700; /* Tebal font. */
+    border: none; /* Hilangkan border. */
+    transition: all 0.3s; /* Transisi hover. */
+    text-decoration: none; /* Hilangkan underline. */
+    display: inline-block; /* Tampilkan inline-block. */
+} /* Tutup .btn-primary-custom. */
 
-.btn-primary-custom:hover {
-    background-color: var(--primary-color) !important;
-    transform: scale(1.05);
-    color: white !important;
-}
+.btn-primary-custom:hover { /* Hover tombol utama. */
+    background-color: var(--primary-color) !important; /* Warna latar saat hover. */
+    transform: scale(1.05); /* Perbesar sedikit saat hover. */
+    color: white !important; /* Warna teks tetap putih. */
+} /* Tutup .btn-primary-custom:hover. */
 
-.text-truncate-2 {
-    max-width: 180px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+.text-truncate-2 { /* Utilitas truncate teks. */
+    max-width: 180px; /* Batas lebar teks. */
+    white-space: nowrap; /* Tidak turun baris. */
+    overflow: hidden; /* Sembunyikan overflow. */
+    text-overflow: ellipsis; /* Tambahkan ellipsis. */
+} /* Tutup .text-truncate-2. */
