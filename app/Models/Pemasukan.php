@@ -1,23 +1,23 @@
-<?php
+<?php // Mulai file PHP.
 
-namespace App\Models;
+namespace App\Models; // Namespace untuk model.
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model; // Base model Eloquent.
 
-class Pemasukan extends Model
+class Pemasukan extends Model // Model untuk tabel pemasukan.
 {
-    protected $table = 'tb_pemasukan';
+    protected $table = 'tb_pemasukan'; // Nama tabel yang dipakai model ini.
 
-    protected $fillable = [
-        'user_id',
-        'dompet_id',
-        'keterangan',
-        'jumlah',
-        'tanggal',
-    ];
+    protected $fillable = [ // Daftar field yang boleh diisi mass assignment.
+        'user_id', // ID user pemilik pemasukan.
+        'dompet_id', // ID dompet terkait.
+        'keterangan', // Deskripsi pemasukan.
+        'jumlah', // Nilai pemasukan.
+        'tanggal', // Tanggal pemasukan.
+    ]; // Selesai definisi fillable.
 
-    public function dompet()
+    public function dompet() // Relasi ke model Dompet.
     {
-        return $this->belongsTo(Dompet::class);
+        return $this->belongsTo(Dompet::class); // Pemasukan milik satu dompet.
     }
 }

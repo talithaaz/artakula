@@ -1,129 +1,161 @@
-<?php
+<?php // Mulai file PHP.
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; // Namespace controller Laravel.
 
-use App\Models\Pemasukan;
-use App\Models\Dompet;
-use Illuminate\Http\Request;
+use App\Models\Pemasukan; // Model Pemasukan untuk akses data pemasukan.
+use App\Models\Dompet; // Model Dompet untuk akses data dompet.
+use Illuminate\Http\Request; // Class Request untuk menangkap input HTTP.
 
-class PemasukanController extends Controller
+class PemasukanController extends Controller // Controller untuk CRUD pemasukan.
 {
-    public function index()
+    /**
+     * Menampilkan daftar pemasukan per bulan & tahun
+     */
+    public function index(Request $request) // Menampilkan daftar pemasukan.
     {
-        $pemasukan = Pemasukan::with('dompet')
-            ->where('user_id', auth()->id())
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        $bulan = $request->bulan ?? now()->month; // Ambil bulan dari request atau pakai bulan sekarang.
+        $tahun = $request->tahun ?? now()->year; // Ambil tahun dari request atau pakai tahun sekarang.
 
-        return view('pemasukan.index', compact('pemasukan'));
+        $pemasukan = Pemasukan::with('dompet') // Eager load relasi dompet.
+            ->where('user_id', auth()->id()) // Filter hanya milik user yang login.
+            ->whereMonth('tanggal', $bulan) // Filter berdasarkan bulan.
+            ->whereYear('tanggal', $tahun) // Filter berdasarkan tahun.
+            ->orderBy('tanggal', 'desc') // Urutkan tanggal terbaru dulu.
+            ->orderBy('id', 'desc') // Urutkan ID terbaru sebagai penguat.
+            ->get(); // Ambil hasil query.
+
+        return view('pemasukan.index', compact('pemasukan', 'bulan', 'tahun')); // Tampilkan view dengan data.
     }
 
-    public function create()
+    /**
+     * Form tambah pemasukan
+     */
+    public function create(Request $request) // Menampilkan form tambah pemasukan.
     {
-        $dompets = Dompet::where('user_id', auth()->id())->get();
-        return view('pemasukan.create', compact('dompets'));
+        $bulan = $request->bulan ?? now()->month; // Ambil bulan dari request atau pakai bulan sekarang.
+        $tahun = $request->tahun ?? now()->year; // Ambil tahun dari request atau pakai tahun sekarang.
+
+        $dompets = Dompet::where('user_id', auth()->id())->get(); // Ambil daftar dompet milik user.
+
+        return view('pemasukan.create', compact('dompets', 'bulan', 'tahun')); // Tampilkan view form dengan data.
     }
 
-    public function store(Request $request)
+    /**
+     * Simpan pemasukan baru
+     */
+    public function store(Request $request) // Menyimpan pemasukan baru.
     {
-        $request->validate([
-            'dompet_id' => 'required',
-            'keterangan' => 'required',
-            'jumlah' => 'required|numeric|min:1',
-            'tanggal' => 'required|date'
-        ]);
+        $request->validate([ // Validasi input request.
+            'dompet_id'  => 'required', // Dompet wajib dipilih.
+            'keterangan' => 'required', // Keterangan wajib diisi.
+            'jumlah'     => 'required|numeric|min:1', // Jumlah wajib angka minimal 1.
+            'tanggal'    => 'required|date', // Tanggal wajib dan valid.
+        ]); // Selesai validasi.
 
-        // pastikan dompet milik user
-        $dompet = Dompet::where('id', $request->dompet_id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        // Pastikan dompet milik user
+        $dompet = Dompet::where('id', $request->dompet_id) // Cari dompet sesuai pilihan.
+            ->where('user_id', auth()->id()) // Pastikan dompet milik user login.
+            ->firstOrFail(); // Gagal jika tidak ditemukan.
 
-        // buat pemasukan
-        $pemasukan = Pemasukan::create([
-            'user_id' => auth()->id(),
-            'dompet_id' => $dompet->id,
-            'keterangan' => $request->keterangan,
-            'jumlah' => $request->jumlah,
-            'tanggal' => $request->tanggal
-        ]);
+        // Simpan pemasukan
+        $pemasukan = Pemasukan::create([ // Buat record pemasukan baru.
+            'user_id'    => auth()->id(), // Set user pemilik.
+            'dompet_id'  => $dompet->id, // Set dompet terkait.
+            'keterangan' => $request->keterangan, // Simpan keterangan.
+            'jumlah'     => (int) $request->jumlah, // Simpan jumlah sebagai integer.
+            'tanggal'    => $request->tanggal, // Simpan tanggal pemasukan.
+        ]); // Selesai membuat pemasukan.
 
-        // update saldo dompet, pastikan integer
-        $dompet->increment('saldo', (int) $request->jumlah);
+        // Tambah saldo dompet
+        $dompet->increment('saldo', $pemasukan->jumlah); // Tambah saldo sesuai jumlah pemasukan.
 
-        return redirect()->route('pemasukan.index')
-            ->with('success', 'Pemasukan berhasil ditambahkan');
+        return redirect()->route('pemasukan.index', [ // Redirect ke halaman daftar pemasukan.
+            'bulan' => $request->bulan, // Bawa parameter bulan.
+            'tahun' => $request->tahun, // Bawa parameter tahun.
+        ])->with('success', 'Pemasukan berhasil ditambahkan'); // Pesan sukses.
     }
 
-    public function edit($id)
+    /**
+     * Form edit pemasukan
+     */
+    public function edit(Request $request, $id) // Menampilkan form edit pemasukan.
     {
-        $pemasukan = Pemasukan::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $pemasukan = Pemasukan::where('id', $id) // Cari pemasukan sesuai ID.
+            ->where('user_id', auth()->id()) // Pastikan milik user login.
+            ->firstOrFail(); // Gagal jika tidak ditemukan.
 
-        $dompets = Dompet::where('user_id', auth()->id())->get();
+        $dompets = Dompet::where('user_id', auth()->id())->get(); // Ambil daftar dompet milik user.
 
-        return view('pemasukan.edit', compact('pemasukan', 'dompets'));
+        $bulan = $request->bulan ?? now()->month; // Ambil bulan dari request atau pakai bulan sekarang.
+        $tahun = $request->tahun ?? now()->year; // Ambil tahun dari request atau pakai tahun sekarang.
+
+        return view('pemasukan.edit', compact('pemasukan', 'dompets', 'bulan', 'tahun')); // Tampilkan view form edit.
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update pemasukan
+     */
+    public function update(Request $request, $id) // Memperbarui data pemasukan.
     {
-        $request->validate([
-            'dompet_id' => 'required',
-            'keterangan' => 'required',
-            'jumlah' => 'required|numeric|min:1',
-            'tanggal' => 'required|date'
-        ]);
+        $request->validate([ // Validasi input request.
+            'dompet_id'  => 'required', // Dompet wajib dipilih.
+            'keterangan' => 'required', // Keterangan wajib diisi.
+            'jumlah'     => 'required|numeric|min:1', // Jumlah wajib angka minimal 1.
+            'tanggal'    => 'required|date', // Tanggal wajib dan valid.
+        ]); // Selesai validasi.
 
-        $pemasukan = Pemasukan::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $pemasukan = Pemasukan::where('id', $id) // Cari pemasukan sesuai ID.
+            ->where('user_id', auth()->id()) // Pastikan milik user login.
+            ->firstOrFail(); // Gagal jika tidak ditemukan.
 
-        // ambil dompet lama dan baru
-        $oldDompet = Dompet::findOrFail($pemasukan->dompet_id);
-        $newDompet = Dompet::where('id', $request->dompet_id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $oldDompet = Dompet::findOrFail($pemasukan->dompet_id); // Ambil dompet lama dari pemasukan.
+        $newDompet = Dompet::where('id', $request->dompet_id) // Ambil dompet baru dari request.
+            ->where('user_id', auth()->id()) // Pastikan dompet baru milik user login.
+            ->firstOrFail(); // Gagal jika tidak ditemukan.
 
-        $oldJumlah = $pemasukan->jumlah;
-        $newJumlah = (int) $request->jumlah;
+        $oldJumlah = (int) $pemasukan->jumlah; // Simpan jumlah lama sebagai integer.
+        $newJumlah = (int) $request->jumlah; // Simpan jumlah baru sebagai integer.
 
-        // update pemasukan
-        $pemasukan->update([
-            'dompet_id' => $newDompet->id,
-            'keterangan' => $request->keterangan,
-            'jumlah' => $newJumlah,
-            'tanggal' => $request->tanggal
-        ]);
+        // Update data pemasukan
+        $pemasukan->update([ // Update record pemasukan.
+            'dompet_id'  => $newDompet->id, // Set dompet baru.
+            'keterangan' => $request->keterangan, // Update keterangan.
+            'jumlah'     => $newJumlah, // Update jumlah.
+            'tanggal'    => $request->tanggal, // Update tanggal.
+        ]); // Selesai update pemasukan.
 
-        // sesuaikan saldo dompet
-        if ($oldDompet->id === $newDompet->id) {
-            // sama dompet → update selisih
-            $selisih = $newJumlah - $oldJumlah;
-            $oldDompet->increment('saldo', $selisih);
-        } else {
-            // pindah dompet → kurangi dompet lama, tambah dompet baru
-            $oldDompet->decrement('saldo', $oldJumlah);
-            $newDompet->increment('saldo', $newJumlah);
-        }
+        // Update saldo dompet
+        if ($oldDompet->id === $newDompet->id) { // Jika dompet tidak berubah.
+            $selisih = $newJumlah - $oldJumlah; // Hitung selisih jumlah baru dan lama.
+            $oldDompet->increment('saldo', $selisih); // Sesuaikan saldo berdasarkan selisih.
+        } else { // Jika dompet berubah.
+            $oldDompet->decrement('saldo', $oldJumlah); // Kurangi saldo dompet lama.
+            $newDompet->increment('saldo', $newJumlah); // Tambah saldo dompet baru.
+        } // Selesai update saldo dompet.
 
-        return redirect()->route('pemasukan.index')
-            ->with('success', 'Pemasukan berhasil diupdate');
+        return redirect()->route('pemasukan.index', [ // Redirect ke halaman daftar pemasukan.
+            'bulan' => $request->bulan, // Bawa parameter bulan.
+            'tahun' => $request->tahun, // Bawa parameter tahun.
+        ])->with('success', 'Pemasukan berhasil diupdate'); // Pesan sukses.
     }
 
-    public function destroy($id)
+    /**
+     * Hapus pemasukan
+     */
+    public function destroy(Request $request, $id) // Menghapus pemasukan.
     {
-        $pemasukan = Pemasukan::where('id', $id)
-            ->where('user_id', auth()->id())
-            ->firstOrFail();
+        $pemasukan = Pemasukan::where('id', $id) // Cari pemasukan sesuai ID.
+            ->where('user_id', auth()->id()) // Pastikan milik user login.
+            ->firstOrFail(); // Gagal jika tidak ditemukan.
 
-        $dompet = Dompet::findOrFail($pemasukan->dompet_id);
+        $dompet = Dompet::findOrFail($pemasukan->dompet_id); // Ambil dompet terkait pemasukan.
 
-        // kurangi saldo
-        $dompet->decrement('saldo', $pemasukan->jumlah);
+        // Kurangi saldo dompet
+        $dompet->decrement('saldo', $pemasukan->jumlah); // Kurangi saldo sesuai jumlah pemasukan.
 
-        // hapus pemasukan
-        $pemasukan->delete();
+        // Hapus data pemasukan
+        $pemasukan->delete(); // Hapus record pemasukan.
 
-        return back()->with('success', 'Pemasukan dihapus');
+        return back()->with('success', 'Pemasukan berhasil dihapus'); // Kembali dengan pesan sukses.
     }
 }
