@@ -16,19 +16,31 @@ SEBELUM FOOTER
             <div class="col-lg-4">
                 <div class="card-artakula card-gradient text-white">
                     <p class="small opacity-75 mb-1 text-uppercase fw-bold">Total Saldo Seluruh Dompet</p>
-                    <h2 class="fw-bold mb-0">Rp 15.240.000</h2>
+                    <h2 class="fw-bold mb-0">
+                        Rp {{ number_format($totalSaldo, 0, ',', '.') }}
+                    </h2>
                 </div>
             </div>
             <div class="col-6 col-lg-4">
                 <div class="card-artakula border-start border-success border-4">
                     <p class="text-secondary small mb-1 fw-bold">TOTAL PEMASUKAN</p>
-                    <h4 class="fw-bold text-success">Rp 12.000.000</h4>
+                    <h4 class="fw-bold text-success">
+                        Rp {{ number_format($totalPemasukan, 0, ',', '.') }}
+                    </h4>
+                    <p class="small text-muted mb-0">
+                        Periode {{ $namaPeriode }}
+                    </p>
                 </div>
             </div>
             <div class="col-6 col-lg-4">
                 <div class="card-artakula border-start border-danger border-4">
                     <p class="text-secondary small mb-1 fw-bold">TOTAL PENGELUARAN</p>
-                    <h4 class="fw-bold text-danger">Rp 4.520.000</h4>
+                    <h4 class="fw-bold text-danger">
+                        Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}
+                    </h4>
+                    <p class="small text-muted mb-0">
+                        Periode {{ $namaPeriode }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -36,7 +48,9 @@ SEBELUM FOOTER
         <div class="row g-4">
             <div class="col-lg-8">
     <div class="card-artakula">
-        <h6 class="fw-bold mb-4">Grafik Perkembangan Tabungan (2025)</h6>
+        <h6 class="fw-bold mb-4">
+            Grafik Perkembangan Tabungan ({{ $tahun }})
+        </h6>
         <div style="position: relative; height: 300px; width: 100%;">
             <canvas id="savingYearlyChart"></canvas>
         </div>
@@ -56,31 +70,36 @@ SEBELUM FOOTER
                 <div class="card-artakula">
                     <h6 class="fw-bold mb-4">Target Tabungan Per Kategori</h6>
                     <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded-4">
-                                <div class="d-flex justify-content-between mb-2 small fw-bold">
-                                    <span>Beli Motor</span><span class="text-success">45%</span>
-                                </div>
-                                <div class="progress" style="height: 8px;"><div class="progress-bar bg-success" style="width: 45%;"></div></div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded-4">
-                                <div class="d-flex justify-content-between mb-2 small fw-bold">
-                                    <span>Dana Darurat</span><span class="text-success">70%</span>
-                                </div>
-                                <div class="progress" style="height: 8px;"><div class="progress-bar bg-success" style="width: 70%;"></div></div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="p-3 bg-light rounded-4">
-                                <div class="d-flex justify-content-between mb-2 small fw-bold">
-                                    <span>Beli HP Baru</span><span class="text-success">30%</span>
-                                </div>
-                                <div class="progress" style="height: 8px;"><div class="progress-bar bg-success" style="width: 30%;"></div></div>
-                            </div>
-                        </div>
+    @forelse ($targetTabungan as $item)
+        <div class="col-md-4">
+            <div class="p-3 bg-light rounded-4">
+                <div class="d-flex justify-content-between mb-2 small fw-bold">
+                    <span>{{ $item->nama_kategori }}</span>
+                    <span class="text-success">
+                        {{ $item->persen }}%
+                    </span>
+                </div>
+
+                <div class="progress" style="height: 8px;">
+                    <div
+                        class="progress-bar bg-success"
+                        style="width: {{ $item->persen }}%;">
                     </div>
+                </div>
+
+                <div class="small text-muted mt-2">
+                    Rp {{ number_format($item->total_tabungan, 0, ',', '.') }}
+                    /
+                    Rp {{ number_format($item->target_nominal, 0, ',', '.') }}
+                </div>
+            </div>
+        </div>
+    @empty
+        <div class="col-12 text-center text-muted small">
+            Belum ada target tabungan
+        </div>
+    @endforelse
+</div>
                 </div>
             </div>
 
@@ -121,6 +140,12 @@ SEBELUM FOOTER
 
 @push('scripts')
 <script>
+    const dataTabunganTahunan = @json($dataTabunganTahunan);
+    const labelPengeluaran = @json($labelPengeluaran);
+    const dataPengeluaran = @json($dataPengeluaran);
+</script>
+
+<script>
     // SEMUA SCRIPT CHART & JS DASHBOARD KAMU
     // 5) Grafik Perkembangan Tabungan
         new Chart(document.getElementById('savingYearlyChart'), {
@@ -129,7 +154,7 @@ SEBELUM FOOTER
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                 datasets: [{
                     label: 'Tabungan',
-                    data: [1.2, 1.5, 1.4, 2.0, 2.8, 2.5, 3.0, 3.5, 3.2, 4.0, 4.5, 5.0],
+                    data: dataTabunganTahunan,
                     borderColor: '#10b981',
                     tension: 0.4,
                     fill: true,
@@ -151,12 +176,19 @@ SEBELUM FOOTER
         new Chart(document.getElementById('expenseCircleChart'), {
             type: 'doughnut',
             data: {
-                labels: ['Makan', 'Ngopi', 'Transportasi', 'Lainnya'],
-                datasets: [{
-                    data: [60, 15, 20, 5],
-                    backgroundColor: ['#10b981', '#34d399', '#059669', '#f1f5f9'],
-                    borderWidth: 0
-                }]
+                labels: labelPengeluaran,
+datasets: [{
+    data: dataPengeluaran,
+    backgroundColor: [
+        '#10b981',
+        '#34d399',
+        '#059669',
+        '#6ee7b7',
+        '#a7f3d0'
+    ],
+    borderWidth: 0
+}]
+
             },
 options: {
         responsive: true,

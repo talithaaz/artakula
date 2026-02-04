@@ -7,6 +7,17 @@ use App\Models\User; // Model User.
 use Illuminate\Support\Facades\Auth; // Facade Auth untuk autentikasi.
 use Illuminate\Support\Facades\Hash; // Facade Hash untuk password.
 use Laravel\Socialite\Facades\Socialite; // Facade Socialite untuk login Google.
+use App\Models\Dompet;
+use App\Models\Pemasukan;
+use App\Models\Pengeluaran;
+use Carbon\Carbon;
+use App\Models\Tabungan;
+use Illuminate\Support\Facades\DB;
+use App\Models\KategoriTabungan;
+
+
+
+
 
 class AuthController extends Controller // Controller autentikasi.
 {
@@ -73,10 +84,112 @@ class AuthController extends Controller // Controller autentikasi.
     }
 
     // ===== DASHBOARD =====
-    public function dashboard() // Menampilkan dashboard.
-    {
-        return view('dashboard.index'); // Tampilkan view dashboard.
-    }
+    public function dashboard()
+{
+    $bulan = now()->month;
+    $tahun = now()->year;
+
+    $awalBulan = Carbon::create($tahun, $bulan, 1)->startOfMonth();
+    $akhirBulan = Carbon::create($tahun, $bulan, 1)->endOfMonth();
+
+    // TOTAL SALDO SELURUH DOMPET
+    $totalSaldo = Dompet::where('user_id', auth()->id())
+        ->sum('saldo');
+
+    // TOTAL PEMASUKAN BULAN BERJALAN
+    $totalPemasukan = Pemasukan::where('user_id', auth()->id())
+        ->whereBetween('tanggal', [$awalBulan, $akhirBulan])
+        ->sum('jumlah');
+
+    // TOTAL PENGELUARAN BULAN BERJALAN
+    $totalPengeluaran = Pengeluaran::where('user_id', auth()->id())
+        ->whereBetween('tanggal', [$awalBulan, $akhirBulan])
+        ->sum('jumlah');
+
+    // TEKS PERIODE (READ-ONLY)
+    $namaPeriode = Carbon::now()->translatedFormat('F Y');
+
+    // ===== GRAFIK TABUNGAN TAHUNAN =====
+$tabunganPerBulan = Tabungan::select(
+        DB::raw('MONTH(tanggal) as bulan'),
+        DB::raw('SUM(nominal) as total')
+    )
+    ->where('user_id', auth()->id())
+    ->whereYear('tanggal', $tahun)
+    ->groupBy(DB::raw('MONTH(tanggal)'))
+    ->pluck('total', 'bulan');
+
+// Pastikan semua bulan ada (Jan–Des)
+$dataTabunganTahunan = [];
+for ($i = 1; $i <= 12; $i++) {
+    $dataTabunganTahunan[] = $tabunganPerBulan[$i] ?? 0;
+}
+
+// ===== GRAFIK PROPORSI PENGELUARAN (BULAN BERJALAN) =====
+$pengeluaranPerKategori = Pengeluaran::select(
+        'tb_kategori_pengeluaran.nama_kategori',
+        DB::raw('SUM(tb_pengeluaran.jumlah) as total')
+    )
+    ->join(
+        'tb_kategori_pengeluaran',
+        'tb_pengeluaran.kategori_id',
+        '=',
+        'tb_kategori_pengeluaran.id'
+    )
+    ->where('tb_pengeluaran.user_id', auth()->id())
+    ->whereBetween('tb_pengeluaran.tanggal', [$awalBulan, $akhirBulan])
+    ->groupBy('tb_kategori_pengeluaran.nama_kategori')
+    ->get();
+
+    $labelPengeluaran = $pengeluaranPerKategori->pluck('nama_kategori');
+$dataPengeluaran  = $pengeluaranPerKategori->pluck('total');
+
+$targetTabungan = KategoriTabungan::select(
+        'tb_kategori_tabungan.id',
+        'tb_kategori_tabungan.nama_kategori',
+        'tb_kategori_tabungan.target_nominal',
+        DB::raw('COALESCE(SUM(tb_tabungan.nominal), 0) as total_tabungan')
+    )
+    ->leftJoin('tb_tabungan', function ($join) {
+        $join->on(
+            'tb_tabungan.kategori_tabungan_id',
+            '=',
+            'tb_kategori_tabungan.id'
+        )
+        ->where('tb_tabungan.user_id', auth()->id());
+    })
+    ->where('tb_kategori_tabungan.user_id', auth()->id())
+    ->groupBy(
+        'tb_kategori_tabungan.id',
+        'tb_kategori_tabungan.nama_kategori',
+        'tb_kategori_tabungan.target_nominal'
+    )
+    ->get()
+    ->map(function ($item) {
+        $item->persen = $item->target_nominal > 0
+            ? min(100, round(($item->total_tabungan / $item->target_nominal) * 100))
+            : 0;
+        return $item;
+    });
+
+
+
+
+    return view('dashboard.index', compact(
+    'totalSaldo',
+    'totalPemasukan',
+    'totalPengeluaran',
+    'namaPeriode',
+    'tahun',
+    'dataTabunganTahunan',
+    'labelPengeluaran',
+    'dataPengeluaran',
+    'targetTabungan'
+));
+
+
+}
+
 
     // ===== GOOGLE LOGIN =====
     public function redirectToGoogle() // Redirect ke Google OAuth.
