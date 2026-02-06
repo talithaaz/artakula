@@ -110,25 +110,56 @@ SEBELUM FOOTER
                         <table class="table table-hover align-middle border-0">
                             <thead class="bg-light small">
                                 <tr>
-                                    <th>JENIS</th><th>KETERANGAN</th><th>KATEGORI</th><th>DOMPET</th><th class="text-end">JUMLAH</th>
-                                </tr>
+                                <th>TANGGAL</th>    
+                                <th>JENIS</th>
+                                    <th>KETERANGAN</th>
+                                    <th>KATEGORI</th>
+                                    <th>DOMPET</th>
+                                    <th>NOMINAL</th>
+                                    
                             </thead>
                             <tbody class="small fw-bold">
-                                <tr>
-                                    <td><span class="badge bg-success-subtle text-success px-3">MASUK</span></td>
-                                    <td>Gaji Freelance</td><td>Pekerjaan</td><td>Bank BCA</td>
-                                    <td class="text-end text-success">+ Rp 2.000.000</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="badge bg-danger-subtle text-danger px-3">KELUAR</span></td>
-                                    <td>Beli Kopi</td><td>Ngopi</td><td>GoPay</td>
-                                    <td class="text-end text-danger">- Rp 25.000</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="badge bg-primary-subtle text-primary px-3">TABUNG</span></td>
-                                    <td>Nabung Motor</td><td>Motor</td><td>Bank Mandiri</td>
-                                    <td class="text-end text-primary">Rp 500.000</td>
-                                </tr>
+                               @forelse ($transaksiTerkini as $trx)
+<tr>
+    <td class="text-muted">
+    {{ \Carbon\Carbon::parse($trx->tanggal)->translatedFormat('d M Y') }}
+</td>
+
+    <td>
+        @if ($trx->jenis === 'MASUK')
+            <span class="badge bg-success-subtle text-success px-3">MASUK</span>
+        @elseif ($trx->jenis === 'KELUAR')
+            <span class="badge bg-danger-subtle text-danger px-3">KELUAR</span>
+        @else
+            <span class="badge bg-primary-subtle text-primary px-3">TABUNG</span>
+        @endif
+    </td>
+    
+    <td>{{ $trx->nama }}</td>
+    <td>{{ $trx->kategori }}</td>
+    <td>{{ $trx->dompet }}</td>
+
+    <td class="
+        {{ $trx->jenis === 'MASUK' ? 'text-success' : '' }}
+        {{ $trx->jenis === 'KELUAR' ? 'text-danger' : '' }}
+        {{ $trx->jenis === 'TABUNG' ? 'text-primary' : '' }}
+    ">
+        @if ($trx->jenis === 'MASUK')
+            + Rp {{ number_format($trx->jumlah, 0, ',', '.') }}
+        @elseif ($trx->jenis === 'KELUAR')
+            - Rp {{ number_format($trx->jumlah, 0, ',', '.') }}
+        @else
+            Rp {{ number_format($trx->jumlah, 0, ',', '.') }}
+        @endif
+    </td>
+</tr>
+@empty
+<tr>
+    <td colspan="5" class="text-center text-muted">
+        Belum ada transaksi 2 hari terakhir
+    </td>
+</tr>
+@endforelse
                             </tbody>
                         </table>
                     </div>

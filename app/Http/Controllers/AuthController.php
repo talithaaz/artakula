@@ -172,6 +172,62 @@ $targetTabungan = KategoriTabungan::select(
         return $item;
     });
 
+    $awal  = Carbon::now()->subDays(1)->startOfDay();
+$akhir = Carbon::now()->endOfDay();
+
+$transaksiTerkini =
+    DB::table('tb_pemasukan')
+        ->select(
+            'tanggal',
+            DB::raw("'MASUK' as jenis"),
+            'keterangan as nama',
+            DB::raw("'Pekerjaan' as kategori"),
+            'tb_dompet.nama_dompet as dompet',
+            'jumlah'
+        )
+        ->join('tb_dompet', 'tb_pemasukan.dompet_id', '=', 'tb_dompet.id')
+        ->where('tb_pemasukan.user_id', auth()->id())
+        ->whereBetween('tanggal', [$awal, $akhir])
+
+    ->unionAll(
+
+        DB::table('tb_pengeluaran')
+            ->select(
+                'tanggal',
+                DB::raw("'KELUAR' as jenis"),
+                'keterangan as nama',
+                'tb_kategori_pengeluaran.nama_kategori as kategori',
+                'tb_dompet.nama_dompet as dompet',
+                'jumlah'
+            )
+            ->join('tb_dompet', 'tb_pengeluaran.dompet_id', '=', 'tb_dompet.id')
+            ->join('tb_kategori_pengeluaran', 'tb_pengeluaran.kategori_id', '=', 'tb_kategori_pengeluaran.id')
+            ->where('tb_pengeluaran.user_id', auth()->id())
+            ->whereBetween('tanggal', [$awal, $akhir])
+    )
+
+    ->unionAll(
+
+        DB::table('tb_tabungan')
+            ->select(
+                'tanggal',
+                DB::raw("'TABUNG' as jenis"),
+                'keterangan as nama',
+                'tb_kategori_tabungan.nama_kategori as kategori',
+                'tb_dompet.nama_dompet as dompet',
+                'nominal as jumlah'
+            )
+            ->join('tb_dompet', 'tb_tabungan.dompet_id', '=', 'tb_dompet.id')
+            ->join('tb_kategori_tabungan', 'tb_tabungan.kategori_tabungan_id', '=', 'tb_kategori_tabungan.id')
+            ->where('tb_tabungan.user_id', auth()->id())
+            ->whereBetween('tanggal', [$awal, $akhir])
+    )
+
+    ->orderBy('tanggal', 'desc')
+    ->limit(10)
+    ->get();
+
+
 
 
 
@@ -184,7 +240,8 @@ $targetTabungan = KategoriTabungan::select(
     'dataTabunganTahunan',
     'labelPengeluaran',
     'dataPengeluaran',
-    'targetTabungan'
+    'targetTabungan',
+    'transaksiTerkini'
 ));
 
 
