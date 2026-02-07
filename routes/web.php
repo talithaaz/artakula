@@ -11,6 +11,7 @@ use App\Http\Controllers\KategoriPengeluaranController; // Controller kategori p
 use App\Http\Controllers\PengeluaranController; // Controller pengeluaran.
 use App\Http\Controllers\KategoriTabunganController; // Controller kategori tabungan.
 use App\Http\Controllers\TabunganController; // Controller tabungan.
+use App\Http\Controllers\EvaluasiController;
 
 // Landing page
 Route::get('/', [Index::class, 'index'])->name('landing'); // Route landing.
@@ -115,6 +116,6 @@ Route::middleware(['auth'])->group(function () { // Group route yang butuh login
     Route::resource('pengeluaran', PengeluaranController::class); // Resource pengeluaran.
     Route::resource('kategoriTabungan', KategoriTabunganController::class); // Resource kategori tabungan.
     Route::resource('tabungan', TabunganController::class); // Resource tabungan.
-
+    Route::get('/evaluasi', [EvaluasiController::class, 'index'])->name('evaluasi.index');
 
 });

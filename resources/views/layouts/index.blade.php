@@ -71,9 +71,10 @@
 </div>
 
 
-            <a href="#" class="nav-link-custom">
-                <i class="bi bi-bar-chart-steps"></i> <span>Evaluasi Keuangan</span>
-            </a>
+            <a href="{{ route('evaluasi.index') }}" class="nav-link-custom">
+    <i class="bi bi-bar-chart-steps"></i> <span>Evaluasi Keuangan</span>
+</a>
+
             
             <a href="#" class="nav-link-custom">
                 <i class="bi bi-person-gear"></i> <span>Profil</span>

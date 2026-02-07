@@ -181,7 +181,7 @@ $transaksiTerkini =
             'tanggal',
             DB::raw("'MASUK' as jenis"),
             'keterangan as nama',
-            DB::raw("'Pekerjaan' as kategori"),
+            DB::raw("'Pemasukan' as kategori"),
             'tb_dompet.nama_dompet as dompet',
             'jumlah'
         )

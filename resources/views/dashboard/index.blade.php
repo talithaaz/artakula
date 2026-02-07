@@ -155,7 +155,7 @@ SEBELUM FOOTER
 </tr>
 @empty
 <tr>
-    <td colspan="5" class="text-center text-muted">
+    <td colspan="6" class="text-center text-muted">
         Belum ada transaksi 2 hari terakhir
     </td>
 </tr>
