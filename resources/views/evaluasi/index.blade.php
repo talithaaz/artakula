@@ -90,25 +90,80 @@
 
 {{-- ======================= INSIGHT KEUANGAN ======================= --}}
 
+<!-- <div class="card-artakula p-4 mb-4">
+    <h6 class="fw-bold mb-2">Insight Keuangan</h6>
+<div class="alert alert-info">
+    <b>Predikat Keuangan:</b> {{ $evaluasi->predikat }} <br>
+
+    <b>Kategori Pengeluaran Terbesar:</b>
+    {{ $evaluasi->kategori_dominan ?? '-' }}
+    ({{ number_format($evaluasi->persen_dominan,1) }}%)
+</div> -->
+
+
 <div class="card-artakula p-4 mb-4">
     <h6 class="fw-bold mb-2">Insight Keuangan</h6>
 
+    <div class="alert alert-{{ $warna }}">
+        <b>Predikat Keuangan:</b> {{ $predikat }} <br>
 
-@if($uangAman < 0)
-    <div class="alert alert-danger mb-0">
-        Pengeluaran + tabungan Anda melebihi pemasukan. Dana bulan ini tidak mencukupi.
+        <b>Kategori Pengeluaran Terbesar:</b>
+        {{ $evaluasi->kategori_dominan ?? '-' }}
+        ({{ number_format($evaluasi->persen_dominan,1) }}%)
+
+        <div class="mt-2">
+            {{ $pesanUtama }}
+        </div>
     </div>
 
-@elseif($totalTabungan < ($totalPemasukan * 0.1))
-    <div class="alert alert-warning mb-0">
-        Anda belum menabung minimal 10% dari pemasukan bulan ini.
-    </div>
+    {{-- ANALISIS DETAIL --}}
+    @if(!empty($insights))
+        <div class="alert alert-light border mt-3 mb-0">
+            <b>Analisis Sistem:</b>
+            <p><b>Trend Pemasukan:</b> {{ $analisisPemasukan }}</p>
 
-@else
-    <div class="alert alert-success mb-0">
-        Kondisi keuangan Anda bulan ini cukup baik. Pertahankan kebiasaan ini!
-    </div>
+@if(!empty($kategoriBoros))
+<p><b>Kategori Boros:</b> {{ implode(', ', $kategoriBoros) }}</p>
 @endif
+
+@if(!empty($kategoriAman))
+<p><b>Kategori Aman:</b> {{ implode(', ', $kategoriAman) }}</p>
+@endif
+
+<p><b>Progres Tabungan:</b></p>
+<ul>
+@foreach($analisisTabungan as $t)
+<li>{{ $t }}</li>
+@endforeach
+</ul>
+
+@if(!empty($tabunganTercapai))
+<p><b>Target Tercapai:</b> {{ implode(', ', $tabunganTercapai) }}</p>
+@endif
+
+@if(!empty($tabunganHampir))
+<p><b>Hampir Target:</b> {{ implode(', ', $tabunganHampir) }}</p>
+@endif
+
+<hr>
+
+<h6 class="fw-bold">Rekomendasi Bulan Depan</h6>
+<ul>
+@foreach($rekomendasi as $r)
+<li>{{ $r }}</li>
+@endforeach
+</ul>
+
+<h6 class="fw-bold mt-3">Motivasi</h6>
+@foreach($motivasi as $m)
+<p>{{ $m }}</p>
+@endforeach
+        </div>
+    @endif
+</div>
+
+
+
 
 
 </div>
