@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail // Model user deng
         'password', // Password user.
         'google_id', // Google ID untuk login Google.
         'email_verified_at', // Waktu email diverifikasi.
+        'foto'
     ]; // Selesai definisi fillable.
 
     protected $hidden = [ // Field yang disembunyikan saat serialisasi.

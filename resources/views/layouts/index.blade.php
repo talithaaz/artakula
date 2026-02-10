@@ -76,7 +76,7 @@
 </a>
 
             
-            <a href="#" class="nav-link-custom">
+            <a href="{{ route('profile.index') }}" class="nav-link-custom">
                 <i class="bi bi-person-gear"></i> <span>Profil</span>
             </a>
             
@@ -118,12 +118,30 @@
                 </div>
 
                 <a href="#" class="d-flex align-items-center gap-2 text-decoration-none bg-white p-1 pe-3 rounded-pill shadow-sm">
-                    <img src="https://ui-avatars.com/api/?name={{ auth()->user()->name }}&background=10b981&color=fff" class="rounded-circle" width="38">
-                    <div class="lh-1 d-none d-md-block">
-                        <p class="mb-0 small fw-bold text-dark">{{ auth()->user()->name }}</p>
-                        <span style="font-size: 0.6rem;" class="text-muted">Premium Member</span>
-                    </div>
-                </a>
+
+
+@if(auth()->check() && auth()->user()->foto)
+    <img src="{{ asset('foto_profil/'.auth()->user()->foto) }}"
+         class="rounded-circle"
+        x height="38"
+         width="38"
+         style="object-fit: cover; border:2px solid #fff;">
+@else
+    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=10b981&color=fff"
+         class="rounded-circle"
+         width="38"
+         height="38">
+@endif
+
+<div class="lh-1 d-none d-md-block">
+    <p class="mb-0 small fw-bold text-dark">
+        {{ auth()->user()->name ?? 'User' }}
+    </p>
+</div>
+
+
+</a>
+
             </div>
         </div>
 
