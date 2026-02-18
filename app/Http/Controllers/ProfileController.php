@@ -22,7 +22,7 @@ class ProfileController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'username' => 'required|unique:tb_users,username,' . $user->id,
+            // 'username' => 'required|unique:tb_users,username,' . $user->id,
             'email' => 'required|email|unique:tb_users,email,' . $user->id,
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -36,7 +36,7 @@ class ProfileController extends Controller
         }
 
         $user->name = $request->name;
-        $user->username = $request->username;
+        // $user->username = $request->username;
         $user->email = $request->email;
         $user->save();
 

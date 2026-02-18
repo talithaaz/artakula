@@ -139,6 +139,8 @@ class TabunganController extends Controller // Controller untuk catat tabungan.
             ]);
         });
 
+        // app(\App\Http\Controllers\NotificationController::class)->generate();
+
         // Redirect kembali ke index sesuai filter
         return redirect()->route('tabungan.index', [ // Redirect ke daftar tabungan.
             'bulan' => $request->bulan, // Bawa parameter bulan.

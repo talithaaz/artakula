@@ -81,6 +81,8 @@ class DompetController extends Controller // Controller untuk CRUD dompet.
             'is_dummy' => 0, // Tanda dompet manual.
         ]); // Selesai membuat dompet.
 
+        // app(\App\Http\Controllers\NotificationController::class)->generate();
+
         return redirect()->route('dompet.index') // Redirect ke daftar dompet.
             ->with('success', 'Dompet berhasil ditambahkan'); // Pesan sukses.
     }

@@ -130,6 +130,7 @@ class PengeluaranController extends Controller // Controller untuk catat pengelu
 
         // Kurangi saldo dompet
         $dompet->decrement('saldo', $request->jumlah); // Kurangi saldo sesuai jumlah.
+// app(\App\Http\Controllers\NotificationController::class)->generate();
 
         return redirect()->route('pengeluaran.index', [ // Redirect ke daftar pengeluaran.
             'bulan' => $request->bulan, // Bawa parameter bulan.

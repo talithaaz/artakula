@@ -95,6 +95,52 @@ body { /* Styling body. */
     border-radius: 10px; /* Radius thumb. */
 } /* Tutup thumb. */
 
+/* container wajib relative */
+.nav-list{
+    position: relative;
+}
+
+/* kotak hijau yg gerak */
+.active-indicator{
+    position: absolute;
+    left: 12px;
+    width: calc(100% - 24px);
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-radius: 14px;
+    transition: transform .28s cubic-bezier(.22,1,.36,1),
+                height .25s,
+                opacity .2s;
+    z-index: 0;
+    /* box-shadow: 0 12px 28px rgba(14, 208, 143, 0.2); */
+    opacity:0;
+}
+
+
+/* link di atas indikator */
+.nav-link-custom{
+    position: relative;
+    z-index: 1;
+    height:48px;
+    display:flex;
+    align-items:center;
+    padding:0 14px;
+    border-radius:12px;
+    color:#cbd5e1;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.nav-link-custom i{
+    margin-right:10px;
+    font-size:18px;
+}
+
+.nav-link-custom:hover{
+    color:white;
+}
+
+
 /* Sidebar Dropdown Icon Rotate */ /* Judul section icon dropdown. */
 .nav-link-custom[data-bs-toggle="collapse"]::after { /* Ikon panah dropdown. */
     display: inline-block; /* Tampilkan inline. */
@@ -148,15 +194,11 @@ body { /* Styling body. */
 } /* Tutup .nav-link-custom. */
 
 .nav-link-custom:hover { /* Hover link utama. */
-    background: var(--sidebar-hover); /* Latar hover. */
+    /* background: var(--sidebar-hover); Latar hover. */
     color: #fff; /* Warna teks hover. */
 } /* Tutup hover link. */
 
-.nav-link-custom.active { /* Link aktif. */
-    background: var(--primary-color); /* Latar aktif. */
-    color: white !important; /* Warna teks aktif. */
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2); /* Shadow aktif. */
-} /* Tutup link aktif. */
+
 
 /* CONTENT AREA */ /* Judul section konten. */
 #content { /* Area konten utama. */

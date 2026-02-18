@@ -35,51 +35,79 @@ class AuthController extends Controller // Controller autentikasi.
     // ===== REGISTER =====
     public function register(Request $request) // Menangani proses register.
     {
+        
+        $email = strtolower($request->email);
+
+        $request->merge(['email' => $email]);
+    
         $request->validate([ // Validasi input register.
             'name'     => 'required|string|max:255', // Nama wajib string max 255.
-            'username' => 'required|string|max:100|unique:tb_users,username', // Username wajib unik.
+            // 'username' => 'required|string|max:100|unique:tb_users,username', // Username wajib unik.
             'email'    => 'required|email|unique:tb_users,email', // Email wajib unik.
-            'password' => 'required|min:6', // Password minimal 6.
+            'password' => 'required|min:8', // Password minimal 6.
         ]);
+
+        // buat username otomatis dari email
+        // $baseUsername = explode('@', $request->email)[0];
+        // $username = $baseUsername;
+        // $i = 1;
+
+        // kalau username sudah dipakai
+        // while(User::where('username', $username)->exists()){
+        //     $username = $baseUsername . $i;
+        //     $i++;
+        // }   
 
         $user = User::create([ // Buat user baru.
             'name'     => $request->name, // Set nama.
-            'username' => $request->username, // Set username.
-            'email'    => $request->email, // Set email.
-            'password' => Hash::make($request->password), // Hash password.
+            // 'username' => $username, // Set username.
+            'email'    => $email, // Set email.
+            'password' => $request->password, // Hash password.
         ]);
 
         // login dulu
         Auth::login($user); // Login otomatis setelah register.
 
+        $request->session()->regenerate();
+
+        return redirect()->route('dashboard');
+
         // kirim email verifikasi
-        $user->sendEmailVerificationNotification(); // Kirim email verifikasi.
+        // $user->sendEmailVerificationNotification(); // Kirim email verifikasi.
 
         // arahkan ke halaman cek email
-        return redirect()->route('verification.notice'); // Redirect ke halaman verifikasi.
+        // return redirect()->route('verification.notice'); // Redirect ke halaman verifikasi.
     }
 
     // ===== LOGIN =====
-    public function login(Request $request) // Menangani proses login.
-    {
-        $request->validate([ // Validasi input login.
-            'email'    => 'required|email', // Email wajib valid.
-            'password' => 'required', // Password wajib.
-        ]);
+    public function login(Request $request)
+{
+    $email = strtolower($request->email);
 
-        if (Auth::attempt($request->only('email', 'password'))) { // Coba login dengan kredensial.
-            return redirect()->route('dashboard'); // Jika sukses, ke dashboard.
-        }
+    $credentials = [
+        'email' => $email,
+        'password' => $request->password
+    ];
 
-        return back()->withErrors([ // Jika gagal, kembali dengan error.
-            'email' => 'Email atau password salah',
-        ]);
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->route('dashboard');
     }
 
+    return back()->withErrors([
+        'email' => 'Email atau password salah',
+    ]);
+}
+
+
     // ===== LOGOUT =====
-    public function logout() // Logout user.
+    public function logout(Request $request) // Logout user.
     {
         Auth::logout(); // Hapus sesi user.
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('landing'); // Kembali ke halaman landing.
     }
 
@@ -255,23 +283,36 @@ $transaksiTerkini =
     }
 
 
-    public function handleGoogleCallback() // Callback setelah login Google.
-    {
-        $googleUser = Socialite::driver('google')->stateless()->user(); // Ambil data user dari Google.
+    public function handleGoogleCallback()
+{
+    $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $user = User::updateOrCreate( // Update atau buat user baru.
-            ['email' => $googleUser->email], // Kunci pencarian berdasarkan email.
-            [
-                'name' => $googleUser->name, // Set nama dari Google.
-                'username' => str_replace(' ', '', strtolower($googleUser->name)), // Set username dari nama.
-                'google_id' => $googleUser->id, // Simpan Google ID.
-                'email_verified_at' => now(), // Tandai email terverifikasi.
-                'password' => Hash::make(uniqid()), // Password random untuk user Google.
-            ]
-        );
+    $email = strtolower($googleUser->email);
+    $email = str_replace('@googlemail.com', '@gmail.com', $email);
 
-        Auth::login($user); // Login user.
+    $user = User::where('email', $email)->first();
 
-        return redirect()->route('dashboard'); // Redirect ke dashboard.
+    if ($user) {
+        // kalau akun sudah ada → LINK saja
+        $user->update([
+            'google_id' => $googleUser->id,
+            'email_verified_at' => now(),
+        ]);
+    } else {
+        // akun baru dari google
+        $user = User::create([
+            'name' => $googleUser->name,
+            'email' => $email,
+            'google_id' => $googleUser->id,
+            'email_verified_at' => now(),
+            'password' => bcrypt(uniqid()),
+        ]);
     }
+
+    Auth::login($user);
+    request()->session()->regenerate();
+
+    return redirect()->route('dashboard');
+}
+
 }

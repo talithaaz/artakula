@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard | Artakula')</title>
 
     <link rel="icon" type="image/png" href="{{ asset('img/logo2.png') }}">
@@ -28,11 +29,15 @@
         </div>
         
         <div class="nav-list mt-2">
-            <a href="{{ route('dashboard') }}" class="nav-link-custom active">
+            <div class="active-indicator"></div>
+
+<a href="{{ route('dashboard') }}"
+   class="nav-link-custom {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="bi bi-grid-fill"></i> <span>Dashboard</span>
             </a>
             
-            <a href="{{ route('dompet.index') }}" class="nav-link-custom">
+<a href="{{ route('dompet.index') }}"
+   class="nav-link-custom {{ request()->routeIs('dompet.*') ? 'active' : '' }}">
                 <i class="bi bi-wallet2"></i> <span>Dompet Saya</span>
             </a>
             
@@ -71,12 +76,14 @@
 </div>
 
 
-            <a href="{{ route('evaluasi.index') }}" class="nav-link-custom">
+<a href="{{ route('evaluasi.index') }}"
+   class="nav-link-custom {{ request()->routeIs('evaluasi.*') ? 'active' : '' }}">
     <i class="bi bi-bar-chart-steps"></i> <span>Evaluasi Keuangan</span>
 </a>
 
             
-            <a href="{{ route('profile.index') }}" class="nav-link-custom">
+<a href="{{ route('profile.index') }}"
+   class="nav-link-custom {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                 <i class="bi bi-person-gear"></i> <span>Profil</span>
             </a>
             
@@ -105,17 +112,30 @@
             </div>
             
             <div class="d-flex align-items-center gap-3">
-                <div class="dropdown">
-                    <button class="btn btn-white rounded-circle shadow-sm p-2 position-relative" data-bs-toggle="dropdown">
-                        <i class="bi bi-bell fs-5 text-secondary"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-3" style="width: 300px; border-radius: 15px;">
-                        <h6 class="fw-bold mb-3">Notifikasi</h6>
-                        <li class="small text-muted mb-2"><i class="bi bi-info-circle me-1 text-success"></i> Saldo masuk Rp 5.000.000</li>
-                        <li class="small text-muted"><i class="bi bi-envelope me-1"></i> Laporan bulanan dikirim ke email.</li>
-                    </ul>
-                </div>
+                <div class="dropdown" id="notifDropdown">
+    <button class="btn btn-white rounded-circle shadow-sm p-2 position-relative"
+            data-bs-toggle="dropdown">
+
+        <i class="bi bi-bell fs-5 text-secondary"></i>
+
+        <!-- badge merah -->
+        <span id="notifBadge"
+              class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+              style="display:none;">
+        </span>
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-3"
+        style="width:300px; border-radius:15px; max-height:350px; overflow-y:auto;"
+        id="notifList">
+
+        <h6 class="fw-bold mb-3">Notifikasi</h6>
+        <li class="small text-muted">Memuat...</li>
+
+    </ul>
+</div>
+
+
 
                 <a href="#" class="d-flex align-items-center gap-2 text-decoration-none bg-white p-1 pe-3 rounded-pill shadow-sm">
 
@@ -190,6 +210,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+/* ================= SIDEBAR ================= */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const content = document.getElementById('content');
@@ -203,7 +224,165 @@ function toggleSidebar() {
         overlay.classList.toggle('show');
     }
 }
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const indicator = document.querySelector(".active-indicator");
+    const links = document.querySelectorAll(".nav-link-custom");
+
+    if(!indicator || links.length === 0) return;
+
+    // fungsi geser indikator
+    function moveIndicator(el){
+        const offset = el.offsetTop;
+        indicator.style.transform = `translateY(${offset}px)`;
+        indicator.style.height = el.offsetHeight + "px";
+        indicator.style.opacity = "1";
+    }
+
+    // ===== hover efek =====
+    links.forEach(link=>{
+        link.addEventListener("mouseenter", function(){
+            moveIndicator(this);
+        });
+    });
+
+    // ===== balik ke menu aktif saat mouse keluar sidebar =====
+    const sidebar = document.getElementById("sidebar");
+
+
+    sidebar.addEventListener("mouseleave", ()=>{
+        const activePage = document.querySelector(".nav-link-custom.active");
+        if(activePage){
+            moveIndicator(activePage);
+        }
+    });
+
+    // ===== pas halaman load langsung ke menu aktif =====
+    window.addEventListener("load", ()=>{
+        const activePage = document.querySelector(".nav-link-custom.active");
+        if(activePage){
+            moveIndicator(activePage);
+        }
+    });
+
+});
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+/* AUTO LOAD SAAT DASHBOARD DIBUKA */
+document.addEventListener("DOMContentLoaded", async function(){
+
+    try{
+        await fetch('/notifications/check',{
+            method:'GET',
+            credentials:'include',
+            headers:{
+                'X-CSRF-TOKEN': csrfToken,
+                'X-Requested-With':'XMLHttpRequest',
+                'Accept':'application/json'
+            }
+        });
+
+        loadNotifBadge();
+
+    }catch(e){
+        console.log('Notif error',e);
+    }
+
+});
+
+
+/* BADGE MERAH */
+async function loadNotifBadge(){
+
+    const res = await fetch('/notifications/list',{
+        method:'GET',
+        credentials:'include',
+        headers:{
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With':'XMLHttpRequest',
+            'Accept':'application/json'
+        }
+    });
+
+    if(!res.ok) return;
+
+    const data = await res.json();
+
+    const badge = document.getElementById('notifBadge');
+
+    let unread = data.filter(n => n.is_read == 0).length;
+
+    badge.style.display = unread > 0 ? "block" : "none";
+}
+
+
+/* LIST NOTIF */
+async function loadNotif(){
+
+    const res = await fetch('/notifications/list',{
+        method:'GET',
+        credentials:'include',
+        headers:{
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With':'XMLHttpRequest',
+            'Accept':'application/json'
+        }
+    });
+
+    const data = await res.json();
+
+    const list = document.getElementById('notifList');
+
+    list.innerHTML = '<h6 class="fw-bold mb-3">Notifikasi</h6>';
+
+    if(data.length === 0){
+        list.innerHTML += `<li class="small text-muted">Tidak ada notifikasi</li>`;
+        return;
+    }
+
+    data.forEach(n => {
+
+        let bold = n.is_read ? '' : 'fw-bold';
+
+        list.innerHTML += `
+        <li class="mb-2">
+            <button onclick="readNotif(${n.id})" class="dropdown-item small ${bold}">
+                <strong>${n.title}</strong><br>
+                <span>${n.message}</span>
+            </button>
+        </li>`;
+    });
+}
+
+
+/* TANDAI DIBACA */
+async function readNotif(id){
+
+    await fetch('/notifications/'+id+'/read',{
+        method:'POST',
+        credentials:'include',
+        headers:{
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With':'XMLHttpRequest',
+            'Accept':'application/json'
+        }
+    });
+
+    loadNotif();
+    loadNotifBadge();
+}
+
+
+/* LOAD SAAT DROPDOWN DIBUKA */
+document.getElementById('notifDropdown')
+.addEventListener('shown.bs.dropdown', function () {
+    loadNotif();
+});
+
 </script>
+
 
 @stack('scripts')
 </body>

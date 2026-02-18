@@ -47,10 +47,10 @@
             <input type="text" name="name" class="form-control auth-input py-2" placeholder="Nama Anda" value="{{ old('name') }}" required> <!-- Input nama. -->
         </div> <!-- Tutup grup input nama. -->
 
-        <div class="mb-2"> <!-- Grup input username. -->
-            <label class="auth-form-label mb-1">Username</label> <!-- Label username. -->
-            <input type="text" name="username" class="form-control auth-input py-2" placeholder="Buat Username Anda" value="{{ old('username') }}" required> <!-- Input username. -->
-        </div> <!-- Tutup grup input username. -->
+        <!-- <div class="mb-2"> Grup input username. -->
+            <!-- <label class="auth-form-label mb-1">Username</label> Label username. -->
+            <!-- <input type="text" name="username" class="form-control auth-input py-2" placeholder="Buat Username Anda" value="{{ old('username') }}" required> Input username. -->
+        <!-- </div> Tutup grup input username. -->
 
         <div class="mb-2"> <!-- Grup input email. -->
             <label class="auth-form-label mb-1">Email</label> <!-- Label email. -->
@@ -59,7 +59,19 @@
 
         <div class="mb-3"> <!-- Grup input password. -->
             <label class="auth-form-label mb-1">Password</label> <!-- Label password. -->
-            <input type="password" name="password" class="form-control auth-input py-2" placeholder="Minimal 8 karakter" required> <!-- Input password. -->
+            <div class="position-relative">
+    <input type="password"
+           id="passwordRegister"
+           name="password"
+           class="form-control auth-input py-2 pe-5"
+           placeholder="Minimal 8 karakter"
+           required>
+
+    <i id="togglePasswordRegister"
+       class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3"
+       style="cursor: pointer; font-size: 1.1rem;"></i>
+</div>
+ <!-- Input password. -->
         </div> <!-- Tutup grup input password. -->
 
         <button type="submit" class="btn btn-primary-custom w-100 py-2 shadow-sm"> <!-- Tombol submit register. -->
@@ -82,5 +94,36 @@
 </div> <!-- Tutup card container. -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <!-- JS Bootstrap. -->
+
+<script>
+/* LOGIN */
+const togglePassword = document.getElementById('togglePassword');
+if(togglePassword){
+    const password = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function () {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        this.classList.toggle('bi-eye');
+        this.classList.toggle('bi-eye-slash');
+    });
+}
+
+/* REGISTER */
+const togglePasswordRegister = document.getElementById('togglePasswordRegister');
+if(togglePasswordRegister){
+    const passwordRegister = document.getElementById('passwordRegister');
+
+    togglePasswordRegister.addEventListener('click', function () {
+        const type = passwordRegister.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordRegister.setAttribute('type', type);
+
+        this.classList.toggle('bi-eye');
+        this.classList.toggle('bi-eye-slash');
+    });
+}
+</script>
+
 </body> <!-- Tutup body. -->
 </html> <!-- Tutup html. -->

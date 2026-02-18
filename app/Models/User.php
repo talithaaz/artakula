@@ -2,7 +2,7 @@
 
 namespace App\Models; // Namespace untuk model.
 
-use Illuminate\Contracts\Auth\MustVerifyEmail; // Interface verifikasi email.
+// use Illuminate\Contracts\Auth\MustVerifyEmail; // Interface verifikasi email.
 use Illuminate\Database\Eloquent\Factories\HasFactory; // Trait factory.
 use Illuminate\Foundation\Auth\User as Authenticatable; // Base user autentikasi.
 use Illuminate\Notifications\Notifiable; // Trait notifikasi.
@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable; // Trait notifikasi.
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements MustVerifyEmail // Model user dengan verifikasi email.
+class User extends Authenticatable  // Model user dengan verifikasi email.
 {
     use HasFactory, Notifiable; // Aktifkan factory dan notifikasi.
 
@@ -18,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail // Model user deng
 
     protected $fillable = [ // Daftar field yang boleh diisi mass assignment.
         'name', // Nama user.
-        'username', // Username.
+        // 'username', // Username.
         'email', // Email user.
         'password', // Password user.
         'google_id', // Google ID untuk login Google.
