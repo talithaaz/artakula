@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-/* AUTO LOAD SAAT DASHBOARD DIBUKA */
+/* AUTO ANALISIS SAAT HALAMAN DIBUKA */
 document.addEventListener("DOMContentLoaded", async function(){
 
     try{
@@ -284,13 +284,17 @@ document.addEventListener("DOMContentLoaded", async function(){
             }
         });
 
-        loadNotifBadge();
+        // tunggu DB insert notif dulu
+        setTimeout(()=>{
+            loadNotifBadge();
+        },600);
 
     }catch(e){
         console.log('Notif error',e);
     }
 
 });
+
 
 
 /* BADGE MERAH */
@@ -344,16 +348,22 @@ async function loadNotif(){
 
     data.forEach(n => {
 
-        let bold = n.is_read ? '' : 'fw-bold';
+    let style = n.is_read
+        ? 'opacity:0.5; background:#f5f5f5;'
+        : 'background:#ecfdf5; border-left:4px solid #10b981;';
 
-        list.innerHTML += `
-        <li class="mb-2">
-            <button onclick="readNotif(${n.id})" class="dropdown-item small ${bold}">
-                <strong>${n.title}</strong><br>
-                <span>${n.message}</span>
-            </button>
-        </li>`;
-    });
+    list.innerHTML += `
+    <li class="mb-2">
+        <button onclick="readNotif(${n.id})"
+            class="dropdown-item small text-start"
+            style="white-space:normal; border-radius:10px; ${style}">
+            
+            <div class="fw-semibold">${n.title}</div>
+            <div class="text-muted">${n.message}</div>
+        </button>
+    </li>`;
+});
+
 }
 
 
@@ -380,6 +390,12 @@ document.getElementById('notifDropdown')
 .addEventListener('shown.bs.dropdown', function () {
     loadNotif();
 });
+
+/* refresh badge tiap 30 detik */
+setInterval(async ()=>{
+    await fetch('/notifications/check');
+    loadNotifBadge();
+},15000);
 
 </script>
 

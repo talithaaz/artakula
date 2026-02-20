@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\Models\Tabungan;
 use Illuminate\Support\Facades\DB;
 use App\Models\KategoriTabungan;
+use App\Http\Controllers\NotificationController;
 
 
 
@@ -114,6 +115,9 @@ class AuthController extends Controller // Controller autentikasi.
     // ===== DASHBOARD =====
     public function dashboard()
 {
+    // JALANKAN ENGINE NOTIFIKASI
+    app(NotificationController::class)->check();
+    
     $bulan = now()->month;
     $tahun = now()->year;
 

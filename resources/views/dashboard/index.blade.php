@@ -70,9 +70,9 @@ SEBELUM FOOTER
                 <div class="card-artakula">
                     <h6 class="fw-bold mb-4">Target Tabungan Per Kategori</h6>
                     <div class="row g-3">
-    @forelse ($targetTabungan as $item)
-        <div class="col-md-4">
-            <div class="p-3 bg-light rounded-4">
+    @forelse ($targetTabungan as $index => $item)
+    <div class="col-md-4 target-item {{ $index >= 6 ? 'd-none extra-target' : '' }}">
+        <div class="p-3 bg-light rounded-4">
                 <div class="d-flex justify-content-between mb-2 small fw-bold">
                     <span>{{ $item->nama_kategori }}</span>
                     <span class="text-success">
@@ -99,9 +99,19 @@ SEBELUM FOOTER
             Belum ada target tabungan
         </div>
     @endforelse
+
+    @if(count($targetTabungan) > 6)
+    <div class="text-center mt-3">
+        <button id="toggleTargetBtn" class="btn btn-outline-success btn-sm rounded-pill px-4">
+            Lihat Lainnya
+        </button>
+    </div>
+@endif
 </div>
                 </div>
             </div>
+
+            
 
             <div class="col-lg-12">
                 <div class="card-artakula">
@@ -211,13 +221,20 @@ SEBELUM FOOTER
 datasets: [{
     data: dataPengeluaran,
     backgroundColor: [
-        '#10b981',
-        '#34d399',
-        '#059669',
-        '#6ee7b7',
-        '#a7f3d0'
+        '#065f46', // emerald super dark
+    '#047857', // emerald dark
+    '#10b981', // primary artakula
+    '#34d399', // soft green
+    '#6ee7b7', // mint
+    '#a7f3d0', // pale mint
+    '#bbf7d0', // pastel green
+    '#d1fae5', // very light
+    '#22c55e', // lime green
+    '#4ade80'  // fresh green
     ],
-    borderWidth: 0
+    borderColor: '#ffffff',
+    borderWidth: 3,
+    hoverOffset: 8
 }]
 
             },
@@ -229,5 +246,24 @@ options: {
             legend: { position: 'bottom' }
         }
     }        });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('toggleTargetBtn');
+    const extraItems = document.querySelectorAll('.extra-target');
+
+    if (btn) {
+        btn.addEventListener('click', function () {
+            extraItems.forEach(item => {
+                item.classList.toggle('d-none');
+            });
+
+            if (btn.innerText === 'Lihat Lainnya') {
+                btn.innerText = 'Tampilkan Lebih Sedikit';
+            } else {
+                btn.innerText = 'Lihat Lainnya';
+            }
+        });
+    }
+});
 </script>
 @endpush
